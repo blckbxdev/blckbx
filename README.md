@@ -1,4 +1,5 @@
 to run go to https://blckbxdev.github.io/blckbx/ or download the html file and run locally
+
 thanks for using blckbx, a secure purely p2p chat interface made with ❤️ for privacy conscious users
 
 note: exchange peer ids through a secure channel (signal, telegram, in-person, etc.) for best security. this tool encrypts your conversation, but can't verify identities
