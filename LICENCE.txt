@@ -1,0 +1,3 @@
+Thanks for using blckbx!
+
+Feel free to modify or fork any of the code, just do not distribute it as your own, please give credit.
