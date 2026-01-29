@@ -34,7 +34,8 @@ modification note: most of the code is obfuscated, due to an old breach that hap
 
 security notice:
 while this uses strong encryption, it's provided as is for educational/quick purposes. for highly sensitive communications, use audited, enterprise grade solutions, even though blckbx is very secure, more secure than emails
-i do not recommend using it on its own as if its invincible, use signal or any other easy to use chat app to exchange ids and a vpn to encrypt ips.
+i do not recommend using it on its own as if its invincible, use signal or any other easy to use chat app to exchange ids and a vpn to encrypt ips, and people can use exploits in the way blckbx was coded to do malicious stuff, only connect
+to people you trust.
 
 license:
 this is open source code, use, modify and distribute freely just give credit where credit is due :)
