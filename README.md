@@ -14,7 +14,7 @@ peer to peer webrtc connections
 
 no backend completely client-side
 
-instant messaging: text, gifs, link previews and file sharing (gifs are currently broken)
+instant messaging: text, gifs, link previews and file sharing
 
 voice calls: encrypted p2p audio with multiple users
 
@@ -28,14 +28,14 @@ mobile friendly: works on phones and tablets (apk version comming soon)
 
 zero storage: nothing is saved anywhere
 
-known issues: gifs and mobile port is bricked due to code optimizations, fill be fixed in v1.4
+known issues: mobile apk version isnt available rn
 
 modification note: most of the code is obfuscated, due to an old breach that happened, this will not be undone for a while as the original source code has been lost to time
 
 security notice:
 while this uses strong encryption, it's provided as is for educational/quick purposes. for highly sensitive communications, use audited, enterprise grade solutions, even though blckbx is very secure, more secure than emails
 i do not recommend using it on its own as if its invincible, use signal or any other easy to use chat app to exchange ids and a vpn to encrypt ips, and people can use exploits in the way blckbx was coded to do malicious stuff, only connect
-to people you trust.
+to people you trust. allthough its fully open source i do not reccoment using a modified version without fully going over the changed code
 
 license:
 this is open source code, use, modify and distribute freely just give credit where credit is due :)
