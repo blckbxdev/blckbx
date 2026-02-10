@@ -4,33 +4,7 @@ thanks for using blckbx, a secure purely p2p chat interface made with ❤️ for
 
 note: exchange peer ids through a secure channel (signal, telegram, in-person, etc.) for best security. this tool encrypts your conversation, but can't verify identities
 
-
-features:
-ecdh p-521 key exchange
-
-aes 256 gcm authenticated encryption: end to end 256 bit encrypted
-
-peer to peer webrtc connections
-
-no backend completely client-side
-
-instant messaging: text, gifs, link previews and file sharing
-
-voice calls: encrypted p2p audio with multiple users
-
-screen sharing: share your screen securely
-
-file transfer: send encrypted files of any size
-
-themes: with 6 presets and custom color picker
-
-mobile friendly: works on phones and tablets (apk version comming soon)
-
-zero storage: nothing is saved anywhere
-
-known issues: mobile apk version isnt available rn
-
-modification note: most of the code is obfuscated, due to an old breach that happened, this will not be undone for a while as the original source code has been lost to time
+(V1.5 Beta) the beta is out, and feutures public rooms anyone can join without needing a code, could be a security concern so wait for full version to come out before fully commiting to using public rooms
 
 security notice:
 while this uses strong encryption, it's provided as is for educational/quick purposes. for highly sensitive communications, use audited, enterprise grade solutions, even though blckbx is very secure, more secure than emails
