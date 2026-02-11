@@ -14,4 +14,4 @@ Open source. You may use, modify, and distribute the code with proper attributio
 #### legal notice:
 blckbx is an open-source project intended for educational and experimental use. the developers do not control or monitor user activity and do not condone illegal activity, abuse, discrimination, or misuse of the software. all third-party components used are open source or freely licensed. no official support is provided. do not try to contact.
 
-built by the blckbx team. ❤️
+built by the blckbx team, as of right now we do not accept donations of any kind. ❤️
