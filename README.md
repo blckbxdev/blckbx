@@ -3,7 +3,7 @@ blckbx is a secure, browser-based, purely peer-to-peer chat interface designed f
 
 run blckbx:
 live (v1.4): https://blckbxdev.github.io/blckbx/
-local (up to v1.5 beta): download the html file and open it in your browser.
+local (up to v1.5 beta): download the html file and open it in your browser. 
 
 features:
 v1.4 (stable)
