@@ -1,5 +1,5 @@
 
-## Website (v1.5 - Beta) (discontinued):
+## Website (v1.5 - Beta) (unstable):
 [official static website](https://blckbxdev.github.io/blckbx/)
 
 ## Local (up to v1.5 Beta):
