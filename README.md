@@ -1,9 +1,9 @@
 
-## Live (v1.4 - Stable):
+## Website (v1.5 - Beta):
 https://blckbxdev.github.io/blckbx/
 
 ## Local (up to v1.5 Beta):
-Download the HTML file and open it in your browser.
+Download the HTML file (V1.4 or V1.5 beta) and open it in your browser.
 
 ## **w features**
 has calling, infinite file sharing sizes, screen sharing, mute button, nice animations ig, easily customizable themes + code based deeper themes
