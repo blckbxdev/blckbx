@@ -980,6 +980,16 @@ button.danger:hover {
     border-color: var(--success);
     color: var(--success);
 }
+.user-action-btn.screen-share-btn {
+    background: rgba(107, 159, 255, 0.1);
+    border-color: rgba(107, 159, 255, 0.3);
+    color: #6b9fff;
+}
+.user-action-btn.screen-share-btn:hover {
+    background: rgba(107, 159, 255, 0.2);
+    border-color: #6b9fff;
+    transform: scale(1.1);
+}
 .user-action-btn svg {
     width: 18px;
     height: 18px;
@@ -1634,7 +1644,7 @@ progress::-webkit-progress-value { background: #fff; border-radius: 2px; }
 
         <div>
             <label>screen share</label>
-            <button onclick="startScreenShare()">share my screen</button>
+            <button id="screenShareBtn" onclick="toggleScreenShare()">share my screen</button>
         </div>
 
         <div class="section-file">
@@ -1751,7 +1761,7 @@ progress::-webkit-progress-value { background: #fff; border-radius: 2px; }
         </div>
         
         <label>screen share</label>
-        <button onclick="startScreenShareMobile()">share my screen</button>
+        <button onclick="toggleScreenShareMobile()">share my screen</button>
     </div>
 </div>
 
@@ -1894,45 +1904,45 @@ progress::-webkit-progress-value { background: #fff; border-radius: 2px; }
     <div id="howToContent" style="margin-top: 24px;">
         <div class="how-to-section">
             <div class="how-to-number">01</div>
-            <div class="how-to-title">choose room type</div>
-            <div class="how-to-text">select private room for direct peer-to-peer connections or public room to browse, create, or join named rooms with multiple users.</div>
+            <div class="how-to-title">security first</div>
+            <div class="how-to-text">all messages, files, and voice are encrypted end-to-end with aes-256-gcm encryption and ecdh p-521 key exchange. no data is stored on servers. connections are peer-to-peer only.</div>
         </div>
 
         <div class="how-to-section">
             <div class="how-to-number">02</div>
-            <div class="how-to-title">browse public rooms</div>
-            <div class="how-to-text">discover active public rooms and join with one click. rooms are listed with their names and user counts.</div>
+            <div class="how-to-title">choose room type</div>
+            <div class="how-to-text">select private room for direct peer-to-peer connections or public room to browse, create, or join named rooms with multiple users. public rooms appear in the discovery browser.</div>
         </div>
 
         <div class="how-to-section">
             <div class="how-to-number">03</div>
-            <div class="how-to-title">encryption keys</div>
-            <div class="how-to-text">when you connect, ecdh key exchange automatically establishes shared encryption keys using elliptic curve cryptography p-521 curve.</div>
+            <div class="how-to-title">discover & join</div>
+            <div class="how-to-text">browse active public rooms, see user counts, and join with one click. use search and sort options to find the perfect room. all participants are encrypted and verified.</div>
         </div>
-        
+
         <div class="how-to-section">
             <div class="how-to-number">04</div>
-            <div class="how-to-title">private rooms</div>
-            <div class="how-to-text">share your unique peer id with someone you want to connect with securely. paste their id to establish an encrypted connection.</div>
+            <div class="how-to-title">voice channels</div>
+            <div class="how-to-text">join the voice channel to talk with all connected users. new users automatically connect when they join. voice is encrypted and peer-to-peer with no server relay.</div>
         </div>
         
         <div class="how-to-section">
             <div class="how-to-number">05</div>
-            <div class="how-to-title">create public rooms</div>
-            <div class="how-to-text">create a room with a name and it will appear in the public room browser. share the room code for direct access. all messages and files are encrypted with aes-256-gcm.</div>
+            <div class="how-to-title">file sharing (50mb limit)</div>
+            <div class="how-to-text">share encrypted files up to 50mb. all files are scanned for security and validated. executable files are blocked. transfers are encrypted and sent in secure chunks.</div>
         </div>
         
         <div class="how-to-section">
             <div class="how-to-number">06</div>
-            <div class="how-to-title">screen sharing & files</div>
-            <div class="how-to-text">share your screen with connected peers or transfer encrypted files. all data is protected with end-to-end encryption.</div>
+            <div class="how-to-title">safety features</div>
+            <div class="how-to-text">built-in protection: rate limiting prevents spam, urls are validated and sanitized, malicious content is blocked, connections auto-recover from disruptions, and message history is never stored.</div>
         </div>
         
         <div class="how-to-footer">
-            <div class="how-to-badge">✓ aes-256-gcm</div>
-            <div class="how-to-badge">✓ ecdh p-521</div>
-            <div class="how-to-badge">✓ room discovery</div>
-            <div class="how-to-badge">✓ screen share</div>
+            <div class="how-to-badge">✓ e2e encrypted</div>
+            <div class="how-to-badge">✓ p2p only</div>
+            <div class="how-to-badge">✓ zero storage</div>
+            <div class="how-to-badge">✓ auto-secure</div>
         </div>
     </div>
 </div>
@@ -2033,6 +2043,93 @@ class Security {
             .replace(/"/g, "&quot;")
             .replace(/'/g, "&#039;");
     }
+    
+    static isValidUrl(urlString) {
+        try {
+            const url = new URL(urlString);
+            // Only allow http and https protocols
+            return url.protocol === 'http:' || url.protocol === 'https:';
+        } catch {
+            return false;
+        }
+    }
+    
+    static sanitizeUrl(urlString) {
+        if (!this.isValidUrl(urlString)) {
+            return null;
+        }
+        
+        const url = new URL(urlString);
+        
+        // Block known dangerous domains
+        const blockedDomains = ['localhost', '127.0.0.1', '0.0.0.0', '169.254.169.254'];
+        const hostname = url.hostname.toLowerCase();
+        
+        if (blockedDomains.some(blocked => hostname.includes(blocked))) {
+            return null;
+        }
+        
+        // Block file:// and other dangerous protocols
+        if (url.protocol !== 'http:' && url.protocol !== 'https:') {
+            return null;
+        }
+        
+        return url.href;
+    }
+    
+    static isValidImageUrl(url) {
+        if (!this.isValidUrl(url)) return false;
+        
+        // Check if URL ends with image extension or is from trusted GIF sources
+        const imageExtensions = ['.jpg', '.jpeg', '.png', '.gif', '.webp'];
+        const trustedGifDomains = ['tenor.com', 'giphy.com', 'media.tenor.com', 'media.giphy.com'];
+        
+        try {
+            const urlObj = new URL(url);
+            const path = urlObj.pathname.toLowerCase();
+            const hostname = urlObj.hostname.toLowerCase();
+            
+            const hasImageExt = imageExtensions.some(ext => path.endsWith(ext));
+            const isTrustedGif = trustedGifDomains.some(domain => hostname.includes(domain));
+            
+            return hasImageExt || isTrustedGif;
+        } catch {
+            return false;
+        }
+    }
+    
+    static sanitizeFilename(filename) {
+        if (!filename) return 'unnamed';
+        // Remove path traversal attempts and dangerous characters
+        return filename
+            .replace(/[\/\\]/g, '')
+            .replace(/\.\./g, '')
+            .replace(/[^a-zA-Z0-9._-]/g, '_')
+            .substring(0, 255);
+    }
+    
+    static isAllowedFileType(mimeType, filename) {
+        // Block executable and script files
+        const blockedExtensions = ['.exe', '.bat', '.cmd', '.sh', '.ps1', '.vbs', '.js', '.jar', '.app', '.deb', '.rpm'];
+        const blockedMimeTypes = [
+            'application/x-msdownload',
+            'application/x-executable',
+            'application/x-sharedlib',
+            'application/x-sh',
+            'application/javascript',
+            'text/javascript'
+        ];
+        
+        const filenameLower = filename.toLowerCase();
+        const hasBlockedExt = blockedExtensions.some(ext => filenameLower.endsWith(ext));
+        const hasBlockedMime = blockedMimeTypes.includes(mimeType);
+        
+        if (hasBlockedExt || hasBlockedMime) {
+            return false;
+        }
+        
+        return true;
+    }
 
     static createSafeMessageElement(text, isMe, color, user, type = 'text') {
         const div = document.createElement('div');
@@ -2048,32 +2145,55 @@ class Security {
         contentDiv.className = 'message-content';
 
         if (type === 'image' || type === 'image_gif') {
-            const img = document.createElement('img');
-            img.src = text; 
-            img.alt = 'Encrypted Image';
-      
-            if (!/^https?:\/\//.test(text) && !/^data:image/.test(text)) {
-                contentDiv.textContent = '[Invalid Image Source]';
+            // Validate image URL
+            const sanitizedUrl = this.sanitizeUrl(text);
+            if (!sanitizedUrl || !this.isValidImageUrl(sanitizedUrl)) {
+                contentDiv.textContent = '[Invalid or unsafe image URL]';
             } else {
+                const img = document.createElement('img');
+                img.src = sanitizedUrl;
+                img.alt = 'Shared Image';
+                img.loading = 'lazy';
+                
+                // Add error handler
+                img.onerror = function() {
+                    this.style.display = 'none';
+                    const errorText = document.createElement('span');
+                    errorText.textContent = '[Image failed to load]';
+                    errorText.style.color = 'var(--danger)';
+                    this.parentNode.appendChild(errorText);
+                };
+                
                 contentDiv.appendChild(img);
             }
         } else {
-            const parts = text.split(/(https?:\/\/[^\s]+)/g);
+            // Text message - detect and sanitize URLs
+            const urlRegex = /(https?:\/\/[^\s]+)/g;
+            const parts = text.split(urlRegex);
+            
             parts.forEach(part => {
-                if (part.match(/^https?:\/\/[^\s]+$/)) {
-                    const a = document.createElement('a');
-                    a.href = part;
-                    a.target = "_blank";
-                    a.rel = "noopener noreferrer";
-                    a.textContent = part;
-                    contentDiv.appendChild(a);
-                    
-                    if (part.match(/\.(jpg|jpeg|png|gif|webp)$/i)) {
-                        const br = document.createElement('br');
-                        const img = document.createElement('img');
-                        img.src = part;
-                        contentDiv.appendChild(br);
-                        contentDiv.appendChild(img);
+                if (part.match(/^https?:\/\//)) {
+                    const sanitizedUrl = this.sanitizeUrl(part);
+                    if (sanitizedUrl) {
+                        const a = document.createElement('a');
+                        a.href = sanitizedUrl;
+                        a.target = "_blank";
+                        a.rel = "noopener noreferrer";
+                        a.textContent = part;
+                        contentDiv.appendChild(a);
+                        
+                        // Auto-embed images from URLs
+                        if (this.isValidImageUrl(sanitizedUrl)) {
+                            const br = document.createElement('br');
+                            const img = document.createElement('img');
+                            img.src = sanitizedUrl;
+                            img.loading = 'lazy';
+                            img.onerror = function() { this.style.display = 'none'; };
+                            contentDiv.appendChild(br);
+                            contentDiv.appendChild(img);
+                        }
+                    } else {
+                        contentDiv.appendChild(document.createTextNode('[blocked URL]'));
                     }
                 } else {
                     contentDiv.appendChild(document.createTextNode(part));
@@ -2181,6 +2301,14 @@ const App = {
     keepAliveInterval: null,
     inVoiceChannel: false,
     voiceChannelStream: null,
+    connectionHealthInterval: null,
+    lastPingTime: {},
+    connectionHealth: {},
+    messageTimestamps: [],
+    lastMessageTime: 0,
+    peerMessageRates: {},
+    screenShares: {}, // { peerId: { stream: MediaStream, userName: string } }
+    myScreenShare: null,
 
     async start(name, roomType, roomNameOrCode = null) {
         this.username = name || 'Guest';
@@ -2309,6 +2437,10 @@ const App = {
             clearInterval(this.keepAliveInterval);
             this.keepAliveInterval = null;
         }
+        if (this.connectionHealthInterval) {
+            clearInterval(this.connectionHealthInterval);
+            this.connectionHealthInterval = null;
+        }
     },
 
     startKeepAlive() {
@@ -2318,6 +2450,7 @@ const App = {
             Object.keys(this.conns).forEach(peerId => {
                 if (this.conns[peerId] && this.conns[peerId].open) {
                     try {
+                        this.lastPingTime[peerId] = Date.now();
                         this.conns[peerId].send({ type: 'ping', timestamp: Date.now() });
                     } catch(e) {
                         console.error('Failed to send ping to', peerId);
@@ -2325,6 +2458,83 @@ const App = {
                 }
             });
         }, 20000);
+        
+        // Monitor connection health every 30 seconds
+        if (this.connectionHealthInterval) clearInterval(this.connectionHealthInterval);
+        this.connectionHealthInterval = setInterval(() => {
+            this.checkConnectionHealth();
+        }, 30000);
+    },
+    
+    checkConnectionHealth() {
+        const now = Date.now();
+        const TIMEOUT = 60000; // 60 seconds
+        
+        Object.keys(this.conns).forEach(peerId => {
+            const health = this.connectionHealth[peerId];
+            
+            // Check if we haven't heard from peer in a while
+            if (!health || (now - health.lastSeen) > TIMEOUT) {
+                console.warn(`Peer ${peerId} appears unhealthy`);
+                
+                // Try to send a test message
+                if (this.conns[peerId] && this.conns[peerId].open) {
+                    try {
+                        this.conns[peerId].send({ type: 'ping', timestamp: now });
+                    } catch(e) {
+                        console.error(`Connection to ${peerId} is dead, cleaning up`);
+                        // Connection is dead, clean it up
+                        if (this.users[peerId]) {
+                            addSystemMsg(`lost connection to ${this.users[peerId].name}`);
+                        }
+                        this.cleanupPeer(peerId);
+                    }
+                }
+            }
+        });
+    },
+    
+    cleanupPeer(peerId) {
+        if (this.conns[peerId]) {
+            try {
+                this.conns[peerId].close();
+            } catch(e) {}
+            delete this.conns[peerId];
+        }
+        delete this.users[peerId];
+        delete this.connectionHealth[peerId];
+        delete this.lastPingTime[peerId];
+        delete this.peerMessageRates[peerId];
+        
+        // Clean up any screen shares from this peer
+        if (this.screenShares[peerId]) {
+            const video = document.getElementById('screenShareVideo');
+            // Close modal if viewing this peer's screen
+            if (video && video.srcObject === this.screenShares[peerId].stream) {
+                closeScreenShare();
+            }
+            delete this.screenShares[peerId];
+        }
+        
+        // Clean up any pending file transfers from this peer
+        if (this.fileTransfers) {
+            Object.keys(this.fileTransfers).forEach(fileId => {
+                if (this.fileTransfers[fileId].peerId === peerId) {
+                    console.log(`Cleaning up incomplete file transfer from ${peerId}`);
+                    delete this.fileTransfers[fileId];
+                }
+            });
+        }
+        
+        if (this.calls[peerId]) {
+            this.handleCallClose(peerId);
+        }
+        
+        this.updateUserList();
+        
+        if (this.isRoomHost && this.roomType === 'public') {
+            this.registerPublicRoom();
+        }
     },
 
     sanitizeRoomName(name) {
@@ -2407,7 +2617,7 @@ const App = {
         document.getElementById('publicRoomControlsMobile').style.display = 'block';
     },
 
-    connect(remoteId) {
+    connect(remoteId, retryCount = 0) {
         if(!remoteId) return;
         if(remoteId === this.id) return addSystemMsg("cannot connect to self");
         
@@ -2418,7 +2628,33 @@ const App = {
         }
         
         updateStatus('connecting', 'handshaking...');
-        const conn = this.peer.connect(remoteId);
+        const conn = this.peer.connect(remoteId, {
+            reliable: true,
+            serialization: 'json'
+        });
+        
+        // Add timeout for connection
+        const connectionTimeout = setTimeout(() => {
+            if (!conn.open) {
+                console.error(`Connection to ${remoteId} timed out`);
+                
+                // Retry up to 3 times
+                if (retryCount < 3) {
+                    console.log(`Retrying connection to ${remoteId} (attempt ${retryCount + 1})`);
+                    setTimeout(() => {
+                        this.connect(remoteId, retryCount + 1);
+                    }, 2000 * (retryCount + 1)); // Exponential backoff
+                } else {
+                    addSystemMsg('connection failed after multiple attempts');
+                }
+            }
+        }, 10000); // 10 second timeout
+        
+        conn.on('open', () => {
+            clearTimeout(connectionTimeout);
+            console.log('Connection established with', remoteId);
+        });
+        
         this.handleConnection(conn);
     },
 
@@ -2434,15 +2670,30 @@ const App = {
                 await this.crypto.init();
             }
             
-            const pub = await this.crypto.getPublicKey();
-            conn.send({
-                type: 'handshake',
-                key: pub,
-                user: this.username,
-                color: this.color,
-                roomType: this.roomType,
-                roomName: this.roomName
-            });
+            try {
+                const pub = await this.crypto.getPublicKey();
+                conn.send({
+                    type: 'handshake',
+                    key: pub,
+                    user: this.username,
+                    color: this.color,
+                    roomType: this.roomType,
+                    roomName: this.roomName
+                });
+            } catch(e) {
+                console.error('Failed to send handshake:', e);
+                addSystemMsg('connection handshake failed');
+            }
+        });
+        
+        conn.on('error', (err) => {
+            console.error('Connection error with', conn.peer, ':', err);
+            // Don't show error to user unless it's critical
+            if (err.type === 'network') {
+                console.log('Network error, connection may recover');
+            } else {
+                addSystemMsg(`connection error: ${err.type}`);
+            }
         });
 
         conn.on('data', async (data) => {
@@ -2470,6 +2721,21 @@ const App = {
                             call.on('stream', remoteStream => this.setupAudio(conn.peer, remoteStream));
                             call.on('close', () => this.handleCallClose(conn.peer));
                         }, 500);
+                    }
+                    
+                    // If we're screen sharing, share with the new peer
+                    if (this.myScreenShare && this.myScreenShare.stream) {
+                        setTimeout(() => {
+                            try {
+                                const call = this.peer.call(conn.peer, this.myScreenShare.stream, { metadata: { type: 'screen' } });
+                                if (call) {
+                                    this.myScreenShare.calls.push(call);
+                                    console.log('Started screen share with new peer', conn.peer);
+                                }
+                            } catch(e) {
+                                console.error('Failed to share screen with new peer:', e);
+                            }
+                        }, 700);
                     }
                     
                     if (this.isRoomHost && this.roomType === 'public') {
@@ -2520,23 +2786,91 @@ const App = {
                 }
                 else if (data.type === 'pong') {
                     // Received pong, connection is alive
-                    console.log('Received pong from', conn.peer);
+                    const peerId = conn.peer;
+                    if (this.lastPingTime[peerId]) {
+                        const latency = Date.now() - this.lastPingTime[peerId];
+                        this.connectionHealth[peerId] = {
+                            latency: latency,
+                            lastSeen: Date.now(),
+                            status: 'healthy'
+                        };
+                        console.log(`Peer ${peerId} latency: ${latency}ms`);
+                    }
                 }
                 else if (data.type === 'msg') {
                     if (!sessionEstablished) {
                         console.warn('Received message before session established');
                         return;
                     }
-                    const text = await this.crypto.decrypt(data.payload, conn.peer);
-                    const u = this.users[conn.peer] || { name: 'Unknown', color: '#888' };
-                    addMessage(text, false, u.color, u.name, data.contentType);
-                    play('r');
+                    
+                    // Rate limiting: check peer message rate
+                    const peerId = conn.peer;
+                    const now = Date.now();
+                    
+                    if (!this.peerMessageRates[peerId]) {
+                        this.peerMessageRates[peerId] = [];
+                    }
+                    
+                    // Clean old timestamps
+                    this.peerMessageRates[peerId] = this.peerMessageRates[peerId].filter(t => now - t < 10000);
+                    
+                    // Allow max 20 messages per 10 seconds from each peer
+                    if (this.peerMessageRates[peerId].length >= 20) {
+                        console.warn(`Peer ${peerId} is sending too fast, dropping message`);
+                        return;
+                    }
+                    
+                    this.peerMessageRates[peerId].push(now);
+                    
+                    // Validate payload exists
+                    if (!data.payload) {
+                        console.error('Message missing payload');
+                        return;
+                    }
+                    
+                    try {
+                        const text = await this.crypto.decrypt(data.payload, conn.peer);
+                        
+                        // Validate decrypted text
+                        if (!text || text.length > 5000) {
+                            console.warn('Invalid message length');
+                            return;
+                        }
+                        
+                        const u = this.users[conn.peer] || { name: 'Unknown', color: '#888' };
+                        addMessage(text, false, u.color, u.name, data.contentType || 'text');
+                        play('r');
+                    } catch(e) {
+                        console.error('Failed to decrypt message:', e);
+                    }
                 }
                 else if (data.type === 'file_meta') {
-                    addSystemMsg(`receiving file: ${data.name} (${formatBytes(data.size)})`);
+                    // Validate file metadata
+                    const safeName = Security.sanitizeFilename(data.name);
+                    
+                    // Check file type is allowed
+                    if (!Security.isAllowedFileType(data.mime, safeName)) {
+                        addSystemMsg(`blocked file type from ${this.users[conn.peer]?.name || 'user'}`);
+                        return;
+                    }
+                    
+                    // Check file size (50MB limit)
+                    const MAX_FILE_SIZE = 50 * 1024 * 1024;
+                    if (data.size > MAX_FILE_SIZE) {
+                        addSystemMsg(`file too large from ${this.users[conn.peer]?.name || 'user'}`);
+                        return;
+                    }
+                    
+                    const u = this.users[conn.peer] || { name: 'Unknown', color: '#888' };
+                    addSystemMsg(`receiving file from ${u.name}: ${safeName} (${formatBytes(data.size)})`);
                     this.fileTransfers = this.fileTransfers || {};
                     this.fileTransfers[data.fileId] = { 
-                        chunks: [], meta: data, received: 0 
+                        chunks: [], 
+                        meta: { ...data, name: safeName }, 
+                        received: 0,
+                        peerId: conn.peer,
+                        startTime: Date.now(),
+                        totalChunks: data.chunks || 0
                     };
                     play('r');
                 }
@@ -2545,23 +2879,47 @@ const App = {
                         console.warn('Received file chunk before session established');
                         return;
                     }
-                    const decryptedStr = await this.crypto.decrypt(data.payload, conn.peer);
-                    const bytes = strToBuffer(decryptedStr);
                     
                     const transfer = this.fileTransfers[data.fileId];
-                    if(transfer) {
+                    if (!transfer) {
+                        console.error('Received chunk for unknown file transfer');
+                        return;
+                    }
+                    
+                    try {
+                        const decryptedStr = await this.crypto.decrypt(data.payload, conn.peer);
+                        const bytes = strToBuffer(decryptedStr);
+                        
                         transfer.chunks.push(bytes);
                         transfer.received += bytes.byteLength;
                         
-                        if(transfer.received >= transfer.meta.size) {
+                        // Update progress
+                        const progress = Math.round((transfer.received / transfer.meta.size) * 100);
+                        console.log(`File transfer progress: ${progress}%`);
+                        
+                        if (transfer.received >= transfer.meta.size) {
+                            // File complete
                             const blob = new Blob(transfer.chunks, { type: transfer.meta.mime });
                             const u = this.users[conn.peer];
-                      
                             const url = URL.createObjectURL(blob);
+                            
+                            const timeElapsed = ((Date.now() - transfer.startTime) / 1000).toFixed(1);
+                            addSystemMsg(`file received in ${timeElapsed}s`);
                             addFileMessage(url, transfer.meta.name, transfer.meta.size, u.color, u.name);
                             play('x'); 
                             delete this.fileTransfers[data.fileId];
                         }
+                    } catch(e) {
+                        console.error('Error processing file chunk:', e);
+                        addSystemMsg('file transfer failed');
+                        delete this.fileTransfers[data.fileId];
+                    }
+                }
+                else if (data.type === 'file_end') {
+                    // Signal that file transfer is complete
+                    const transfer = this.fileTransfers[data.fileId];
+                    if (transfer && transfer.received >= transfer.meta.size) {
+                        console.log('File transfer completed and verified');
                     }
                 }
             } catch(e) {
@@ -2583,8 +2941,19 @@ const App = {
                     addSystemMsg(`${u.name} disconnected`);
                 }
             }
+            
+            // Clean up screen shares from this peer
+            if (this.screenShares[conn.peer]) {
+                const video = document.getElementById('screenShareVideo');
+                if (video && video.srcObject === this.screenShares[conn.peer].stream) {
+                    closeScreenShare();
+                }
+                delete this.screenShares[conn.peer];
+            }
+            
             delete this.conns[conn.peer];
             delete this.users[conn.peer];
+            delete this.peerMessageRates[conn.peer];
             
             // Clean up voice if they were in a call
             if (this.calls[conn.peer]) {
@@ -2620,6 +2989,8 @@ const App = {
         Object.keys(this.users).forEach(peerId => {
             const u = this.users[peerId];
             const inVoice = this.calls[peerId] ? 'talking' : '';
+            const isSharing = this.screenShares[peerId] ? true : false;
+            
             const html = `
                 <div class="user ${inVoice}" id="user-${peerId}">
                     <div class="user-avatar online" style="background:linear-gradient(135deg, ${u.color}, var(--bg-secondary))">
@@ -2629,8 +3000,20 @@ const App = {
                         <div class="user-top">
                             <span class="username" style="color:${u.color};font-weight:600;font-size:13px">${u.name}</span>
                             ${this.calls[peerId] ? '<span class="user-label" style="background: rgba(68, 255, 136, 0.1); color: var(--success); border-color: rgba(68, 255, 136, 0.2);">in voice</span>' : ''}
+                            ${isSharing ? '<span class="user-label" style="background: rgba(107, 159, 255, 0.1); color: #6b9fff; border-color: rgba(107, 159, 255, 0.2);">sharing</span>' : ''}
                         </div>
                     </div>
+                    ${isSharing ? `
+                    <div class="user-actions">
+                        <button class="user-action-btn screen-share-btn" onclick="viewScreenShare('${peerId}')" title="view screen">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
+                                <line x1="8" y1="21" x2="16" y2="21"></line>
+                                <line x1="12" y1="17" x2="12" y2="21"></line>
+                            </svg>
+                        </button>
+                    </div>
+                    ` : ''}
                 </div>`;
             div.innerHTML += html;
             if(mobileDiv) mobileDiv.innerHTML += html;
@@ -2638,12 +3021,61 @@ const App = {
     },
 
     async handleIncomingCall(call) {
-        // Auto-accept if we're in voice channel
+        // Check if this is a screen share
+        const isScreenShare = call.metadata && call.metadata.type === 'screen';
+        
+        if (isScreenShare) {
+            // Handle incoming screen share - store it, don't auto-display
+            console.log('Receiving screen share from', call.peer);
+            call.answer(); // No need to send our stream for screen share
+            
+            call.on('stream', remoteStream => {
+                // Store the screen share stream
+                const userName = this.users[call.peer]?.name || 'Unknown';
+                this.screenShares[call.peer] = {
+                    stream: remoteStream,
+                    userName: userName
+                };
+                
+                addSystemMsg(`${userName} is sharing their screen`);
+                play('c');
+                this.updateUserList();
+                
+                // Handle when stream ends
+                remoteStream.getVideoTracks()[0].onended = () => {
+                    console.log('Screen share from', call.peer, 'ended');
+                    delete this.screenShares[call.peer];
+                    addSystemMsg(`${userName} stopped sharing`);
+                    this.updateUserList();
+                    
+                    // Close modal if this user's screen was being viewed
+                    const video = document.getElementById('screenShareVideo');
+                    if (video && video.srcObject === remoteStream) {
+                        closeScreenShare();
+                    }
+                };
+            });
+            
+            call.on('close', () => {
+                const userName = this.users[call.peer]?.name || 'Unknown';
+                console.log('Screen share call closed from', call.peer);
+                delete this.screenShares[call.peer];
+                this.updateUserList();
+            });
+            
+            return;
+        }
+        
+        // Auto-accept voice calls if we're in voice channel
         if (this.inVoiceChannel && this.voiceChannelStream) {
             console.log('Auto-accepting call from', call.peer);
             call.answer(this.voiceChannelStream);
             call.on('stream', remoteStream => this.setupAudio(call.peer, remoteStream));
             call.on('close', () => this.handleCallClose(call.peer));
+            call.on('error', (err) => {
+                console.error('Call error with', call.peer, err);
+                this.handleCallClose(call.peer);
+            });
             this.calls[call.peer] = call;
             this.updateVoiceUI();
         } else {
@@ -3011,10 +3443,33 @@ function addFileMessage(url, name, size, color, user) {
 }
 
 function downloadFile(url, name) {
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = name;
-    a.click();
+    // Validate that URL is a blob URL (created by our app)
+    if (!url.startsWith('blob:')) {
+        console.error('Invalid file URL');
+        addSystemMsg('invalid file download');
+        return;
+    }
+    
+    // Sanitize filename
+    const safeName = Security.sanitizeFilename(name);
+    
+    try {
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = safeName;
+        a.style.display = 'none';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        
+        // Revoke blob URL after download to free memory
+        setTimeout(() => {
+            URL.revokeObjectURL(url);
+        }, 1000);
+    } catch(e) {
+        console.error('File download failed:', e);
+        addSystemMsg('file download failed');
+    }
 }
 
 window.joinRoom = function() {
@@ -3032,6 +3487,23 @@ window.joinRoomMobile = function() {
 
 window.disconnectRoom = function() {
     play('k');
+    
+    // Stop screen sharing if active
+    if (App.myScreenShare && App.myScreenShare.stream) {
+        App.myScreenShare.stream.getTracks().forEach(track => track.stop());
+        if (App.myScreenShare.calls) {
+            App.myScreenShare.calls.forEach(call => {
+                try { call.close(); } catch(e) {}
+            });
+        }
+        App.myScreenShare = null;
+        screenStream = null;
+        updateScreenShareButton();
+    }
+    
+    // Clean up received screen shares
+    App.screenShares = {};
+    closeScreenShare();
     
     // Leave voice if in it
     if (App.inVoiceChannel) {
@@ -3069,6 +3541,23 @@ window.disconnectRoomMobile = function() {
 
 window.leavePublicRoom = function() {
     play('k');
+    
+    // Stop screen sharing if active
+    if (App.myScreenShare && App.myScreenShare.stream) {
+        App.myScreenShare.stream.getTracks().forEach(track => track.stop());
+        if (App.myScreenShare.calls) {
+            App.myScreenShare.calls.forEach(call => {
+                try { call.close(); } catch(e) {}
+            });
+        }
+        App.myScreenShare = null;
+        screenStream = null;
+        updateScreenShareButton();
+    }
+    
+    // Clean up received screen shares
+    App.screenShares = {};
+    closeScreenShare();
     
     // Leave voice if in it
     if (App.inVoiceChannel) {
@@ -3108,6 +3597,35 @@ window.sendMessage = async function() {
     const text = input.value.trim();
     if(!text) return;
     
+    // Rate limiting: max 10 messages per 10 seconds
+    const now = Date.now();
+    App.messageTimestamps = App.messageTimestamps.filter(t => now - t < 10000);
+    
+    if (App.messageTimestamps.length >= 10) {
+        addSystemMsg('sending too fast, please slow down');
+        return;
+    }
+    
+    // Prevent double-sending (debounce 500ms)
+    if (now - App.lastMessageTime < 500) {
+        return;
+    }
+    
+    App.messageTimestamps.push(now);
+    App.lastMessageTime = now;
+    
+    // Validate message length (prevent spam)
+    if (text.length > 5000) {
+        addSystemMsg('message too long (max 5000 characters)');
+        return;
+    }
+    
+    // Check for connections
+    if (Object.keys(App.conns).length === 0) {
+        addSystemMsg('no active connections');
+        return;
+    }
+    
     addMessage(text, true, App.color, 'me', 'text');
     play('l');
     input.value = '';
@@ -3119,6 +3637,13 @@ window.sendMessage = async function() {
                 console.warn(`No session for peer ${peerId}, skipping message`);
                 continue;
             }
+            
+            // Check connection is open
+            if (!App.conns[peerId] || !App.conns[peerId].open) {
+                console.warn(`Connection to ${peerId} is not open`);
+                continue;
+            }
+            
             const encrypted = await App.crypto.encrypt(text, peerId);
             App.conns[peerId].send({ type: 'msg', payload: encrypted, contentType: 'text' });
         } catch(e) { 
@@ -3128,15 +3653,23 @@ window.sendMessage = async function() {
 };
 
 window.sendGif = async function(url) {
-    addMessage(url, true, App.color, 'me', 'image_gif');
+    // Validate GIF URL
+    const sanitizedUrl = Security.sanitizeUrl(url);
+    if (!sanitizedUrl || !Security.isValidImageUrl(sanitizedUrl)) {
+        addSystemMsg('invalid or unsafe GIF URL');
+        return;
+    }
+    
+    addMessage(sanitizedUrl, true, App.color, 'me', 'image_gif');
     play('l');
+    
     for(let peerId in App.conns) {
         try {
             if(!App.crypto.sessions[peerId]) {
                 console.warn(`No session for peer ${peerId}, skipping GIF`);
                 continue;
             }
-            const encrypted = await App.crypto.encrypt(url, peerId);
+            const encrypted = await App.crypto.encrypt(sanitizedUrl, peerId);
             App.conns[peerId].send({ type: 'msg', payload: encrypted, contentType: 'image_gif' });
         } catch(e) {
             console.error(`Failed to send GIF to ${peerId}:`, e);
@@ -3159,34 +3692,94 @@ window.sendFileMobile = function() {
 };
 
 async function processFileSend(file) {
-    addSystemMsg(`sending file: ${file.name}`);
+    if (!file) {
+        addSystemMsg('no file selected');
+        return;
+    }
+    
+    // Validate file size (50MB limit)
+    const MAX_FILE_SIZE = 50 * 1024 * 1024;
+    if (file.size > MAX_FILE_SIZE) {
+        addSystemMsg(`file too large (max 50MB)`);
+        return;
+    }
+    
+    // Sanitize filename
+    const safeName = Security.sanitizeFilename(file.name);
+    
+    // Validate file type
+    if (!Security.isAllowedFileType(file.type, safeName)) {
+        addSystemMsg('file type blocked for security');
+        return;
+    }
+    
+    addSystemMsg(`sending file: ${safeName} (${formatBytes(file.size)})`);
     const fileId = crypto.randomUUID();
     const buffer = await file.arrayBuffer();
-    const binaryStr = bufferToStr(buffer);
+    
+    // Split into chunks (64KB each for better reliability)
+    const CHUNK_SIZE = 64 * 1024;
+    const totalChunks = Math.ceil(buffer.byteLength / CHUNK_SIZE);
+    let sentChunks = 0;
 
     for(let peerId in App.conns) {
+        if(!App.crypto.sessions[peerId]) {
+            console.warn(`No session for peer ${peerId}, skipping file`);
+            continue;
+        }
+        
         try {
-            if(!App.crypto.sessions[peerId]) {
-                console.warn(`No session for peer ${peerId}, skipping file`);
-                continue;
-            }
-            
+            // Send metadata
             App.conns[peerId].send({
                 type: 'file_meta',
                 fileId: fileId,
-                name: file.name,
+                name: safeName,
                 size: file.size,
-                mime: file.type
+                mime: file.type || 'application/octet-stream',
+                chunks: totalChunks
             });
-            const encrypted = await App.crypto.encrypt(binaryStr, peerId);
+            
+            // Send file in chunks
+            for (let i = 0; i < totalChunks; i++) {
+                const start = i * CHUNK_SIZE;
+                const end = Math.min(start + CHUNK_SIZE, buffer.byteLength);
+                const chunk = buffer.slice(start, end);
+                const binaryStr = bufferToStr(chunk);
+                
+                const encrypted = await App.crypto.encrypt(binaryStr, peerId);
+                
+                App.conns[peerId].send({
+                    type: 'file_chunk',
+                    fileId: fileId,
+                    payload: encrypted,
+                    chunkIndex: i,
+                    totalChunks: totalChunks
+                });
+                
+                sentChunks++;
+                
+                // Small delay between chunks to avoid overwhelming connection
+                if (i < totalChunks - 1) {
+                    await new Promise(resolve => setTimeout(resolve, 10));
+                }
+            }
+            
+            // Send completion signal
             App.conns[peerId].send({
-                type: 'file_chunk',
-                fileId: fileId,
-                payload: encrypted
+                type: 'file_end',
+                fileId: fileId
             });
+            
+            console.log(`Sent ${totalChunks} chunks to ${peerId}`);
+            
         } catch(e) { 
             console.error(`Failed to send file to ${peerId}:`, e);
+            addSystemMsg(`failed to send to ${App.users[peerId]?.name || 'user'}`);
         }
+    }
+    
+    if (sentChunks > 0) {
+        addSystemMsg(`file sent successfully`);
     }
 }
 
@@ -3299,25 +3892,145 @@ window.toggleVoiceChannel = async () => {
     }
 };
 
+window.toggleScreenShare = async () => {
+    if (App.myScreenShare) {
+        // Stop screen sharing
+        play('k');
+        if (App.myScreenShare.stream) {
+            App.myScreenShare.stream.getTracks().forEach(track => track.stop());
+        }
+        if (App.myScreenShare.calls) {
+            App.myScreenShare.calls.forEach(call => {
+                try { call.close(); } catch(e) {}
+            });
+        }
+        App.myScreenShare = null;
+        screenStream = null;
+        updateScreenShareButton();
+        addSystemMsg('screen sharing stopped');
+    } else {
+        // Start screen sharing
+        await startScreenShare();
+    }
+};
+
+function updateScreenShareButton() {
+    const btn = document.getElementById('screenShareBtn');
+    if (!btn) return;
+    
+    if (App.myScreenShare) {
+        btn.textContent = 'stop sharing';
+        btn.classList.add('danger');
+        btn.style.background = 'rgba(255, 68, 68, 0.1)';
+        btn.style.borderColor = 'var(--danger)';
+        btn.style.color = 'var(--danger)';
+    } else {
+        btn.textContent = 'share my screen';
+        btn.classList.remove('danger');
+        btn.style.background = '';
+        btn.style.borderColor = '';
+        btn.style.color = '';
+    }
+}
+
 let screenStream = null;
 window.startScreenShare = async () => {
     play('k');
+    
+    // Check if already sharing
+    if (screenStream || App.myScreenShare) {
+        addSystemMsg('already sharing screen');
+        return;
+    }
+    
+    // Check for active connections
+    if (Object.keys(App.conns).length === 0) {
+        addSystemMsg('no active connections to share with');
+        return;
+    }
+    
     try {
-        screenStream = await navigator.mediaDevices.getDisplayMedia({video:true});
-        for(let peerId in App.conns) {
-            App.peer.call(peerId, screenStream, { metadata: { type: 'screen' } });
-        }
-        addSystemMsg('sharing screen...');
-        play('c');
-        screenStream.getVideoTracks()[0].onended = () => {
-            addSystemMsg('screen share stopped');
-            screenStream = null;
+        screenStream = await navigator.mediaDevices.getDisplayMedia({
+            video: {
+                cursor: 'always',
+                displaySurface: 'monitor'
+            },
+            audio: false
+        });
+        
+        // Track that we're sharing
+        App.myScreenShare = {
+            stream: screenStream,
+            calls: []
         };
-    } catch(e) { addSystemMsg('screen share failed'); }
+        
+        // Send to all connected peers
+        let sharedCount = 0;
+        for(let peerId in App.conns) {
+            if (App.conns[peerId] && App.conns[peerId].open) {
+                try {
+                    const call = App.peer.call(peerId, screenStream, { metadata: { type: 'screen' } });
+                    if (call) {
+                        App.myScreenShare.calls.push(call);
+                        sharedCount++;
+                    }
+                } catch(e) {
+                    console.error(`Failed to share screen with ${peerId}:`, e);
+                }
+            }
+        }
+        
+        if (sharedCount > 0) {
+            addSystemMsg(`screen sharing started (${sharedCount} ${sharedCount === 1 ? 'viewer' : 'viewers'})`);
+            play('c');
+            updateScreenShareButton();
+        } else {
+            addSystemMsg('failed to share screen');
+            screenStream.getTracks().forEach(track => track.stop());
+            screenStream = null;
+            App.myScreenShare = null;
+        }
+        
+        // Handle when screen sharing stops
+        screenStream.getVideoTracks()[0].onended = () => {
+            addSystemMsg('screen sharing stopped');
+            
+            // Close all screen share calls
+            if (App.myScreenShare && App.myScreenShare.calls) {
+                App.myScreenShare.calls.forEach(call => {
+                    try {
+                        call.close();
+                    } catch(e) {}
+                });
+            }
+            
+            screenStream = null;
+            App.myScreenShare = null;
+            updateScreenShareButton();
+        };
+        
+    } catch(e) {
+        console.error('Screen share error:', e);
+        if (e.name === 'NotAllowedError') {
+            addSystemMsg('screen share permission denied');
+        } else if (e.name === 'NotFoundError') {
+            addSystemMsg('no screen available to share');
+        } else {
+            addSystemMsg('screen share failed');
+        }
+        screenStream = null;
+        App.myScreenShare = null;
+        updateScreenShareButton();
+    }
 };
 
 window.startScreenShareMobile = () => {
     window.startScreenShare();
+    closeMobilePanel();
+};
+
+window.toggleScreenShareMobile = async () => {
+    await window.toggleScreenShare();
     closeMobilePanel();
 };
 
@@ -3427,17 +4140,59 @@ window.closeHowTo = () => {
 
 window.closeScreenShare = () => {
     play('k');
+    const video = document.getElementById('screenShareVideo');
+    if (video) {
+        video.srcObject = null;
+    }
     document.getElementById('screenShareOverlay').classList.remove('active');
     document.getElementById('screenShareModal').classList.remove('active');
+};
+
+window.viewScreenShare = (peerId) => {
+    play('k');
+    
+    const screenShare = App.screenShares[peerId];
+    if (!screenShare) {
+        addSystemMsg('screen share no longer available');
+        return;
+    }
+    
+    const video = document.getElementById('screenShareVideo');
+    const modal = document.getElementById('screenShareModal');
+    const overlay = document.getElementById('screenShareOverlay');
+    const title = document.getElementById('screenShareTitle');
+    
+    if (video && modal && overlay && title) {
+        video.srcObject = screenShare.stream;
+        title.textContent = `${screenShare.userName}'s screen`;
+        modal.classList.add('active');
+        overlay.classList.add('active');
+    }
 };
 
 // Initial setup handlers
 document.getElementById('usernameSubmit').onclick = () => {
     play('n');
     const val = document.getElementById('usernameInput').value.trim();
-    if(!val) return;
+    if(!val) {
+        addSystemMsg('please enter a username');
+        return;
+    }
     
-    App.username = val;
+    // Validate username length
+    if (val.length < 2 || val.length > 20) {
+        addSystemMsg('username must be 2-20 characters');
+        return;
+    }
+    
+    // Sanitize username (alphanumeric and basic punctuation only)
+    const sanitized = val.replace(/[^a-zA-Z0-9_\- ]/g, '');
+    if (sanitized.length < 2) {
+        addSystemMsg('username contains invalid characters');
+        return;
+    }
+    
+    App.username = sanitized;
     showStep('roomTypeStep');
 };
 
@@ -3455,8 +4210,22 @@ document.getElementById('createRoomBtn').onclick = () => {
         addSystemMsg('please enter a room name');
         return;
     }
+    
+    // Validate room name
+    if (roomName.length < 3 || roomName.length > 30) {
+        addSystemMsg('room name must be 3-30 characters');
+        return;
+    }
+    
+    // Sanitize room name
+    const sanitized = roomName.replace(/[^a-zA-Z0-9_\- ]/g, '');
+    if (sanitized.length < 3) {
+        addSystemMsg('room name contains invalid characters');
+        return;
+    }
+    
     document.getElementById('usernameOverlay').classList.add('hidden');
-    App.start(App.username, 'public', roomName);
+    App.start(App.username, 'public', sanitized);
     setTimeout(() => App.updateVoiceUI(), 500);
 };
 
