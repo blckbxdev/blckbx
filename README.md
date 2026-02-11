@@ -1,6 +1,6 @@
 
 ## Website (v1.5 - Beta):
-https://blckbxdev.github.io/blckbx/
+[official static website](https://blckbxdev.github.io/blckbx/)
 
 ## Local (up to v1.5 Beta):
 Download the HTML file (V1.4 or V1.5 beta) and open it in your browser.
