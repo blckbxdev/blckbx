@@ -8,6 +8,8 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta http-equiv="Permissions-Policy" content="microphone=*, camera=*">
 <title>blackbox secure</title>
+<script src="https://cdn.jsdelivr.net/npm/gun/gun.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gun/lib/open.js"></script>
 <script src="https://unpkg.com/peerjs@1.5.2/dist/peerjs.min.js"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -1550,7 +1552,6 @@ progress::-webkit-progress-value { background: #fff; border-radius: 2px; }
 
 <div id="usernameOverlay">
     <div id="usernameModal">
-        <!-- Step 1: Username -->
         <div class="setup-step active" id="usernameStep">
             <div class="modal-title">enter blckbx username</div>
             <input 
@@ -1565,7 +1566,6 @@ progress::-webkit-progress-value { background: #fff; border-radius: 2px; }
             <div class="username-hint">aes-256-gcm encrypted • ecdh p-521 key exchange</div>
         </div>
 
-        <!-- Step 2: Room Type Selection -->
         <div class="setup-step" id="roomTypeStep">
             <div class="modal-title">select room type</div>
             <button class="room-type-btn" onclick="selectRoomType('private')">
@@ -1578,7 +1578,6 @@ progress::-webkit-progress-value { background: #fff; border-radius: 2px; }
             </button>
         </div>
 
-        <!-- Step 3a: Private Room -->
         <div class="setup-step" id="privateRoomStep">
             <div class="modal-title">private room mode</div>
             <div class="username-hint" style="margin-bottom: 16px;">
@@ -1588,7 +1587,6 @@ progress::-webkit-progress-value { background: #fff; border-radius: 2px; }
             <button id="backToRoomTypeBtn" onclick="backToRoomType()">back</button>
         </div>
 
-        <!-- Step 3b: Public Room Selection -->
         <div class="setup-step" id="publicRoomSelectionStep">
             <div class="modal-title">public room</div>
             <button class="room-type-btn" onclick="showBrowseRooms()">
@@ -1604,7 +1602,6 @@ progress::-webkit-progress-value { background: #fff; border-radius: 2px; }
             <button id="backToRoomSelectionBtn" onclick="backToRoomType()">back</button>
         </div>
 
-        <!-- Step 3c: Browse Rooms -->
         <div class="setup-step" id="browseRoomsStep">
             <div class="modal-title">discover public rooms</div>
             
@@ -1650,7 +1647,6 @@ progress::-webkit-progress-value { background: #fff; border-radius: 2px; }
             <button onclick="backToPublicRoomSelection()">back</button>
         </div>
 
-        <!-- Step 3d: Create Public Room -->
         <div class="setup-step" id="createPublicRoomStep">
             <div class="modal-title">create public room</div>
             <input 
@@ -1668,7 +1664,6 @@ progress::-webkit-progress-value { background: #fff; border-radius: 2px; }
             <button onclick="backToPublicRoomSelection()">back</button>
         </div>
 
-        <!-- Step 3e: Join Public Room with Code -->
         <div class="setup-step" id="joinPublicRoomStep">
             <div class="modal-title">join with code</div>
             <input 
@@ -2000,7 +1995,6 @@ progress::-webkit-progress-value { background: #fff; border-radius: 2px; }
     <button class="danger" onclick="closeScreenShare()">stop viewing</button>
 </div>
 
-<!-- Security Warning Modal -->
 <div id="securityWarningOverlay" class="overlay"></div>
 <div id="securityWarningModal" class="security-modal">
     <div class="gif-header">
@@ -2045,7 +2039,6 @@ progress::-webkit-progress-value { background: #fff; border-radius: 2px; }
     <button onclick="closeSecurityWarning()">I understand the risks</button>
 </div>
 
-<!-- Fingerprint Verification Modal -->
 <div id="fingerprintOverlay" class="overlay" onclick="closeFingerprintModal()"></div>
 <div id="fingerprintModal" class="fingerprint-modal">
     <div class="gif-header">
@@ -2130,76 +2123,76 @@ progress::-webkit-progress-value { background: #fff; border-radius: 2px; }
 </div>
 
 <script>
-// Room Directory - Uses localStorage as a simple decentralized directory
+// Room Directory - Uses GunDB for distributed public room discovery
+// Replaces previous localStorage mechanism to allow cross-device visibility
 const RoomDirectory = {
-    STORAGE_KEY: 'blckbx_public_rooms',
-    CLEANUP_INTERVAL: 30000, // 30 seconds
-    ROOM_TIMEOUT: 120000, // 2 minutes
+    gun: null,
+    rooms: {}, // Local cache of rooms synced from GunDB
+    CLEANUP_INTERVAL: 10000, // 10 seconds
     
     init() {
-        // Clean up old rooms periodically
-        setInterval(() => this.cleanupOldRooms(), this.CLEANUP_INTERVAL);
+        // Initialize Gun with public relay peers for better connectivity
+        // This connects to a mesh of public peers to sync room data globally
+        try {
+            this.gun = Gun([
+                'https://gun-manhattan.herokuapp.com/gun',
+                'https://relay.peer.ooo/gun',
+                'https://gun.erasmus-nerds.us/gun'
+            ]);
+            
+            // Listen for room updates on the 'blckbx_public_rooms_v2' node
+            this.gun.get('blckbx_public_rooms_v2').map().on((data, id) => {
+                if (data === null) {
+                    delete this.rooms[id];
+                } else {
+                    // Only keep rooms seen in the last 2 minutes
+                    if (Date.now() - data.lastSeen < 120000) {
+                        this.rooms[id] = data;
+                    } else {
+                        // Optimistically remove old rooms locally
+                        delete this.rooms[id];
+                    }
+                }
+                // Trigger UI update whenever data changes
+                window.dispatchEvent(new Event('roomsUpdated'));
+            });
+
+            // Periodically clean up old rooms from local cache
+            setInterval(() => this.cleanupOldRooms(), this.CLEANUP_INTERVAL);
+        } catch (e) {
+            console.error("GunDB Initialization Failed:", e);
+        }
     },
     
     getRooms() {
-        try {
-            const stored = localStorage.getItem(this.STORAGE_KEY);
-            if (!stored) return [];
-            const rooms = JSON.parse(stored);
-            return rooms.filter(room => Date.now() - room.lastSeen < this.ROOM_TIMEOUT);
-        } catch(e) {
-            return [];
-        }
+        // Return array of active rooms from local cache
+        return Object.values(this.rooms).filter(r => Date.now() - r.lastSeen < 120000);
     },
     
     addOrUpdateRoom(roomCode, roomName, userCount = 1) {
-        try {
-            let rooms = this.getRooms();
-            const existing = rooms.findIndex(r => r.code === roomCode);
-            
-            const roomData = {
-                code: roomCode,
-                name: roomName,
-                users: userCount,
-                lastSeen: Date.now(),
-                created: existing >= 0 ? rooms[existing].created : Date.now()
-            };
-            
-            if (existing >= 0) {
-                rooms[existing] = roomData;
-            } else {
-                rooms.push(roomData);
-            }
-            
-            // Limit to 1000 rooms
-            if (rooms.length > 1000) {
-                rooms.sort((a, b) => b.lastSeen - a.lastSeen);
-                rooms = rooms.slice(0, 1000);
-            }
-            
-            localStorage.setItem(this.STORAGE_KEY, JSON.stringify(rooms));
-            
-            // Trigger storage event for other tabs
-            window.dispatchEvent(new Event('roomsUpdated'));
-        } catch(e) {
-            console.error('Failed to update room directory', e);
-        }
+        if (!this.gun) return;
+
+        const roomData = {
+            code: roomCode,
+            name: roomName,
+            users: userCount,
+            lastSeen: Date.now(),
+            created: this.rooms[roomCode] ? this.rooms[roomCode].created : Date.now()
+        };
+        
+        // Publish room data to the public graph
+        this.gun.get('blckbx_public_rooms_v2').get(roomCode).put(roomData);
     },
     
     removeRoom(roomCode) {
-        try {
-            let rooms = this.getRooms();
-            rooms = rooms.filter(r => r.code !== roomCode);
-            localStorage.setItem(this.STORAGE_KEY, JSON.stringify(rooms));
-            window.dispatchEvent(new Event('roomsUpdated'));
-        } catch(e) {
-            console.error('Failed to remove room', e);
-        }
+        if (!this.gun) return;
+        // Nullify the room entry in GunDB
+        this.gun.get('blckbx_public_rooms_v2').get(roomCode).put(null);
     },
     
     cleanupOldRooms() {
-        const rooms = this.getRooms();
-        localStorage.setItem(this.STORAGE_KEY, JSON.stringify(rooms));
+        // Only triggers a UI refresh to filter out stale data visually
+        window.dispatchEvent(new Event('roomsUpdated'));
     }
 };
 
