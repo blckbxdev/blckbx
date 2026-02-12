@@ -1,8 +1,8 @@
 
-## Website (v1.5 - Beta) (unstable):
+## website (v1.5 - beta) (unstable):
 [official static website](https://blckbxdev.github.io/blckbx/)
 
-## Local/custom file (up to v1.5 Beta):
+## local/custom file (up to v1.5 Beta):
 download the HTML file (V1.4 or V1.5 beta) and open it in your browser
 
 ## **w features**
