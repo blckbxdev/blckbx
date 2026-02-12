@@ -18,7 +18,7 @@ to use private rooms share the **"xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"** code, 
 ### file sharing:
 file sharing has temporarily been nerfed/disabled, this is temprary and will be re-added back when v1.5 releases
 
-## License
+## license
 open source, you may use, modify, and distribute the code with proper credit
 
 #### legal notice:
