@@ -6,7 +6,7 @@
 Download the HTML file (V1.4 or V1.5 beta) and open it in your browser.
 
 ## **w features**
-has calling, infinite file sharing sizes, screen sharing, mute button, nice animations ig, easily customizable themes + code based deeper themes (infinite file sizes have been removed temporarily in 1.5 due to large public room spams, this will be fixed soon)
+has calling, infinite file sharing sizes (infinite file sizes have been removed temporarily in 1.5 due to large public room spams, this will be fixed soon), screen sharing, mute button, nice animations ig, easily customizable themes + code based deeper themes 
 
 ### License
 Open source. You may use, modify, and distribute the code with proper attribution.
