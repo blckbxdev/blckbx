@@ -875,12 +875,12 @@ button.danger:hover {
 }
 .user {
     background: var(--bg-input);
-    padding: 12px;
+    padding: 10px 12px;
     border-radius: 8px;
     border: 1px solid var(--border);
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 10px;
     transition: all 0.2s ease;
     position: relative;
     animation: userFadeIn 0.3s ease;
@@ -906,8 +906,8 @@ button.danger:hover {
     box-shadow: 0 0 20px rgba(68, 255, 136, 0.2);
 }
 .user-avatar {
-    width: 40px;
-    height: 40px;
+    width: 36px;
+    height: 36px;
     border-radius: 50%;
     background: linear-gradient(135deg, #2a2a2a, var(--bg-secondary));
     display: flex;
@@ -915,7 +915,7 @@ button.danger:hover {
     justify-content: center;
     font-family: var(--font-mono);
     font-weight: 700;
-    font-size: 16px;
+    font-size: 14px;
     color: #fff;
     position: relative;
     flex-shrink: 0;
@@ -925,10 +925,10 @@ button.danger:hover {
 .user-avatar::after {
     content: '';
     position: absolute;
-    bottom: -2px;
-    right: -2px;
-    width: 12px;
-    height: 12px;
+    bottom: -1px;
+    right: -1px;
+    width: 10px;
+    height: 10px;
     border-radius: 50%;
     background: #444;
     border: 2px solid var(--bg-input);
@@ -939,21 +939,29 @@ button.danger:hover {
 .user-main {
     flex: 1;
     min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
 }
 .user-top {
     display: flex;
     align-items: center;
     gap: 6px;
-    margin-bottom: 2px;
+    flex-wrap: wrap;
+}
+.user-badges {
+    display: flex;
+    gap: 4px;
+    flex-wrap: wrap;
 }
 .user-actions {
     display: flex;
-    gap: 6px;
+    gap: 4px;
     flex-shrink: 0;
 }
 .user-action-btn {
-    width: 36px;
-    height: 36px;
+    width: 32px;
+    height: 32px;
     padding: 0;
     margin: 0;
     border-radius: 50%;
@@ -968,7 +976,7 @@ button.danger:hover {
 .user-action-btn:hover {
     background: #252525;
     border-color: var(--border-strong);
-    transform: scale(1.1);
+    transform: scale(1.15);
 }
 .user-action-btn.call-active {
     background: rgba(255, 68, 68, 0.1);
@@ -988,21 +996,42 @@ button.danger:hover {
 .user-action-btn.screen-share-btn:hover {
     background: rgba(107, 159, 255, 0.2);
     border-color: #6b9fff;
-    transform: scale(1.1);
+    transform: scale(1.15);
 }
 .user-action-btn svg {
-    width: 18px;
-    height: 18px;
+    width: 16px;
+    height: 16px;
 }
 .user-label {
-    font-size: 8px;
+    font-size: 7px;
     background: var(--bg-secondary);
-    padding: 2px 6px;
+    padding: 2px 5px;
     border-radius: 3px;
     color: #666;
     border: 1px solid var(--border);
     text-transform: uppercase;
     letter-spacing: 0.5px;
+    white-space: nowrap;
+}
+.user-badge {
+    font-size: 7px;
+    padding: 2px 5px;
+    border-radius: 3px;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+    font-weight: 600;
+    white-space: nowrap;
+    border: 1px solid;
+}
+.user-badge.voice-badge {
+    background: rgba(68, 255, 136, 0.1);
+    color: var(--success);
+    border-color: rgba(68, 255, 136, 0.3);
+}
+.user-badge.screen-badge {
+    background: rgba(107, 159, 255, 0.1);
+    color: #6b9fff;
+    border-color: rgba(107, 159, 255, 0.3);
 }
 #callStatus {
     font-family: var(--font-mono);
@@ -1207,6 +1236,28 @@ progress::-webkit-progress-value { background: #fff; border-radius: 2px; }
     transform: translate(-50%, -50%) scale(1);
     display: block;
 }
+.security-modal, .fingerprint-modal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0.95);
+    width: 90%;
+    max-width: 500px;
+    max-height: 80vh;
+    background: var(--bg-panel);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 24px;
+    z-index: 999;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.8);
+    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    overflow-y: auto;
+    display: none;
+}
+.security-modal.active, .fingerprint-modal.active {
+    transform: translate(-50%, -50%) scale(1);
+    display: block;
+}
 #screenShareModal {
     max-width: 800px;
     width: 95%;
@@ -1217,6 +1268,60 @@ progress::-webkit-progress-value { background: #fff; border-radius: 2px; }
     border-radius: 8px;
     background: #000;
     margin-bottom: 16px;
+}
+.security-modal, .fingerprint-modal {
+    max-width: 500px;
+    width: 95%;
+    max-height: 80vh;
+    overflow-y: auto;
+}
+.security-warning {
+    padding: 12px;
+    margin-bottom: 12px;
+    background: var(--bg-input);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    border-left: 3px solid var(--danger);
+    overflow: hidden;
+}
+.security-warning h4 {
+    font-size: 12px;
+    margin: 0 0 6px 0;
+    color: var(--text);
+    font-weight: 600;
+}
+.security-warning p {
+    font-size: 10px;
+    margin: 0;
+    color: var(--text-muted);
+    line-height: 1.5;
+}
+.warning-icon {
+    font-size: 24px;
+    float: left;
+    margin-right: 12px;
+}
+.fingerprint-section {
+    margin-bottom: 16px;
+}
+.fingerprint-section h4 {
+    font-size: 11px;
+    margin-bottom: 8px;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+.fingerprint-display {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    background: var(--bg-input);
+    padding: 12px;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    word-break: break-all;
+    line-height: 1.6;
+    color: var(--success);
+    letter-spacing: 1px;
 }
 .how-to-section {
     margin-bottom: 24px;
@@ -1895,6 +2000,83 @@ progress::-webkit-progress-value { background: #fff; border-radius: 2px; }
     <button class="danger" onclick="closeScreenShare()">stop viewing</button>
 </div>
 
+<!-- Security Warning Modal -->
+<div id="securityWarningOverlay" class="overlay"></div>
+<div id="securityWarningModal" class="security-modal">
+    <div class="gif-header">
+        <h3>• security & privacy notice</h3>
+    </div>
+    <div style="padding: 20px; max-height: 60vh; overflow-y: auto;">
+        <div class="security-warning">
+            <div class="warning-icon">①</div>
+            <h4>IP Address Exposure</h4>
+            <p>Your real IP address will be visible to all peers, even when using a VPN. This is inherent to WebRTC P2P.</p>
+        </div>
+        
+        <div class="security-warning">
+            <div class="warning-icon">②</div>
+            <h4>Browser Extensions</h4>
+            <p>Malicious extensions can access all content including encryption keys. Use trusted extensions only.</p>
+        </div>
+        
+        <div class="security-warning">
+            <div class="warning-icon">③</div>
+            <h4>No Forward Secrecy</h4>
+            <p>If your device is compromised later, recorded messages could be decrypted. Avoid highly sensitive topics.</p>
+        </div>
+        
+        <div class="security-warning">
+            <div class="warning-icon">④</div>
+            <h4>Identity Verification</h4>
+            <p>Use the fingerprint button to verify peer identities. Compare out-of-band to prevent MITM attacks.</p>
+        </div>
+        
+        <div class="security-warning">
+            <div class="warning-icon">⑤</div>
+            <h4>File Sharing Risks</h4>
+            <p>Always scan downloads for malware. Files are not scanned. Only download from trusted sources.</p>
+        </div>
+        
+        <label style="display: flex; align-items: center; gap: 8px; font-size: 11px; margin-top: 16px;">
+            <input type="checkbox" id="dontShowSecurityWarning" style="width: auto;">
+            <span>Don't show this again</span>
+        </label>
+    </div>
+    <button onclick="closeSecurityWarning()">I understand the risks</button>
+</div>
+
+<!-- Fingerprint Verification Modal -->
+<div id="fingerprintOverlay" class="overlay" onclick="closeFingerprintModal()"></div>
+<div id="fingerprintModal" class="fingerprint-modal">
+    <div class="gif-header">
+        <h3>• verify identity</h3>
+        <button class="close-btn" onclick="closeFingerprintModal()">×</button>
+    </div>
+    <div style="padding: 20px;">
+        <p style="font-size: 11px; color: var(--text-muted); margin-bottom: 16px;">
+            this is the finger prints (not very relevent outside of modded secure channels and debugging).
+        </p>
+        
+        <div class="fingerprint-section">
+            <h4>Your Fingerprint</h4>
+            <div class="fingerprint-display" id="myFingerprint"></div>
+        </div>
+        
+        <div class="fingerprint-section">
+            <h4 id="peerFingerprintTitle">Peer's Fingerprint</h4>
+            <div class="fingerprint-display" id="peerFingerprint"></div>
+        </div>
+        
+        <div style="margin-top: 16px; padding: 12px; background: var(--bg-secondary); border: 1px solid var(--border); border-radius: 8px;">
+            <p style="font-size: 10px; color: var(--text-muted);">
+                ✓ If fingerprints match on other users screen: Connection is secure<br>
+                ✗ If fingerprints don't match: Possible MITM attack (Irrelevant for most use cases)
+            </p>
+        </div>
+    </div>
+    <button onclick="closeFingerprintModal()">close</button>
+</div>
+
 <div id="howToOverlay" onclick="closeHowTo()"></div>
 <div id="howToModal">
     <div class="gif-header">
@@ -2209,7 +2391,8 @@ class Security {
 class CryptoManager {
     constructor() {
         this.keyPair = null;
-        this.sessions = {}; 
+        this.sessions = {};
+        this.peerKeys = {}; // Store peer public keys for fingerprint verification
     }
     async init() {
         this.keyPair = await crypto.subtle.generateKey(
@@ -2225,6 +2408,31 @@ class CryptoManager {
         const exported = await crypto.subtle.exportKey('spki', this.keyPair.publicKey);
         return btoa(String.fromCharCode(...new Uint8Array(exported)));
     }
+    
+    async getFingerprint() {
+        if (!this.keyPair) {
+            console.error('KeyPair not initialized for fingerprint');
+            return null;
+        }
+        const exported = await crypto.subtle.exportKey('spki', this.keyPair.publicKey);
+        const hash = await crypto.subtle.digest('SHA-256', exported);
+        const hashArray = Array.from(new Uint8Array(hash));
+        const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+        // Format as groups of 4 for readability
+        return hashHex.match(/.{1,4}/g).join(' ');
+    }
+    
+    async getPeerFingerprint(peerId) {
+        if (!this.peerKeys[peerId]) {
+            console.error('No peer key for fingerprint:', peerId);
+            return null;
+        }
+        const hash = await crypto.subtle.digest('SHA-256', this.peerKeys[peerId]);
+        const hashArray = Array.from(new Uint8Array(hash));
+        const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+        return hashHex.match(/.{1,4}/g).join(' ');
+    }
+    
     async deriveSession(peerPublicKeyB64, peerId) {
         // Safety check
         if (!this.keyPair) {
@@ -2235,6 +2443,9 @@ class CryptoManager {
         const bin = atob(peerPublicKeyB64);
         const buf = new Uint8Array(bin.length);
         for(let i=0; i<bin.length; i++) buf[i] = bin.charCodeAt(i);
+        
+        // Store the peer's public key buffer for fingerprint verification
+        this.peerKeys[peerId] = buf;
         
         const peerKey = await crypto.subtle.importKey(
             'spki', buf, 
@@ -2505,6 +2716,12 @@ const App = {
         delete this.connectionHealth[peerId];
         delete this.lastPingTime[peerId];
         delete this.peerMessageRates[peerId];
+        
+        // Clean up crypto sessions and keys
+        if (this.crypto) {
+            delete this.crypto.sessions[peerId];
+            delete this.crypto.peerKeys[peerId];
+        }
         
         // Clean up any screen shares from this peer
         if (this.screenShares[peerId]) {
@@ -2854,8 +3071,8 @@ const App = {
                         return;
                     }
                     
-                    // Check file size (50MB limit)
-                    const MAX_FILE_SIZE = 50 * 1024 * 1024;
+                    // Check file size (5GB limit)
+                    const MAX_FILE_SIZE = 5 * 1024 * 1024 * 1024; // 5GB
                     if (data.size > MAX_FILE_SIZE) {
                         addSystemMsg(`file too large from ${this.users[conn.peer]?.name || 'user'}`);
                         return;
@@ -2955,6 +3172,12 @@ const App = {
             delete this.users[conn.peer];
             delete this.peerMessageRates[conn.peer];
             
+            // Clean up crypto sessions and keys
+            if (this.crypto) {
+                delete this.crypto.sessions[conn.peer];
+                delete this.crypto.peerKeys[conn.peer];
+            }
+            
             // Clean up voice if they were in a call
             if (this.calls[conn.peer]) {
                 this.handleCallClose(conn.peer);
@@ -2997,14 +3220,14 @@ const App = {
                         ${u.name[0].toUpperCase()}
                     </div>
                     <div class="user-main">
-                        <div class="user-top">
-                            <span class="username" style="color:${u.color};font-weight:600;font-size:13px">${u.name}</span>
-                            ${this.calls[peerId] ? '<span class="user-label" style="background: rgba(68, 255, 136, 0.1); color: var(--success); border-color: rgba(68, 255, 136, 0.2);">in voice</span>' : ''}
-                            ${isSharing ? '<span class="user-label" style="background: rgba(107, 159, 255, 0.1); color: #6b9fff; border-color: rgba(107, 159, 255, 0.2);">sharing</span>' : ''}
+                        <span class="username" style="color:${u.color};font-weight:600;font-size:12px">${u.name}</span>
+                        <div class="user-badges">
+                            ${this.calls[peerId] ? '<span class="user-badge voice-badge">voice</span>' : ''}
+                            ${isSharing ? '<span class="user-badge screen-badge">screen</span>' : ''}
                         </div>
                     </div>
-                    ${isSharing ? `
                     <div class="user-actions">
+                        ${isSharing ? `
                         <button class="user-action-btn screen-share-btn" onclick="viewScreenShare('${peerId}')" title="view screen">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                 <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
@@ -3012,8 +3235,13 @@ const App = {
                                 <line x1="12" y1="17" x2="12" y2="21"></line>
                             </svg>
                         </button>
+                        ` : ''}
+                        <button class="user-action-btn" onclick="showPeerFingerprint('${peerId}')" title="verify identity">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M12 11c0 3.517-1.009 6.799-2.753 9.571m-3.44-2.04l.054-.09A13.916 13.916 0 008 11a4 4 0 118 0c0 1.017-.07 2.019-.203 3m-2.118 6.844A21.88 21.88 0 0015.171 17m3.839 1.132c.645-2.266.99-4.659.99-7.132A8 8 0 008 4.07M3 15.364c.64-1.319 1-2.8 1-4.364 0-1.457.39-2.823 1.07-4"></path>
+                            </svg>
+                        </button>
                     </div>
-                    ` : ''}
                 </div>`;
             div.innerHTML += html;
             if(mobileDiv) mobileDiv.innerHTML += html;
@@ -3453,6 +3681,13 @@ function downloadFile(url, name) {
     // Sanitize filename
     const safeName = Security.sanitizeFilename(name);
     
+    // Show malware warning
+    const warning = ` SECURITY WARNING \n\nYou are about to download: ${safeName}\n\nThis file has NOT been scanned for malware or viruses.\n\nOnly download files from people you trust.\nAlways scan downloads with antivirus software before opening.\n\nDo you want to download this file?`;
+    
+    if (!window.confirm(warning)) {
+        return;
+    }
+    
     try {
         const a = document.createElement('a');
         a.href = url;
@@ -3466,6 +3701,8 @@ function downloadFile(url, name) {
         setTimeout(() => {
             URL.revokeObjectURL(url);
         }, 1000);
+        
+        addSystemMsg(`file downloaded - scan for malware before opening`);
     } catch(e) {
         console.error('File download failed:', e);
         addSystemMsg('file download failed');
@@ -3697,11 +3934,17 @@ async function processFileSend(file) {
         return;
     }
     
-    // Validate file size (50MB limit)
-    const MAX_FILE_SIZE = 50 * 1024 * 1024;
+    // Validate file size (5GB limit)
+    const MAX_FILE_SIZE = 5 * 1024 * 1024 * 1024; // 5GB
     if (file.size > MAX_FILE_SIZE) {
-        addSystemMsg(`file too large (max 50MB)`);
+        addSystemMsg('file too large (max 5GB)');
         return;
+    }
+    
+    // Warn for large files
+    if (file.size > 100 * 1024 * 1024) { // > 100MB
+        const confirm = window.confirm(`This file is ${formatBytes(file.size)}. Large files may take a while to send. Continue?`);
+        if (!confirm) return;
     }
     
     // Sanitize filename
@@ -3909,6 +4152,13 @@ window.toggleScreenShare = async () => {
         updateScreenShareButton();
         addSystemMsg('screen sharing stopped');
     } else {
+        // Show warning before starting
+        const warning = ` SCREEN SHARING WARNING \n\nEverything on your screen will be visible to all connected peers, including:\n• Passwords and login credentials\n• Private messages and emails\n• Personal information\n• Notifications that appear\n• Other open windows/tabs\n\nMake sure to:\n✓ Close sensitive applications\n✓ Disable notifications\n✓ Only share with trusted people\n\nDo you want to share your screen?`;
+        
+        if (!window.confirm(warning)) {
+            return;
+        }
+        
         // Start screen sharing
         await startScreenShare();
     }
@@ -4147,6 +4397,66 @@ window.closeScreenShare = () => {
     document.getElementById('screenShareOverlay').classList.remove('active');
     document.getElementById('screenShareModal').classList.remove('active');
 };
+
+// Security Warning Modal
+window.showSecurityWarning = () => {
+    const overlay = document.getElementById('securityWarningOverlay');
+    const modal = document.getElementById('securityWarningModal');
+    if (overlay) overlay.classList.add('active');
+    if (modal) modal.classList.add('active');
+};
+
+window.closeSecurityWarning = () => {
+    const checkbox = document.getElementById('dontShowSecurityWarning');
+    if (checkbox && checkbox.checked) {
+        localStorage.setItem('blckbx_hide_security_warning', 'true');
+    }
+    const overlay = document.getElementById('securityWarningOverlay');
+    const modal = document.getElementById('securityWarningModal');
+    if (overlay) overlay.classList.remove('active');
+    if (modal) modal.classList.remove('active');
+};
+
+// Fingerprint Verification Modal
+window.showPeerFingerprint = async (peerId) => {
+    play('k');
+    const user = App.users[peerId];
+    if (!user) return;
+    
+    const myFingerprint = await App.crypto.getFingerprint();
+    const peerFingerprint = await App.crypto.getPeerFingerprint(peerId);
+    
+    if (!myFingerprint || !peerFingerprint) {
+        addSystemMsg('unable to generate fingerprints');
+        return;
+    }
+    
+    document.getElementById('myFingerprint').textContent = myFingerprint;
+    document.getElementById('peerFingerprint').textContent = peerFingerprint;
+    document.getElementById('peerFingerprintTitle').textContent = `${user.name}'s Fingerprint`;
+    
+    const overlay = document.getElementById('fingerprintOverlay');
+    const modal = document.getElementById('fingerprintModal');
+    if (overlay) overlay.classList.add('active');
+    if (modal) modal.classList.add('active');
+};
+
+window.closeFingerprintModal = () => {
+    const overlay = document.getElementById('fingerprintOverlay');
+    const modal = document.getElementById('fingerprintModal');
+    if (overlay) overlay.classList.remove('active');
+    if (modal) modal.classList.remove('active');
+};
+
+// Show security warning on first load
+window.addEventListener('DOMContentLoaded', () => {
+    const hideWarning = localStorage.getItem('blckbx_hide_security_warning');
+    if (!hideWarning) {
+        setTimeout(() => {
+            showSecurityWarning();
+        }, 1000);
+    }
+});
 
 window.viewScreenShare = (peerId) => {
     play('k');
