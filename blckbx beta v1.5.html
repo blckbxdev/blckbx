@@ -1608,9 +1608,9 @@ progress::-webkit-progress-value { background: #fff; border-radius: 2px; }
         <div class="setup-step" id="browseRoomsStep">
             <div class="modal-title">discover public rooms</div>
             <p style="font-size: 10px; color: var(--text-muted); margin: 8px 0 16px 0; text-align: center;">
-                <span style="color: var(--accent);">🌐 gossip network:</span> rooms discovered from peers you connect to • 
+                <span style="color: var(--accent);">‣ gossip network:</span> rooms discovered from peers you connect to • 
                 join any room to discover more • 
-                <span style="color: var(--success);">💡 tip:</span> share room names directly for instant joining
+                <span style="color: var(--success);">‣ tip:</span> share room names directly for instant joining
             </p>
             
             <div class="room-search-container">
@@ -2009,35 +2009,35 @@ progress::-webkit-progress-value { background: #fff; border-radius: 2px; }
 <div id="securityWarningOverlay" class="overlay"></div>
 <div id="securityWarningModal" class="security-modal">
     <div class="gif-header">
-        <h3>⚠️ security & privacy notice</h3>
+        <h3>• security and privacy notice</h3>
     </div>
     <div style="padding: 20px; max-height: 60vh; overflow-y: auto;">
         <div class="security-warning">
-            <div class="warning-icon">🔓</div>
-            <h4>IP Address Exposure</h4>
-            <p>Your real IP address will be visible to all peers, even when using a VPN. This is inherent to WebRTC P2P.</p>
+            <div class="warning-icon">‣</div>
+            <h4>public ip/h4>
+            <p>Your real IP address will be visible to all peers. this is inherent to webrtc p2p.</p>
         </div>
         
         <div class="security-warning">
-            <div class="warning-icon">🔍</div>
+            <div class="warning-icon">‣</div>
             <h4>Browser Extensions</h4>
             <p>Malicious extensions can access all content including encryption keys. Use trusted extensions only.</p>
         </div>
         
         <div class="security-warning">
-            <div class="warning-icon">🔒</div>
+            <div class="warning-icon">‣</div>
             <h4>No Forward Secrecy</h4>
             <p>If your device is compromised later, recorded messages could be decrypted. Avoid highly sensitive topics.</p>
         </div>
         
         <div class="security-warning">
-            <div class="warning-icon">👤</div>
+            <div class="warning-icon">‣</div>
             <h4>Identity Verification</h4>
             <p>Use the fingerprint button to verify peer identities. Compare out-of-band to prevent MITM attacks.</p>
         </div>
         
         <div class="security-warning">
-            <div class="warning-icon">📁</div>
+            <div class="warning-icon">‣</div>
             <h4>File Sharing Risks</h4>
             <p>Always scan downloads for malware. Files are not scanned. Only download from trusted sources.</p>
         </div>
@@ -2054,7 +2054,7 @@ progress::-webkit-progress-value { background: #fff; border-radius: 2px; }
 <div id="fingerprintOverlay" class="overlay" onclick="closeFingerprintModal()"></div>
 <div id="fingerprintModal" class="fingerprint-modal">
     <div class="gif-header">
-        <h3>🔐 verify identity</h3>
+        <h3>• verify identity</h3>
         <button class="close-btn" onclick="closeFingerprintModal()">×</button>
     </div>
     <div style="padding: 20px;">
@@ -2074,8 +2074,8 @@ progress::-webkit-progress-value { background: #fff; border-radius: 2px; }
         
         <div style="margin-top: 16px; padding: 12px; background: var(--bg-secondary); border: 1px solid var(--border); border-radius: 8px;">
             <p style="font-size: 10px; color: var(--text-muted);">
-                ✓ If fingerprints match: Connection is secure<br>
-                ✗ If fingerprints don't match: Possible MITM attack
+                ✓ if fingerprints match on both screens: connection is secure<br>
+                ✗ if fingerprints don't match: possible mitm attack
             </p>
         </div>
     </div>
@@ -2135,7 +2135,6 @@ progress::-webkit-progress-value { background: #fff; border-radius: 2px; }
 </div>
 
 <script>
-// Room Directory - Decentralized gossip-based discovery (no server needed!)
 const RoomDirectory = {
     LOCAL_STORAGE_KEY: 'blckbx_known_rooms',
     ROOM_TIMEOUT: 300000, // 5 minutes
@@ -2146,7 +2145,7 @@ const RoomDirectory = {
         this.loadKnownRooms();
         
         // Clean up old rooms periodically
-        setInterval(() => this.cleanupStaleRooms(), 60000);
+        setInterval(() => this.cleanupStaleRooms(), 60000);  // 10 mins
     },
     
     loadKnownRooms() {
@@ -2217,7 +2216,6 @@ const RoomDirectory = {
         }
     },
     
-    // Gossip protocol - share known rooms with connected peers
     shareRoomsWithPeer(conn) {
         const rooms = this.getRooms().map(r => ({
             code: r.code,
@@ -2233,8 +2231,6 @@ const RoomDirectory = {
             console.log(`Shared ${rooms.length} rooms with peer`);
         }
     },
-    
-    // Receive gossiped rooms from other peers
     receiveGossipedRooms(rooms) {
         let newRooms = 0;
         rooms.forEach(r => {
@@ -2372,7 +2368,6 @@ class Security {
         contentDiv.className = 'message-content';
 
         if (type === 'image' || type === 'image_gif') {
-            // Validate image URL
             const sanitizedUrl = this.sanitizeUrl(text);
             if (!sanitizedUrl || !this.isValidImageUrl(sanitizedUrl)) {
                 contentDiv.textContent = '[Invalid or unsafe image URL]';
@@ -2381,8 +2376,6 @@ class Security {
                 img.src = sanitizedUrl;
                 img.alt = 'Shared Image';
                 img.loading = 'lazy';
-                
-                // Add error handler
                 img.onerror = function() {
                     this.style.display = 'none';
                     const errorText = document.createElement('span');
@@ -2394,7 +2387,6 @@ class Security {
                 contentDiv.appendChild(img);
             }
         } else {
-            // Text message - detect and sanitize URLs
             const urlRegex = /(https?:\/\/[^\s]+)/g;
             const parts = text.split(urlRegex);
             
@@ -2408,8 +2400,6 @@ class Security {
                         a.rel = "noopener noreferrer";
                         a.textContent = part;
                         contentDiv.appendChild(a);
-                        
-                        // Auto-embed images from URLs
                         if (this.isValidImageUrl(sanitizedUrl)) {
                             const br = document.createElement('br');
                             const img = document.createElement('img');
@@ -3828,9 +3818,9 @@ window.backToPublicRoomSelection = function() {
     showStep('publicRoomSelectionStep');
 };
 
-// Audio
+// Audio sfx
 const audioMap = {
-    'l': new Audio('https://www.myinstants.com/media/sounds/message_2.mp3'),
+    'l': new Audio('https://www.myinstants.com/media/sounds/message_2.mp3'),    
     'r': new Audio('https://www.myinstants.com/media/sounds/sentmessage_1.mp3'),
     'c': new Audio('https://www.myinstants.com/media/sounds/knopka-iz-igry-2.mp3'),
     'd': new Audio('https://www.myinstants.com/media/sounds/knopka-iz-igry-2.mp3'),
@@ -3906,7 +3896,7 @@ function downloadFile(url, name) {
     const safeName = Security.sanitizeFilename(name);
     
     // Show malware warning
-    const warning = `⚠️ SECURITY WARNING ⚠️\n\nYou are about to download: ${safeName}\n\nThis file has NOT been scanned for malware or viruses.\n\nOnly download files from people you trust.\nAlways scan downloads with antivirus software before opening.\n\nDo you want to download this file?`;
+    const warning = ` SECURITY WARNING \n\nYou are about to download: ${safeName}\n\nThis file has NOT been scanned for malware or viruses.\n\nOnly download files from people you trust.\nAlways scan downloads with antivirus software before opening.\n\nDo you want to download this file?`;
     
     if (!window.confirm(warning)) {
         return;
@@ -3947,12 +3937,12 @@ function showFileTransferPrompt(fileId, fileName, fileSize, mimeType, senderName
     div.dataset.totalChunks = totalChunks || 0;
     
     // Get file icon based on type
-    let fileIcon = '📄';
-    if (mimeType.startsWith('image/')) fileIcon = '🖼️';
-    else if (mimeType.startsWith('video/')) fileIcon = '🎥';
-    else if (mimeType.startsWith('audio/')) fileIcon = '🎵';
-    else if (mimeType.includes('pdf')) fileIcon = '📑';
-    else if (mimeType.includes('zip') || mimeType.includes('rar')) fileIcon = '📦';
+    let fileIcon = 'file';
+    if (mimeType.startsWith('image/')) fileIcon = 'image:';
+    else if (mimeType.startsWith('video/')) fileIcon = 'video:';
+    else if (mimeType.startsWith('audio/')) fileIcon = 'audio:';
+    else if (mimeType.includes('pdf')) fileIcon = 'pdf:';
+    else if (mimeType.includes('zip') || mimeType.includes('rar')) fileIcon = 'zip:';
     
     div.innerHTML = `
         <div style="background: var(--bg-secondary); padding: 16px; border-radius: 8px; border: 1px solid var(--border);">
@@ -3984,7 +3974,7 @@ function showFileTransferPrompt(fileId, fileName, fileSize, mimeType, senderName
                 </button>
             </div>
             <div style="margin-top: 8px; font-size: 9px; color: var(--text-muted); text-align: center;">
-                ⚠️ Always scan downloads for malware
+                 Always scan downloads for malware
             </div>
         </div>
     `;
@@ -4065,7 +4055,7 @@ function downloadFile(url, name) {
     const safeName = Security.sanitizeFilename(name);
     
     // Show malware warning
-    const warning = `⚠️ SECURITY WARNING ⚠️\n\nYou are about to download: ${safeName}\n\nThis file has NOT been scanned for malware or viruses.\n\nOnly download files from people you trust.\nAlways scan downloads with antivirus software before opening.\n\nDo you want to download this file?`;
+    const warning = ` security warning \n\nyou are about to download: ${safeName}\n\nthis file has not been scanned for malware or viruses.\n\nonly download files from people you trust.\nalways scan downloads with antivirus software before opening.\n\ndo you want to download this file?`;
     
     if (!window.confirm(warning)) {
         return;
@@ -4537,7 +4527,7 @@ window.toggleScreenShare = async () => {
         addSystemMsg('screen sharing stopped');
     } else {
         // Show warning before starting
-        const warning = `⚠️ SCREEN SHARING WARNING ⚠️\n\nEverything on your screen will be visible to all connected peers, including:\n• Passwords and login credentials\n• Private messages and emails\n• Personal information\n• Notifications that appear\n• Other open windows/tabs\n\nMake sure to:\n✓ Close sensitive applications\n✓ Disable notifications\n✓ Only share with trusted people\n\nDo you want to share your screen?`;
+        const warning = ` screen sharing warning \n\neverything on your screen will be visible to all connected peers, including:\n• passwords and login credentials\n• private messages and emails\n• personal information\n•  notifications that appear\n• other open windows/tabs\n\nmake sure to:\n✓ close sensitive applications\n✓ disable notifications\n✓ only share with trusted people\n\ndo you want to share your screen?`;
         
         if (!window.confirm(warning)) {
             return;
