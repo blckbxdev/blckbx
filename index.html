@@ -16,86 +16,150 @@
 <style>
 
 :root {
-    --bg-app: #050505;
-    --bg-panel: #0a0a0a;
-    --bg-input: var(--bg-input);
-    --border: rgba(255, 255, 255, 0.08);
-    --border-hover: rgba(255, 255, 255, 0.2);
-    --text-main: #ededed;
-    --text-muted: #666666;
-    --accent: #ffffff;
-    --danger: #ff4444;
-    --success: #44ff88;
-    --warning: #ffaa44;
-    --font-ui: 'Inter', -apple-system, sans-serif;
+    /* backgrounds */
+    --bg-app:        #080808;
+    --bg-panel:      #101010;
+    --bg-secondary:  #181818;
+    --bg-tertiary:   #0c0c0c;
+    --bg-input:      #1c1c1c;
+
+    /* borders */
+    --border:        rgba(255,255,255,0.07);
+    --border-hover:  rgba(255,255,255,0.14);
+    --border-strong: rgba(255,255,255,0.22);
+
+    /* text */
+    --text-main:     #e8e8e8;
+    --text-secondary:#aaaaaa;
+    --text-muted:    #555555;
+
+    /* semantic — default theme stays neutral/white */
+    --accent:        #ffffff;
+    --accent-dim:    rgba(255,255,255,0.06);
+    --accent-border: rgba(255,255,255,0.14);
+
+    --success:        #cccccc;      /* neutral silver in default */
+    --success-dim:    rgba(255,255,255,0.05);
+    --success-border: rgba(255,255,255,0.12);
+
+    --warning:        #888888;
+    --warning-dim:    rgba(255,255,255,0.04);
+
+    --danger:         #e05050;
+    --danger-dim:     rgba(220,80,80,0.08);
+    --danger-border:  rgba(220,80,80,0.25);
+
+    /* typography */
+    --font-ui:   'Inter', -apple-system, sans-serif;
     --font-mono: 'JetBrains Mono', monospace;
-    --radius: 12px;
+
+    /* layout */
+    --radius:    12px;
     --radius-sm: 6px;
-    --spacing: 16px;
+    --spacing:   16px;
 }
 [data-theme="midnight"] {
-    --bg-app: #0a0e1a;
-    --bg-panel: #131a2e;
-    --bg-input: #1a2740;
-    --accent: #6b9fff;
-    --success: #4de1ff;
-    --warning: #ffc266;
-    --bg-secondary: #1f2d4d;
-    --bg-tertiary: #0d1220;
-    --text-secondary: #6b9fff;
-    --border-strong: #4a7acc;
-    
+    --bg-app:        #080d18;
+    --bg-panel:      #0f1624;
+    --bg-secondary:  #18243a;
+    --bg-tertiary:   #0a1020;
+    --bg-input:      #1a2540;
+    --border:        rgba(107,159,255,0.12);
+    --border-hover:  rgba(107,159,255,0.25);
+    --border-strong: rgba(107,159,255,0.4);
+    --text-secondary:#7aa4f0;
+    --accent:        #6b9fff;
+    --accent-dim:    rgba(107,159,255,0.08);
+    --accent-border: rgba(107,159,255,0.22);
+    --success:        #4de1ff;
+    --success-dim:    rgba(77,225,255,0.08);
+    --success-border: rgba(77,225,255,0.22);
+    --warning:        #ffc266;
+    --warning-dim:    rgba(255,194,102,0.08);
 }
 [data-theme="white"] {
-    --bg-app:        #cfeaec;
-    --bg-panel:      #b4dfe6;
-    --bg-secondary:  #95cbd4;
-    --bg-tertiary:   #7abccf;
-    --bg-input:      #55cbd8;
-    --accent:        #1fb4cc;
-    --success:       #1aa4bf;
-    --warning:       #e39c33;
-    --text-secondary:#061a32;
-    --border-strong: #2456d6;
+    --bg-app:        #f0f0f0;
+    --bg-panel:      #e4e4e4;
+    --bg-secondary:  #d8d8d8;
+    --bg-tertiary:   #ebebeb;
+    --bg-input:      #d0d0d0;
+    --border:        rgba(0,0,0,0.10);
+    --border-hover:  rgba(0,0,0,0.20);
+    --border-strong: rgba(0,0,0,0.35);
+    --text-main:     #111111;
+    --text-secondary:#333333;
+    --text-muted:    #777777;
+    --accent:        #111111;
+    --accent-dim:    rgba(0,0,0,0.06);
+    --accent-border: rgba(0,0,0,0.14);
+    --success:        #2a6e3f;
+    --success-dim:    rgba(42,110,63,0.08);
+    --success-border: rgba(42,110,63,0.22);
+    --warning:        #8a5a00;
+    --warning-dim:    rgba(138,90,0,0.06);
+    --danger:         #b03030;
+    --danger-dim:     rgba(176,48,48,0.08);
+    --danger-border:  rgba(176,48,48,0.25);
 }
-
 [data-theme="orange"] {
-    --bg-app: #1a0f05;
-    --bg-panel: #2e1a0a;
-    --bg-input: #3d2410;
-    --accent: #ff9a44;
-    --success: #ffb366;
-    --warning: #ffcc44;
-    --bg-secondary: #4d2e15;
-    --bg-tertiary: #150b03;
-    --text-secondary: #ff9a44;
-    --border-strong: #cc7a33;
+    --bg-app:        #130b02;
+    --bg-panel:      #1e1005;
+    --bg-secondary:  #2e1a08;
+    --bg-tertiary:   #0f0802;
+    --bg-input:      #3a2010;
+    --border:        rgba(255,154,68,0.10);
+    --border-hover:  rgba(255,154,68,0.22);
+    --border-strong: rgba(255,154,68,0.38);
+    --text-secondary:#ff9a44;
+    --accent:        #ff9a44;
+    --accent-dim:    rgba(255,154,68,0.07);
+    --accent-border: rgba(255,154,68,0.20);
+    --success:        #ffb366;
+    --success-dim:    rgba(255,179,102,0.08);
+    --success-border: rgba(255,179,102,0.22);
+    --warning:        #ffcc44;
+    --warning-dim:    rgba(255,204,68,0.07);
 }
-
 [data-theme="purple"] {
-    --bg-app: #140a1a;
-    --bg-panel: #1f0f2e;
-    --bg-input: #2a1640;
-    --accent: #c77dff;
-    --success: #e0aaff;
-    --warning: #ff6ec7;
-    --bg-secondary: #351b4d;
-    --bg-tertiary: #0f0615;
-    --text-secondary: #c77dff;
-    --border-strong: #9f5ecc;
+    --bg-app:        #0e0614;
+    --bg-panel:      #180a22;
+    --bg-secondary:  #251535;
+    --bg-tertiary:   #0a0410;
+    --bg-input:      #2a1640;
+    --border:        rgba(199,125,255,0.10);
+    --border-hover:  rgba(199,125,255,0.22);
+    --border-strong: rgba(199,125,255,0.38);
+    --text-secondary:#c77dff;
+    --accent:        #c77dff;
+    --accent-dim:    rgba(199,125,255,0.07);
+    --accent-border: rgba(199,125,255,0.20);
+    --success:        #e0aaff;
+    --success-dim:    rgba(224,170,255,0.08);
+    --success-border: rgba(224,170,255,0.22);
+    --warning:        #ff6ec7;
+    --warning-dim:    rgba(255,110,199,0.07);
 }
 [data-theme="red"] {
-
-    --bg-app:        #1f0000; 
-    --bg-panel:      #2d0000; 
-    --bg-secondary:  #430000;
-    --bg-tertiary:   #260000; 
-    --bg-input:      #5a0000; 
-    --accent:        #7a0000;
-    --success:       #1df500;
-    --warning:       #d90000; 
-    --text-secondary:#ffdede; 
-    --border-strong: #8f0000;
+    --bg-app:        #160000;
+    --bg-panel:      #200000;
+    --bg-secondary:  #300000;
+    --bg-tertiary:   #180000;
+    --bg-input:      #3d0000;
+    --border:        rgba(200,40,40,0.12);
+    --border-hover:  rgba(200,40,40,0.25);
+    --border-strong: rgba(200,40,40,0.40);
+    --text-secondary:#ff6666;
+    --accent:        #ff4444;
+    --accent-dim:    rgba(255,68,68,0.07);
+    --accent-border: rgba(255,68,68,0.20);
+    --success:        #ff8888;
+    --success-dim:    rgba(255,136,136,0.07);
+    --success-border: rgba(255,136,136,0.20);
+    --warning:        #ff6600;
+    --warning-dim:    rgba(255,102,0,0.07);
+    --danger:         #ff2222;
+    --danger-dim:     rgba(255,34,34,0.08);
+    --danger-border:  rgba(255,34,34,0.25);
 }
 
 
@@ -193,7 +257,7 @@ body {
 #usernameInput:focus, #roomNameInput:focus, #joinRoomCodeInput:focus {
     outline: none;
     border-color: var(--border-strong);
-    background: #161616;
+    background: var(--bg-tertiary);
     box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.05);
 }
 #usernameSubmit, .room-type-btn, #createRoomBtn, #joinRoomBtn, #backToRoomTypeBtn, #backToRoomSelectionBtn, #browseRoomsBtn {
@@ -225,8 +289,8 @@ body {
     border: 1px solid var(--border);
 }
 .room-type-btn:hover {
-    background: #252525;
-    border-color: #666;
+    background: var(--bg-secondary);
+    border-color: var(--border-hover);
 }
 #backToRoomTypeBtn, #backToRoomSelectionBtn {
     background: transparent;
@@ -271,8 +335,8 @@ body {
 .room-search-input:focus {
     outline: none;
     border-color: var(--border-strong);
-    background: #161616;
-    box-shadow: 0 0 0 2px rgba(255,255,255,0.05);
+    background: var(--bg-tertiary);
+    box-shadow: 0 0 0 2px var(--accent-dim);
 }
 .room-search-icon {
     position: absolute;
@@ -340,7 +404,7 @@ body {
     transition: transform 0.2s ease;
 }
 .room-item:hover {
-    background: #151515;
+    background: var(--bg-secondary);
     border-color: var(--border-hover);
     transform: translateX(4px);
 }
@@ -367,9 +431,9 @@ body {
 .room-item-badge {
     font-size: 8px;
     padding: 2px 6px;
-    background: rgba(68, 255, 136, 0.1);
+    background: var(--success-dim);
     color: var(--success);
-    border: 1px solid rgba(68, 255, 136, 0.2);
+    border: 1px solid var(--success-border);
     border-radius: 3px;
     text-transform: uppercase;
     letter-spacing: 0.5px;
@@ -421,7 +485,20 @@ body {
 .room-item-join:hover {
     opacity: 0.9;
     transform: scale(1.1);
-    box-shadow: 0 4px 12px rgba(68, 255, 136, 0.3);
+    box-shadow: 0 4px 12px var(--success-dim);
+}
+.room-join-icon {
+    background: var(--success);
+    color: #000;
+    border-radius: 50%;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 16px;
+    flex-shrink: 0;
 }
 .room-item-join:active {
     transform: scale(0.95);
@@ -476,18 +553,18 @@ body {
     transition: all 0.3s ease;
 }
 .connection-status.connected {
-    background: rgba(68, 255, 136, 0.1);
-    border-color: rgba(68, 255, 136, 0.3);
+    background: var(--success-dim);
+    border-color: var(--success-border);
     color: var(--success);
 }
 .connection-status.connecting {
-    background: rgba(255, 170, 68, 0.1);
-    border-color: rgba(255, 170, 68, 0.3);
+    background: var(--warning-dim);
+    border-color: var(--warning);
     color: var(--warning);
 }
 .connection-status.disconnected {
-    background: rgba(255, 68, 68, 0.1);
-    border-color: rgba(255, 68, 68, 0.3);
+    background: var(--danger-dim);
+    border-color: var(--danger-border);
     color: var(--danger);
 }
 .status-dot {
@@ -543,8 +620,8 @@ body {
     transition: all 0.15s ease;
 }
 .mobile-nav-btn:hover {
-    background: #252525;
-    border-color: #666;
+    background: var(--bg-secondary);
+    border-color: var(--border-hover);
     transform: translateY(-2px);
 }
 .mobile-nav-btn svg {
@@ -650,12 +727,12 @@ body {
 }
 .room-info-badge {
     font-size: 9px;
-    background: rgba(68, 255, 136, 0.1);
+    background: var(--success-dim);
     padding: 4px 10px;
     border-radius: 100px;
     margin-left: 8px;
     color: var(--success);
-    border: 1px solid rgba(68, 255, 136, 0.2);
+    border: 1px solid var(--success-border);
     letter-spacing: 0.5px;
 }
 .encryption-badge {
@@ -663,11 +740,11 @@ body {
     align-items: center;
     gap: 4px;
     font-size: 8px;
-    background: rgba(68, 255, 136, 0.1);
+    background: var(--accent-dim);
     padding: 3px 8px;
     border-radius: 100px;
-    color: var(--success);
-    border: 1px solid rgba(68, 255, 136, 0.2);
+    color: var(--accent);
+    border: 1px solid var(--accent-border);
     margin-left: 8px;
 }
 .encryption-icon {
@@ -719,8 +796,8 @@ input {
 input:focus {
     outline: none;
     border-color: var(--border-strong);
-    background: #161616;
-    box-shadow: 0 0 0 2px rgba(255,255,255,0.05);
+    background: var(--bg-tertiary);
+    box-shadow: 0 0 0 2px var(--accent-dim);
 }
 input[readonly] {
     color: var(--text-secondary);
@@ -748,20 +825,20 @@ button {
     overflow: hidden;
 }
 button:hover {
-    background: #252525;
-    border-color: #666;
+    background: var(--bg-secondary);
+    border-color: var(--border-hover);
     transform: translateY(-1px);
 }
 button:active {
     transform: scale(0.98) translateY(0);
 }
 button.danger {
-    border-color: rgba(255, 68, 68, 0.3);
+    border-color: var(--danger-border);
     color: var(--danger);
-    background: rgba(255, 68, 68, 0.05);
+    background: var(--danger-dim);
 }
 button.danger:hover {
-    background: rgba(255, 68, 68, 0.1);
+    background: var(--danger-dim);
     border-color: var(--danger);
 }
 #messages {
@@ -783,7 +860,7 @@ button.danger:hover {
     animation: messageSlideIn 0.3s cubic-bezier(0.16, 1, 0.3, 1);
     border-radius: 20px; 
     align-self: flex-start;
-    background: #141414;
+    background: var(--bg-secondary);
     border: 1px solid var(--border);
     border-top-left-radius: 4px;
 }
@@ -799,7 +876,7 @@ button.danger:hover {
 }
 .message.is-me {
     align-self: flex-end;
-    background: #1f1f1f;
+    background: var(--bg-input);
     border: 1px solid var(--border);
     text-align: right;
     border-top-left-radius: 20px;
@@ -813,11 +890,15 @@ button.danger:hover {
     opacity: 0.8;
 }
 .message-content img {
-    max-width: 100%;
+    max-width: 280px;
+    max-height: 200px;
+    width: auto;
+    height: auto;
     border-radius: 8px;
     border: 1px solid var(--border);
     margin-top: 6px;
     display: block;
+    object-fit: contain;
 }
 .message-content a {
     color: var(--success);
@@ -826,13 +907,13 @@ button.danger:hover {
 .system {
     align-self: center;
     font-size: 10px;
-    color: var(--border-strong);
+    color: var(--text-muted);
     font-family: var(--font-mono);
     background: var(--bg-panel);
     padding: 4px 12px;
     border-radius: 100px;
-    border: 1px solid #1a1a1a;
-    margin: 12px 0;
+    border: 1px solid var(--border);
+    margin: 8px 0;
 }
 .message-input-row {
     display: flex;
@@ -896,14 +977,14 @@ button.danger:hover {
     }
 }
 .user:hover {
-    background: #151515;
+    background: var(--bg-secondary);
     border-color: var(--border);
     transform: translateX(4px);
 }
 .user.talking {
     background: var(--bg-secondary);
     border-color: var(--success);
-    box-shadow: 0 0 20px rgba(68, 255, 136, 0.2);
+    box-shadow: 0 0 16px var(--success-dim);
 }
 .user-avatar {
     width: 36px;
@@ -974,28 +1055,28 @@ button.danger:hover {
     transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
 }
 .user-action-btn:hover {
-    background: #252525;
+    background: var(--bg-secondary);
     border-color: var(--border-strong);
     transform: scale(1.15);
 }
 .user-action-btn.call-active {
-    background: rgba(255, 68, 68, 0.1);
+    background: var(--danger-dim);
     border-color: var(--danger);
     color: var(--danger);
 }
 .user-action-btn.screen-active {
-    background: rgba(68, 255, 136, 0.1);
+    background: var(--success-dim);
     border-color: var(--success);
     color: var(--success);
 }
 .user-action-btn.screen-share-btn {
-    background: rgba(107, 159, 255, 0.1);
-    border-color: rgba(107, 159, 255, 0.3);
-    color: #6b9fff;
+    background: var(--accent-dim);
+    border-color: var(--accent-border);
+    color: var(--accent);
 }
 .user-action-btn.screen-share-btn:hover {
-    background: rgba(107, 159, 255, 0.2);
-    border-color: #6b9fff;
+    background: var(--accent-dim);
+    border-color: var(--accent);
     transform: scale(1.15);
 }
 .user-action-btn svg {
@@ -1024,23 +1105,23 @@ button.danger:hover {
     border: 1px solid;
 }
 .user-badge.voice-badge {
-    background: rgba(68, 255, 136, 0.1);
+    background: var(--success-dim);
     color: var(--success);
-    border-color: rgba(68, 255, 136, 0.3);
+    border-color: var(--success-border);
 }
 .user-badge.screen-badge {
-    background: rgba(107, 159, 255, 0.1);
-    color: #6b9fff;
-    border-color: rgba(107, 159, 255, 0.3);
+    background: var(--accent-dim);
+    color: var(--accent);
+    border-color: var(--accent-border);
 }
 #callStatus {
     font-family: var(--font-mono);
     font-size: 11px;
-    color: #666;
+    color: var(--text-muted);
     padding: 16px;
-    background: #0a0a0a;
+    background: var(--bg-tertiary);
     border-radius: var(--radius-sm);
-    border: 1px solid #1a1a1a;
+    border: 1px solid var(--border);
     text-align: center;
     margin-top: auto;
     display: flex;
@@ -1049,8 +1130,8 @@ button.danger:hover {
 }
 #callStatus.call-active {
     color: var(--success);
-    border-color: rgba(68, 255, 136, 0.2);
-    background: rgba(68, 255, 136, 0.05);
+    border-color: var(--success-border);
+    background: var(--success-dim);
 }
 .call-header {
     display: flex;
@@ -1077,11 +1158,11 @@ button.danger:hover {
     padding: 8px;
     background: var(--bg-input);
     border-radius: 6px;
-    border: 1px solid #1a1a1a;
+    border: 1px solid var(--border);
 }
 .call-participant.talking {
-    border-color: var(--success);
-    background: rgba(68, 255, 136, 0.05);
+    border-color: var(--success-border);
+    background: var(--success-dim);
 }
 .call-participant-avatar {
     width: 24px;
@@ -1112,7 +1193,7 @@ button.danger:hover {
 .section-file {
     margin-top: auto;
     padding-top: 20px;
-    border-top: 1px solid #1a1a1a;
+    border-top: 1px solid var(--border);
 }
 #fileInput {
     padding: 8px;
@@ -1145,7 +1226,7 @@ progress::-webkit-progress-value { background: #fff; border-radius: 2px; }
     max-width: 90vw;
     height: 600px;
     max-height: 80vh;
-    background: #0a0a0a;
+    background: var(--bg-tertiary);
     border: 1px solid var(--border);
     border-radius: 16px;
     padding: 24px;
@@ -1326,7 +1407,7 @@ progress::-webkit-progress-value { background: #fff; border-radius: 2px; }
 .how-to-section {
     margin-bottom: 24px;
     padding-bottom: 24px;
-    border-bottom: 1px solid #1a1a1a;
+    border-bottom: 1px solid var(--border);
 }
 .how-to-section:last-of-type {
     border-bottom: none;
@@ -1334,21 +1415,21 @@ progress::-webkit-progress-value { background: #fff; border-radius: 2px; }
 .how-to-number {
     font-family: var(--font-mono);
     font-size: 11px;
-    color: var(--border-strong);
+    color: var(--text-muted);
     letter-spacing: 2px;
     margin-bottom: 8px;
 }
 .how-to-title {
     font-family: var(--font-mono);
     font-size: 14px;
-    color: var(--accent);
+    color: var(--text-main);
     margin-bottom: 8px;
     font-weight: 600;
 }
 .how-to-text {
-    font-size: 13px;
+    font-size: 12px;
     line-height: 1.6;
-    color: #999;
+    color: var(--text-secondary);
 }
 .how-to-footer {
     display: flex;
@@ -1389,7 +1470,7 @@ progress::-webkit-progress-value { background: #fff; border-radius: 2px; }
 }
 .theme-option.active {
     border-color: var(--success);
-    background: rgba(68, 255, 136, 0.05);
+    background: var(--success-dim);
 }
 .theme-option.active::after {
     content: '✓';
@@ -1574,7 +1655,7 @@ progress::-webkit-progress-value { background: #fff; border-radius: 2px; }
             </button>
             <button class="room-type-btn" onclick="selectRoomType('public')">
                 public room
-                <div class="username-hint" style="margin-top: 8px;">join or create named room</div>
+                <div class="username-hint" style="margin-top: 8px;">browse &amp; join global rooms</div>
             </button>
         </div>
 
@@ -1606,30 +1687,33 @@ progress::-webkit-progress-value { background: #fff; border-radius: 2px; }
 
         <!-- Step 3c: Browse Rooms -->
         <div class="setup-step" id="browseRoomsStep">
-            <div class="modal-title">discover public rooms</div>
-            <p style="font-size: 10px; color: var(--text-muted); margin: 8px 0 16px 0; text-align: center;">
-                <span style="color: var(--accent);">‣ gossip network:</span> rooms discovered from peers you connect to • 
-                join any room to discover more • 
-                <span style="color: var(--success);">‣ tip:</span> share room names directly for instant joining
-            </p>
+            <div class="modal-title">global rooms</div>
             
-            <div class="room-search-container">
-                <input 
-                    type="text" 
-                    class="room-search-input" 
-                    id="roomSearchInput" 
-                    placeholder="search rooms..." 
-                    oninput="filterRooms()"
-                >
-                <svg class="room-search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <circle cx="11" cy="11" r="8"></circle>
-                    <path d="m21 21-4.35-4.35"></path>
-                </svg>
+            <div style="display:flex; gap:8px; margin-bottom:12px;">
+                <div class="room-search-container" style="flex:1; margin-bottom:0;">
+                    <input 
+                        type="text" 
+                        class="room-search-input" 
+                        id="roomSearchInput" 
+                        placeholder="search rooms..." 
+                        oninput="filterRooms()"
+                    >
+                    <svg class="room-search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="11" cy="11" r="8"></circle>
+                        <path d="m21 21-4.35-4.35"></path>
+                    </svg>
+                </div>
+                <button onclick="showCreatePublicRoom()" style="width:auto; padding:10px 14px; margin:0; background:var(--success); color:#000; font-weight:700; flex-shrink:0; border-color:var(--success);" title="create room">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" style="display:block;"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                </button>
             </div>
-            
-            <div class="room-stats">
-                <span id="roomCount">loading...</span>
-                <span id="roomSort">sort: recent</span>
+
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; font-size:10px; font-family:var(--font-mono); color:var(--text-muted);">
+                <span id="roomCount">connecting...</span>
+                <span id="discoveryStatus" style="color:var(--warning); display:flex; align-items:center; gap:4px;">
+                    <svg width="6" height="6" viewBox="0 0 8 8" style="flex-shrink:0;"><circle cx="4" cy="4" r="4" fill="currentColor"/></svg>
+                    <span id="discoveryStatusText">connecting</span>
+                </span>
             </div>
             
             <div class="room-sort">
@@ -1641,18 +1725,13 @@ progress::-webkit-progress-value { background: #fff; border-radius: 2px; }
             <div class="room-list" id="publicRoomsList">
                 <div class="empty-rooms">
                     <div class="loading-spinner"></div>
-                    <div style="margin-top: 12px;">discovering rooms...</div>
+                    <div style="margin-top: 12px;">scanning network...</div>
                 </div>
             </div>
             
-            <button onclick="refreshRoomList()">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display: inline; margin-right: 6px;">
-                    <polyline points="23 4 23 10 17 10"></polyline>
-                    <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path>
-                </svg>
-                refresh rooms
+            <button onclick="backToRoomType()" style="background:transparent; border-color:var(--border); color:var(--text-muted); margin-top:4px;">
+                back
             </button>
-            <button onclick="backToPublicRoomSelection()">back</button>
         </div>
 
         <!-- Step 3d: Create Public Room -->
@@ -1670,10 +1749,9 @@ progress::-webkit-progress-value { background: #fff; border-radius: 2px; }
                 your room will appear in the public room list
             </div>
             <button id="createRoomBtn">create room</button>
-            <button onclick="backToPublicRoomSelection()">back</button>
+            <button onclick="showBrowseRooms()">back</button>
         </div>
 
-        <!-- Step 3e: Join Public Room with Code -->
         <div class="setup-step" id="joinPublicRoomStep">
             <div class="modal-title">join with code</div>
             <input 
@@ -1926,7 +2004,7 @@ progress::-webkit-progress-value { background: #fff; border-radius: 2px; }
     <div class="theme-grid">
         <div class="theme-option active" onclick="applyTheme('default')">
             <div class="theme-preview" style="background: #050505;">
-                <div class="theme-preview-color" style="background: #0a0a0a;"></div>
+                <div class="theme-preview-color" style="background: var(--bg-tertiary);"></div>
                 <div class="theme-preview-color" style="background: #111111;"></div>
                 <div class="theme-preview-color" style="background: #ffffff;"></div>
             </div>
@@ -2009,52 +2087,47 @@ progress::-webkit-progress-value { background: #fff; border-radius: 2px; }
 <div id="securityWarningOverlay" class="overlay"></div>
 <div id="securityWarningModal" class="security-modal">
     <div class="gif-header">
-        <h3>• security and privacy notice</h3>
+        <h3>security &amp; privacy notice</h3>
     </div>
     <div style="padding: 20px; max-height: 60vh; overflow-y: auto;">
         <div class="security-warning">
-            <div class="warning-icon">‣</div>
-            <h4>public ip/h4>
-            <p>Your real IP address will be visible to all peers. this is inherent to webrtc p2p.</p>
+            <h4>IP address exposure</h4>
+            <p>Your real IP address will be visible to all peers, even when using a VPN. This is inherent to WebRTC P2P.</p>
         </div>
         
         <div class="security-warning">
-            <div class="warning-icon">‣</div>
-            <h4>Browser Extensions</h4>
+            <h4>browser extensions</h4>
             <p>Malicious extensions can access all content including encryption keys. Use trusted extensions only.</p>
         </div>
         
         <div class="security-warning">
-            <div class="warning-icon">‣</div>
-            <h4>No Forward Secrecy</h4>
+            <h4>no forward secrecy</h4>
             <p>If your device is compromised later, recorded messages could be decrypted. Avoid highly sensitive topics.</p>
         </div>
         
         <div class="security-warning">
-            <div class="warning-icon">‣</div>
-            <h4>Identity Verification</h4>
+            <h4>identity verification</h4>
             <p>Use the fingerprint button to verify peer identities. Compare out-of-band to prevent MITM attacks.</p>
         </div>
         
         <div class="security-warning">
-            <div class="warning-icon">‣</div>
-            <h4>File Sharing Risks</h4>
+            <h4>file sharing risks</h4>
             <p>Always scan downloads for malware. Files are not scanned. Only download from trusted sources.</p>
         </div>
         
         <label style="display: flex; align-items: center; gap: 8px; font-size: 11px; margin-top: 16px;">
             <input type="checkbox" id="dontShowSecurityWarning" style="width: auto;">
-            <span>Don't show this again</span>
+            <span>don't show this again</span>
         </label>
     </div>
-    <button onclick="closeSecurityWarning()">I understand the risks</button>
+    <button onclick="closeSecurityWarning()">i understand the risks</button>
 </div>
 
 <!-- Fingerprint Verification Modal -->
 <div id="fingerprintOverlay" class="overlay" onclick="closeFingerprintModal()"></div>
 <div id="fingerprintModal" class="fingerprint-modal">
     <div class="gif-header">
-        <h3>• verify identity</h3>
+        <h3>verify identity</h3>
         <button class="close-btn" onclick="closeFingerprintModal()">×</button>
     </div>
     <div style="padding: 20px;">
@@ -2074,8 +2147,8 @@ progress::-webkit-progress-value { background: #fff; border-radius: 2px; }
         
         <div style="margin-top: 16px; padding: 12px; background: var(--bg-secondary); border: 1px solid var(--border); border-radius: 8px;">
             <p style="font-size: 10px; color: var(--text-muted);">
-                ✓ if fingerprints match on both screens: connection is secure<br>
-                ✗ if fingerprints don't match: possible mitm attack
+                [ok] if fingerprints match: connection is secure<br>
+                [!] if fingerprints don't match: possible mitm attack
             </p>
         </div>
     </div>
@@ -2115,8 +2188,8 @@ progress::-webkit-progress-value { background: #fff; border-radius: 2px; }
         
         <div class="how-to-section">
             <div class="how-to-number">05</div>
-            <div class="how-to-title">file sharing (10gb limit)</div>
-            <div class="how-to-text">share files up to 10gb with accept/reject prompts. when someone sends a file, you see the name, size, and type before accepting. files are encrypted, chunked, and sent P2P. executable files blocked. always scan downloads for malware.</div>
+            <div class="how-to-title">file sharing (5gb limit)</div>
+            <div class="how-to-text">share files up to 5gb with accept/reject prompts. when someone sends a file, you see the name, size, and type before accepting. files are encrypted, chunked, and sent p2p. executable files blocked. always scan downloads for malware.</div>
         </div>
         
         <div class="how-to-section">
@@ -2126,134 +2199,259 @@ progress::-webkit-progress-value { background: #fff; border-radius: 2px; }
         </div>
         
         <div class="how-to-footer">
-            <div class="how-to-badge">✓ e2e encrypted</div>
-            <div class="how-to-badge">✓ p2p only</div>
-            <div class="how-to-badge">✓ zero storage</div>
-            <div class="how-to-badge">✓ auto-secure</div>
+            <div class="how-to-badge">e2e encrypted</div>
+            <div class="how-to-badge">p2p only</div>
+            <div class="how-to-badge">zero storage</div>
+            <div class="how-to-badge">auto-secure</div>
         </div>
     </div>
 </div>
 
 <script>
+// Global Discovery System with Beacon Pattern (PROVEN TO WORK!)
+// This system elects a 'Beacon' peer to hold the room list.
+// If the beacon exists, we connect to it. If it doesn't, we BECOME it.
 const RoomDirectory = {
-    LOCAL_STORAGE_KEY: 'blckbx_known_rooms',
-    ROOM_TIMEOUT: 300000, // 5 minutes
-    knownRooms: new Map(),
+    beaconId: 'blckbx-beacon-v2-global', // Deterministic beacon ID
+    peer: null,
+    rooms: new Map(), // Stores { id, name, users, lastSeen, created }
+    isBeacon: false,
+    conn: null,
     
     init() {
-        // Load known rooms from localStorage
-        this.loadKnownRooms();
+        console.log('🔍 Starting room discovery...');
         
-        // Clean up old rooms periodically
-        setInterval(() => this.cleanupStaleRooms(), 60000);  // 10 mins
-    },
-    
-    loadKnownRooms() {
-        try {
-            const stored = localStorage.getItem(this.LOCAL_STORAGE_KEY);
-            if (stored) {
-                const rooms = JSON.parse(stored);
-                rooms.forEach(r => {
-                    this.knownRooms.set(r.code, r);
-                });
-                console.log(`Loaded ${this.knownRooms.size} known rooms from cache`);
+        // Try to CONNECT to the beacon first
+        this.peer = new Peer(null, { 
+            debug: 0,
+            config: {
+                iceServers: [
+                    { urls: 'stun:stun.l.google.com:19302' },
+                    { urls: 'stun:stun1.l.google.com:19302' }
+                ]
             }
-        } catch(e) {
-            console.error('Failed to load known rooms:', e);
-        }
-    },
-    
-    saveKnownRooms() {
-        try {
-            const rooms = Array.from(this.knownRooms.values());
-            localStorage.setItem(this.LOCAL_STORAGE_KEY, JSON.stringify(rooms));
-        } catch(e) {
-            console.error('Failed to save known rooms:', e);
-        }
-    },
-    
-    addRoom(roomCode, roomName, userCount = 1) {
-        this.knownRooms.set(roomCode, {
-            code: roomCode,
-            name: roomName,
-            users: userCount,
-            lastSeen: Date.now(),
-            discovered: Date.now()
         });
-        this.saveKnownRooms();
+        
+        this.peer.on('open', (id) => {
+            console.log('Discovery client ready:', id);
+            this.connectToBeacon();
+        });
+
+        this.peer.on('error', (err) => {
+            console.log('Discovery error:', err.type);
+        });
     },
     
-    updateRoom(roomCode, userCount) {
-        const room = this.knownRooms.get(roomCode);
-        if (room) {
-            room.users = userCount;
-            room.lastSeen = Date.now();
-            this.saveKnownRooms();
+    connectToBeacon() {
+        console.log('Attempting to connect to beacon:', this.beaconId);
+        const conn = this.peer.connect(this.beaconId, { reliable: true });
+        
+        let connected = false;
+        
+        const setStatus = (color, text) => {
+            const el = document.getElementById('discoveryStatus');
+            const textEl = document.getElementById('discoveryStatusText');
+            if (el) el.style.color = color;
+            if (textEl) textEl.textContent = text;
+        };
+
+        conn.on('open', () => {
+            console.log('✅ Connected to Global Beacon');
+            connected = true;
+            this.conn = conn;
+            this.isBeacon = false;
+            setStatus('var(--success)', 'connected');
+            
+            // Request room list
+            conn.send({ type: 'GET_ROOMS' });
+        });
+
+        conn.on('data', (data) => {
+            if (data.type === 'ROOM_LIST') {
+                console.log('Received room list:', data.rooms);
+                this.updateRoomListUI(data.rooms);
+            }
+        });
+
+        conn.on('close', () => {
+            console.log('⚠️ Beacon connection lost. Attempting election...');
+            this.conn = null;
+            setStatus('var(--danger)', 'reconnecting');
+            // Try to become beacon after random delay to avoid race conditions
+            setTimeout(() => this.attemptToBecomeBeacon(), Math.random() * 2000);
+        });
+        
+        conn.on('error', (err) => {
+            console.log('Beacon connection error:', err.type);
+        });
+        
+        // Timeout: If connection doesn't open in 3s, beacon might not exist
+        setTimeout(() => {
+            if (!connected) {
+                console.log('⏱️ Beacon connection timeout - attempting to become beacon');
+                this.attemptToBecomeBeacon();
+            }
+        }, 3000);
+    },
+    
+    attemptToBecomeBeacon() {
+        if (this.isBeacon) {
+            console.log('Already beacon, skipping');
+            return;
+        }
+        
+        console.log('🎯 Attempting to become beacon...');
+        
+        // Destroy client peer and try to claim beacon ID
+        if (this.peer && !this.isBeacon) {
+            this.peer.destroy();
+        }
+
+        const beaconPeer = new Peer(this.beaconId, { 
+            debug: 0,
+            config: {
+                iceServers: [
+                    { urls: 'stun:stun.l.google.com:19302' },
+                    { urls: 'stun:stun1.l.google.com:19302' }
+                ]
+            }
+        });
+
+        beaconPeer.on('open', (id) => {
+            console.log('🌟 I AM NOW THE BEACON');
+            this.isBeacon = true;
+            this.peer = beaconPeer;
+            this.startBeaconLogic();
+            
+            // Update UI to show we're hosting
+            const el = document.getElementById('discoveryStatus');
+            const textEl = document.getElementById('discoveryStatusText');
+            if (el) el.style.color = '#4de1ff';
+            if (textEl) textEl.textContent = 'hosting';
+            addSystemMsg('hosting global room directory');
+        });
+
+        beaconPeer.on('error', (err) => {
+            if (err.type === 'unavailable-id') {
+                console.log('Beacon ID taken (race condition). Reconnecting as client...');
+                this.isBeacon = false;
+                // Someone else claimed it, reconnect as client
+                setTimeout(() => this.init(), 1000);
+            } else {
+                console.error('Beacon creation error:', err);
+            }
+        });
+    },
+    
+    startBeaconLogic() {
+        console.log('Starting beacon logic - managing room directory');
+        
+        // Handle incoming connections
+        this.peer.on('connection', (conn) => {
+            console.log('Beacon: New client connected:', conn.peer);
+            
+            conn.on('data', (data) => {
+                if (data.type === 'REGISTER_ROOM') {
+                    const room = data.room;
+                    this.rooms.set(room.id, { 
+                        ...room, 
+                        lastSeen: Date.now() 
+                    });
+                    console.log('Beacon: Registered room:', room.name);
+                    this.broadcastRooms();
+                    
+                } else if (data.type === 'GET_ROOMS') {
+                    // Send room list to requester
+                    const roomList = Array.from(this.rooms.values());
+                    conn.send({ type: 'ROOM_LIST', rooms: roomList });
+                    console.log('Beacon: Sent room list to', conn.peer);
+                }
+            });
+        });
+
+        // Prune stale rooms every 10 seconds
+        setInterval(() => {
+            const now = Date.now();
+            let pruned = 0;
+            
+            for (const [id, room] of this.rooms.entries()) {
+                if (now - room.lastSeen > 15000) { // 15 second timeout
+                    this.rooms.delete(id);
+                    pruned++;
+                }
+            }
+            
+            if (pruned > 0) {
+                console.log(`Beacon: Pruned ${pruned} stale rooms`);
+                this.broadcastRooms();
+            }
+        }, 10000);
+    },
+    
+    broadcastRooms() {
+        if (!this.isBeacon) return;
+        
+        const roomArray = Array.from(this.rooms.values());
+        
+        // Broadcast to all connected clients
+        if (this.peer && this.peer.connections) {
+            for (const connId in this.peer.connections) {
+                this.peer.connections[connId].forEach(conn => {
+                    if (conn.open) {
+                        conn.send({ type: 'ROOM_LIST', rooms: roomArray });
+                    }
+                });
+            }
+        }
+        
+        // Update own UI
+        this.updateRoomListUI(roomArray);
+    },
+    
+    updateRoomListUI(rooms) {
+        // Update the global currentRooms variable
+        currentRooms = rooms;
+        
+        // Trigger render if we're on the browse screen
+        const browseStep = document.getElementById('browseRoomsStep');
+        if (browseStep && browseStep.classList.contains('active')) {
+            renderRooms();
+        }
+    },
+    
+    // Called by room host to keep room alive in directory
+    announceRoom(roomId, name, users) {
+        if (this.isBeacon) {
+            // I'm the beacon, just add it locally
+            this.rooms.set(roomId, { 
+                id: roomId, 
+                name, 
+                users, 
+                created: this.rooms.has(roomId) ? this.rooms.get(roomId).created : Date.now(),
+                lastSeen: Date.now() 
+            });
+            this.broadcastRooms();
+        } else if (this.conn && this.conn.open) {
+            // Send to beacon
+            this.conn.send({ 
+                type: 'REGISTER_ROOM', 
+                room: { 
+                    id: roomId, 
+                    name, 
+                    users, 
+                    created: Date.now() 
+                } 
+            });
         }
     },
     
     getRooms() {
-        // Return active rooms (seen in last 5 minutes)
-        const now = Date.now();
-        const activeRooms = Array.from(this.knownRooms.values())
-            .filter(r => now - r.lastSeen < this.ROOM_TIMEOUT)
-            .sort((a, b) => b.lastSeen - a.lastSeen);
-        return activeRooms;
-    },
-    
-    cleanupStaleRooms() {
-        const now = Date.now();
-        let cleaned = 0;
-        for (const [code, room] of this.knownRooms.entries()) {
-            if (now - room.lastSeen > this.ROOM_TIMEOUT) {
-                this.knownRooms.delete(code);
-                cleaned++;
-            }
-        }
-        if (cleaned > 0) {
-            console.log(`Cleaned up ${cleaned} stale rooms`);
-            this.saveKnownRooms();
-        }
-    },
-    
-    shareRoomsWithPeer(conn) {
-        const rooms = this.getRooms().map(r => ({
-            code: r.code,
-            name: r.name,
-            users: r.users
-        }));
-        
-        if (rooms.length > 0) {
-            conn.send({
-                type: 'gossip_rooms',
-                rooms: rooms
-            });
-            console.log(`Shared ${rooms.length} rooms with peer`);
-        }
-    },
-    receiveGossipedRooms(rooms) {
-        let newRooms = 0;
-        rooms.forEach(r => {
-            if (!this.knownRooms.has(r.code)) {
-                this.addRoom(r.code, r.name, r.users);
-                newRooms++;
-            } else {
-                this.updateRoom(r.code, r.users);
-            }
-        });
-        
-        if (newRooms > 0) {
-            console.log(`Discovered ${newRooms} new rooms via gossip`);
-            // Trigger UI update
-            if (typeof window.onRoomsDiscovered === 'function') {
-                window.onRoomsDiscovered();
-            }
-        }
+        return Array.from(this.rooms.values());
     }
 };
 
-// Initialize room directory
-RoomDirectory.init();
+// Initialize room directory on-demand (when user clicks browse rooms)
+// RoomDirectory.init();
 
 // Security
 class Security {
@@ -2368,6 +2566,7 @@ class Security {
         contentDiv.className = 'message-content';
 
         if (type === 'image' || type === 'image_gif') {
+            // Validate image URL
             const sanitizedUrl = this.sanitizeUrl(text);
             if (!sanitizedUrl || !this.isValidImageUrl(sanitizedUrl)) {
                 contentDiv.textContent = '[Invalid or unsafe image URL]';
@@ -2376,6 +2575,8 @@ class Security {
                 img.src = sanitizedUrl;
                 img.alt = 'Shared Image';
                 img.loading = 'lazy';
+                
+                // Add error handler
                 img.onerror = function() {
                     this.style.display = 'none';
                     const errorText = document.createElement('span');
@@ -2387,6 +2588,7 @@ class Security {
                 contentDiv.appendChild(img);
             }
         } else {
+            // Text message - detect and sanitize URLs
             const urlRegex = /(https?:\/\/[^\s]+)/g;
             const parts = text.split(urlRegex);
             
@@ -2400,6 +2602,8 @@ class Security {
                         a.rel = "noopener noreferrer";
                         a.textContent = part;
                         contentDiv.appendChild(a);
+                        
+                        // Auto-embed images from URLs
                         if (this.isValidImageUrl(sanitizedUrl)) {
                             const br = document.createElement('br');
                             const img = document.createElement('img');
@@ -2564,9 +2768,9 @@ const App = {
         await this.crypto.init();
         
         if (roomType === 'public' && roomNameOrCode) {
-            const sanitizedRoom = this.sanitizeRoomName(roomNameOrCode);
             this.roomName = roomNameOrCode;
-            this.roomCode = `blckbx-${sanitizedRoom}`;
+            // Generate a random room ID (like OPUS) - not tied to room name, prevents collisions
+            this.roomCode = 'blckbx-room-' + Math.random().toString(36).substr(2, 9);
             this.peer = new Peer(this.roomCode, { 
                 debug: 0,
                 config: {
@@ -2663,110 +2867,19 @@ const App = {
         if (this.roomType === 'public' && this.isRoomHost) {
             const userCount = Object.keys(this.users).length + 1;
             
-            // Add our room to the directory
-            RoomDirectory.addRoom(this.roomCode, this.roomName, userCount);
-            console.log(`Registered public room: ${this.roomName} (${this.roomCode})`);
-            
-            // Share room info with all connected peers (gossip protocol)
-            Object.values(this.conns).forEach(conn => {
-                if (conn && conn.open) {
-                    RoomDirectory.shareRoomsWithPeer(conn);
-                }
-            });
-            
-            // If we're alone in the room, bootstrap gossip by connecting to other known rooms
-            if (Object.keys(this.conns).length === 0 && Object.keys(this.users).length === 0) {
-                console.log('Alone in room, initiating bootstrap gossip...');
-                this.bootstrapGossip();
-            }
-            
-            // Update periodically
+            // Announce to beacon every 5 seconds
             if (this.heartbeatInterval) clearInterval(this.heartbeatInterval);
+            
+            // Initial announce
+            RoomDirectory.announceRoom(this.roomCode, this.roomName, userCount);
+            console.log(`Announced room: ${this.roomName} with ${userCount} users`);
+            
+            // Keep announcing
             this.heartbeatInterval = setInterval(() => {
                 const count = Object.keys(this.users).length + 1;
-                RoomDirectory.updateRoom(this.roomCode, count);
-                
-                // Re-share with peers
-                Object.values(this.conns).forEach(conn => {
-                    if (conn && conn.open) {
-                        RoomDirectory.shareRoomsWithPeer(conn);
-                    }
-                });
-                
-                // If still alone, try bootstrap again
-                if (Object.keys(this.conns).length === 0) {
-                    this.bootstrapGossip();
-                }
-            }, 30000); // Update every 30 seconds
+                RoomDirectory.announceRoom(this.roomCode, this.roomName, count);
+            }, 5000); // Announce every 5 seconds
         }
-    },
-    
-    bootstrapGossip() {
-        // Get other known rooms to gossip with
-        const knownRooms = RoomDirectory.getRooms().filter(r => r.code !== this.roomCode);
-        
-        if (knownRooms.length === 0) {
-            console.log('Bootstrap: No known rooms yet. Room will be discoverable when others join.');
-            addSystemMsg('room created - share the name or join other rooms to spread the word');
-            return;
-        }
-        
-        // Try to connect to up to 3 random known rooms to spread the word
-        const roomsToTry = knownRooms.sort(() => Math.random() - 0.5).slice(0, 3);
-        
-        console.log(`Bootstrap: Connecting to ${roomsToTry.length} rooms to announce your room...`);
-        addSystemMsg(`announcing room to ${roomsToTry.length} other ${roomsToTry.length === 1 ? 'room' : 'rooms'}...`);
-        
-        let announced = 0;
-        roomsToTry.forEach(room => {
-            if (!this.peer || !this.peer.open) return;
-            
-            try {
-                // Create temporary connection just for gossiping
-                const tempConn = this.peer.connect(room.code, {
-                    reliable: true,
-                    metadata: { bootstrap: true }
-                });
-                
-                const timeout = setTimeout(() => {
-                    if (tempConn) tempConn.close();
-                }, 10000); // 10 second timeout
-                
-                tempConn.on('open', () => {
-                    console.log(`Bootstrap: Connected to ${room.name}`);
-                    
-                    // Send a bootstrap gossip message
-                    tempConn.send({
-                        type: 'bootstrap_gossip',
-                        rooms: [{
-                            code: this.roomCode,
-                            name: this.roomName,
-                            users: 1
-                        }]
-                    });
-                    
-                    announced++;
-                    
-                    // Close after 2 seconds
-                    setTimeout(() => {
-                        clearTimeout(timeout);
-                        tempConn.close();
-                        console.log(`Bootstrap: Disconnected from ${room.name}`);
-                        
-                        if (announced === roomsToTry.length) {
-                            addSystemMsg(`room announced to ${announced} ${announced === 1 ? 'room' : 'rooms'} - discoverable now!`);
-                        }
-                    }, 2000);
-                });
-                
-                tempConn.on('error', (err) => {
-                    console.log(`Bootstrap: Failed to connect to ${room.name}:`, err.type);
-                    clearTimeout(timeout);
-                });
-            } catch(e) {
-                console.log(`Bootstrap: Error connecting to ${room.name}:`, e);
-            }
-        });
     },
 
     unregisterPublicRoom() {
@@ -2918,7 +3031,10 @@ const App = {
             this.showPublicRoomUI();
             updateStatus('connecting', 'joining room...');
             
-            this.roomName = roomCode.replace('blckbx-', '').replace(/-/g, ' ');
+            // Use pre-set roomName if available, otherwise derive from code
+            if (!this.roomName) {
+                this.roomName = roomCode.replace('blckbx-room-', '').replace('blckbx-', '').replace(/-/g, ' ');
+            }
             const badge = document.getElementById('roomInfoBadge');
             badge.textContent = `room: ${this.roomName}`;
             badge.style.display = 'inline-flex';
@@ -3007,16 +3123,9 @@ const App = {
 
     handleConnection(conn) {
         let sessionEstablished = false;
-        const isBootstrap = conn.metadata && conn.metadata.bootstrap;
         
         conn.on('open', async () => {
             this.conns[conn.peer] = conn;
-            
-            // Bootstrap connections don't need full handshake
-            if (isBootstrap) {
-                console.log('Bootstrap connection from', conn.peer);
-                return; // Just wait for their gossip message
-            }
             
             // Ensure crypto is initialized
             if (!this.crypto.keyPair) {
@@ -3064,7 +3173,7 @@ const App = {
                         // Add this room to our directory (we just confirmed it exists!)
                         if (this.roomCode && this.roomName) {
                             const userCount = Object.keys(this.users).length + 1;
-                            RoomDirectory.addRoom(this.roomCode, this.roomName, userCount);
+                            RoomDirectory.announceRoom(this.roomCode, this.roomName, userCount);
                             console.log(`Added room to directory: ${this.roomName}`);
                         }
                     } else {
@@ -3123,13 +3232,6 @@ const App = {
                         // Update room user count
                         this.registerPublicRoom();
                     }
-                    
-                    // Share known rooms with the new peer (gossip protocol)
-                    setTimeout(() => {
-                        if (conn && conn.open) {
-                            RoomDirectory.shareRoomsWithPeer(conn);
-                        }
-                    }, 1000);
                 } 
                 else if (data.type === 'new_peer') {
                     // Another peer joined, connect to them
@@ -3163,24 +3265,6 @@ const App = {
                             status: 'healthy'
                         };
                         console.log(`Peer ${peerId} latency: ${latency}ms`);
-                    }
-                }
-                else if (data.type === 'gossip_rooms') {
-                    // Received gossiped room information from peer
-                    if (data.rooms && Array.isArray(data.rooms)) {
-                        RoomDirectory.receiveGossipedRooms(data.rooms);
-                    }
-                }
-                else if (data.type === 'bootstrap_gossip') {
-                    // Received bootstrap gossip from a single-person room
-                    if (data.rooms && Array.isArray(data.rooms)) {
-                        console.log('Received bootstrap gossip:', data.rooms);
-                        RoomDirectory.receiveGossipedRooms(data.rooms);
-                        
-                        // Reply with our known rooms to help them discover more
-                        if (conn && conn.open) {
-                            RoomDirectory.shareRoomsWithPeer(conn);
-                        }
                     }
                 }
                 else if (data.type === 'msg') {
@@ -3245,10 +3329,10 @@ const App = {
                         return;
                     }
                     
-                    // Check file size (10GB limit)
-                    const MAX_FILE_SIZE = 10 * 1024 * 1024 * 1024; // 10GB
+                    // Check file size (5GB limit)
+                    const MAX_FILE_SIZE = 5 * 1024 * 1024 * 1024; // 5GB
                     if (data.size > MAX_FILE_SIZE) {
-                        addSystemMsg(`file too large from ${this.users[conn.peer]?.name || 'user'} (max 10GB)`);
+                        addSystemMsg(`file too large from ${this.users[conn.peer]?.name || 'user'} (max 5gb)`);
                         conn.send({
                             type: 'file_rejected',
                             fileId: data.fileId
@@ -3263,9 +3347,12 @@ const App = {
                     play('r');
                 }
                 else if (data.type === 'file_accepted') {
-                    // Receiver has accepted the file transfer
+                    // Receiver has accepted — NOW send the actual file chunks
+                    const senderName = App.users[conn.peer]?.name || 'user';
                     console.log(`File transfer accepted by ${conn.peer}`);
-                    addSystemMsg(`${this.users[conn.peer]?.name || 'user'} accepted file transfer`);
+                    addSystemMsg(`${senderName} accepted file transfer — sending...`);
+                    // Trigger actual file send to this peer
+                    sendFileChunksTo(data.fileId, conn.peer);
                 }
                 else if (data.type === 'file_rejected') {
                     // Receiver has rejected the file transfer
@@ -3279,14 +3366,8 @@ const App = {
                     }
                     
                     const transfer = this.fileTransfers[data.fileId];
-                    if (!transfer) {
+                    if (!transfer || !transfer.accepted) {
                         console.warn('Received chunk for unknown/rejected file transfer');
-                        return;
-                    }
-                    
-                    // Check if transfer was accepted
-                    if (!transfer.accepted) {
-                        console.warn('Received chunk for non-accepted file transfer');
                         return;
                     }
                     
@@ -3294,50 +3375,46 @@ const App = {
                         const decryptedStr = await this.crypto.decrypt(data.payload, conn.peer);
                         const bytes = strToBuffer(decryptedStr);
                         
-                        transfer.chunks.push(bytes);
-                        transfer.received += bytes.byteLength;
+                        // Store by index — guarantees correct reconstruction order
+                        // regardless of async decryption interleaving
+                        transfer.chunks[data.chunkIndex] = bytes;
+                        transfer.receivedCount = (transfer.receivedCount || 0) + 1;
                         
-                        // Store metadata from first chunk if not already set
-                        if (!transfer.meta.size && data.totalChunks) {
+                        // Update totalChunks if we know it
+                        if (data.totalChunks && !transfer.totalChunks) {
                             transfer.totalChunks = data.totalChunks;
-                            // We don't know exact size yet, will calculate from chunks
                         }
                         
-                        // Update progress
-                        const chunkProgress = transfer.chunks.length;
-                        const totalChunks = transfer.totalChunks || data.totalChunks || 0;
-                        
-                        if (totalChunks > 0) {
-                            const progress = Math.round((chunkProgress / totalChunks) * 100);
-                            console.log(`File transfer progress: ${progress}% (${chunkProgress}/${totalChunks} chunks)`);
+                        const total = transfer.totalChunks || data.totalChunks || 0;
+                        if (total > 0) {
+                            const pct = Math.round((transfer.receivedCount / total) * 100);
+                            if (pct % 25 === 0 && pct > 0 && pct < 100) {
+                                addSystemMsg(`receiving: ${pct}%`);
+                            }
                             
-                            // Show progress every 25%
-                            if (progress % 25 === 0 && progress > 0 && progress < 100) {
-                                addSystemMsg(`receiving file: ${progress}%`);
+                            // Assemble as soon as ALL chunks are received — don't wait for file_end
+                            if (transfer.receivedCount === total) {
+                                assembleReceivedFile(data.fileId, conn.peer, this);
                             }
                         }
                     } catch(e) {
                         console.error('Error processing file chunk:', e);
-                        addSystemMsg('file transfer failed');
-                        delete this.fileTransfers[data.fileId];
+                        addSystemMsg('chunk error — file may be incomplete');
                     }
                 }
                 else if (data.type === 'file_end') {
-                    // Signal that file transfer is complete
+                    // file_end is a safety fallback — primary assembly is count-based in file_chunk
                     const transfer = this.fileTransfers[data.fileId];
                     if (transfer && transfer.accepted) {
-                        // Reconstruct file from chunks
-                        const blob = new Blob(transfer.chunks);
-                        const u = this.users[transfer.peerId] || { name: 'Unknown', color: '#888' };
-                        const url = URL.createObjectURL(blob);
-                        
-                        const timeElapsed = ((Date.now() - transfer.startTime) / 1000).toFixed(1);
-                        addSystemMsg(`file received in ${timeElapsed}s`);
-                        
-                        // Add file message with download button
-                        addFileMessage(url, transfer.meta.name || 'file', blob.size, u.color, u.name);
-                        play('x'); 
-                        delete this.fileTransfers[data.fileId];
+                        // Only assemble here if count-based assembly hasn't fired yet
+                        const received = transfer.receivedCount || 0;
+                        const total = transfer.totalChunks || 0;
+                        if (received < total) {
+                            console.warn(`file_end received with only ${received}/${total} chunks — attempting partial assembly`);
+                        }
+                        if (received > 0) {
+                            assembleReceivedFile(data.fileId, conn.peer, this);
+                        }
                     }
                 }
             } catch(e) {
@@ -3609,7 +3686,7 @@ const App = {
             if (this.inVoiceChannel) {
                 btn.textContent = 'leave voice';
                 btn.classList.add('danger');
-                btn.style.background = 'rgba(255, 68, 68, 0.1)';
+                btn.style.background = 'var(--danger-dim)';
                 btn.style.borderColor = 'var(--danger)';
                 btn.style.color = 'var(--danger)';
             } else {
@@ -3640,15 +3717,76 @@ window.showBrowseRooms = function() {
     });
     const searchInput = document.getElementById('roomSearchInput');
     if (searchInput) searchInput.value = '';
-    refreshRoomList();
+    
+    // Show loading state
+    const grid = document.getElementById('publicRoomsList');
+    if (grid) {
+        grid.innerHTML = `
+            <div style="text-align: center; padding: 40px; color: var(--text-muted); font-size: 12px;">
+                <div class="loading-spinner" style="border: 2px solid var(--border); border-top-color: var(--accent); border-radius: 50%; width: 20px; height: 20px; animation: spin 1s linear infinite; margin: 0 auto 10px;"></div>
+                connecting to global beacon...
+            </div>
+        `;
+    }
+    
+    // Set status
+    const statusEl = document.getElementById('discoveryStatus');
+    const statusTextEl = document.getElementById('discoveryStatusText');
+    const setDiscStatus = (color, text) => {
+        if (statusEl) statusEl.style.color = color;
+        if (statusTextEl) statusTextEl.textContent = text;
+    };
+    setDiscStatus('var(--warning)', 'connecting');
+    
+    // Initialize beacon-based discovery if not already done
+    if (!RoomDirectory.peer) {
+        console.log('Initializing beacon discovery...');
+        RoomDirectory.init();
+    } else {
+        // Already initialized, just refresh
+        refreshRoomList();
+        if (RoomDirectory.isBeacon) {
+            setDiscStatus('#4de1ff', 'hosting');
+        } else if (RoomDirectory.conn && RoomDirectory.conn.open) {
+            setDiscStatus('var(--success)', 'connected');
+        }
+    }
 };
 
 window.refreshRoomList = function() {
     play('k');
     console.log('Refreshing room list...');
-    currentRooms = RoomDirectory.getRooms();
-    console.log(`Found ${currentRooms.length} active rooms`);
-    renderRooms();
+    
+    // If we're connected to the beacon, request fresh room list
+    if (RoomDirectory.conn && RoomDirectory.conn.open) {
+        console.log('Requesting fresh room list from beacon...');
+        RoomDirectory.conn.send({ type: 'GET_ROOMS' });
+    } else if (RoomDirectory.isBeacon) {
+        // We ARE the beacon, just use our local rooms
+        console.log('We are the beacon, using local room list');
+        currentRooms = RoomDirectory.getRooms();
+        renderRooms();
+    } else {
+        // Not connected to beacon yet, show what we have (might be empty)
+        console.log('Not connected to beacon, showing cached rooms');
+        currentRooms = RoomDirectory.getRooms();
+        renderRooms();
+    }
+};
+
+// Join a room discovered via beacon
+window.joinDiscoveredRoom = async function(roomId, roomName) {
+    play('k');
+    console.log(`Joining discovered room: ${roomName} (${roomId})`);
+    
+    // Hide setup modal
+    showStep('usernameStep'); // Reset to first step
+    document.getElementById('setupModal').classList.remove('active');
+    document.getElementById('setupOverlay').classList.remove('active');
+    
+    // Join the room (room host's peer ID IS the room ID)
+    await App.joinExistingPublicRoom(roomId);
+    App.roomName = roomName;
 };
 
 // Auto-update room list when new rooms are discovered via gossip
@@ -3691,7 +3829,7 @@ function renderRooms() {
     // Filter rooms by search
     let filteredRooms = currentRooms.filter(room => 
         room.name.toLowerCase().includes(searchTerm) ||
-        room.code.toLowerCase().includes(searchTerm)
+        room.id.toLowerCase().includes(searchTerm)
     );
     
     // Sort rooms
@@ -3745,7 +3883,7 @@ function renderRooms() {
     container.innerHTML = filteredRooms.map(room => {
         const isNew = (Date.now() - room.created) < 300000; // New if less than 5 minutes old
         return `
-        <div class="room-item" onclick="joinPublicRoomFromBrowse('${room.code}', '${Security.escapeHtml(room.name)}')">
+        <div class="room-item" onclick="joinPublicRoomFromBrowse('${room.id}', '${Security.escapeHtml(room.name)}')">
             <div class="room-item-info">
                 <div class="room-item-header">
                     <div class="room-item-name">${Security.escapeHtml(room.name)}</div>
@@ -3764,7 +3902,7 @@ function renderRooms() {
                     <div class="room-item-time">${getTimeAgo(room.lastSeen)}</div>
                 </div>
             </div>
-            <button class="room-item-join" onclick="event.stopPropagation(); joinPublicRoomFromBrowse('${room.code}', '${Security.escapeHtml(room.name)}')">
+            <button class="room-item-join" onclick="event.stopPropagation(); joinPublicRoomFromBrowse('${room.id}', '${Security.escapeHtml(room.name)}')">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                     <line x1="5" y1="12" x2="19" y2="12"></line>
                     <polyline points="12 5 19 12 12 19"></polyline>
@@ -3775,11 +3913,11 @@ function renderRooms() {
     }).join('');
 }
 
-window.joinPublicRoomFromBrowse = async function(roomCode, roomName) {
+window.joinPublicRoomFromBrowse = async function(roomId, roomName) {
     play('n');
     document.getElementById('usernameOverlay').classList.add('hidden');
-    App.roomName = roomName;
-    await App.joinExistingPublicRoom(roomCode);
+    App.roomName = roomName; // Set name before joining so joinExistingPublicRoom preserves it
+    await App.joinExistingPublicRoom(roomId);
     setTimeout(() => App.updateVoiceUI(), 500);
 };
 
@@ -3794,7 +3932,7 @@ window.selectRoomType = function(type) {
     if (type === 'private') {
         showStep('privateRoomStep');
     } else {
-        showStep('publicRoomSelectionStep');
+        showBrowseRooms();
     }
 };
 
@@ -3815,12 +3953,12 @@ window.showJoinPublicRoom = function() {
 
 window.backToPublicRoomSelection = function() {
     play('k');
-    showStep('publicRoomSelectionStep');
+    showBrowseRooms();
 };
 
-// Audio sfx
+// Audio
 const audioMap = {
-    'l': new Audio('https://www.myinstants.com/media/sounds/message_2.mp3'),    
+    'l': new Audio('https://www.myinstants.com/media/sounds/message_2.mp3'),
     'r': new Audio('https://www.myinstants.com/media/sounds/sentmessage_1.mp3'),
     'c': new Audio('https://www.myinstants.com/media/sounds/knopka-iz-igry-2.mp3'),
     'd': new Audio('https://www.myinstants.com/media/sounds/knopka-iz-igry-2.mp3'),
@@ -3896,7 +4034,7 @@ function downloadFile(url, name) {
     const safeName = Security.sanitizeFilename(name);
     
     // Show malware warning
-    const warning = ` SECURITY WARNING \n\nYou are about to download: ${safeName}\n\nThis file has NOT been scanned for malware or viruses.\n\nOnly download files from people you trust.\nAlways scan downloads with antivirus software before opening.\n\nDo you want to download this file?`;
+    const warning = `[!] SECURITY WARNING\n\nYou are about to download: ${safeName}\n\nThis file has NOT been scanned for malware or viruses.\n\nOnly download files from people you trust.\nAlways scan downloads with antivirus software before opening.\n\nDo you want to download this file?`;
     
     if (!window.confirm(warning)) {
         return;
@@ -3936,45 +4074,48 @@ function showFileTransferPrompt(fileId, fileName, fileSize, mimeType, senderName
     div.dataset.mimeType = mimeType;
     div.dataset.totalChunks = totalChunks || 0;
     
-    // Get file icon based on type
-    let fileIcon = 'file';
-    if (mimeType.startsWith('image/')) fileIcon = 'image:';
-    else if (mimeType.startsWith('video/')) fileIcon = 'video:';
-    else if (mimeType.startsWith('audio/')) fileIcon = 'audio:';
-    else if (mimeType.includes('pdf')) fileIcon = 'pdf:';
-    else if (mimeType.includes('zip') || mimeType.includes('rar')) fileIcon = 'zip:';
+    // Get file icon SVG based on type
+    const fileIconSVGs = {
+        image: `<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>`,
+        video: `<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="2" width="20" height="20" rx="2.18"/><path d="M7 2v20"/><path d="M17 2v20"/><path d="M2 12h20"/><path d="M2 7h5"/><path d="M2 17h5"/><path d="M17 17h5"/><path d="M17 7h5"/></svg>`,
+        audio: `<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>`,
+        pdf: `<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>`,
+        archive: `<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="21 8 21 21 3 21 3 8"/><rect x="1" y="3" width="22" height="5"/><line x1="10" y1="12" x2="14" y2="12"/></svg>`,
+        default: `<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>`
+    };
+    let fileIcon = fileIconSVGs.default;
+    if (mimeType.startsWith('image/')) fileIcon = fileIconSVGs.image;
+    else if (mimeType.startsWith('video/')) fileIcon = fileIconSVGs.video;
+    else if (mimeType.startsWith('audio/')) fileIcon = fileIconSVGs.audio;
+    else if (mimeType.includes('pdf')) fileIcon = fileIconSVGs.pdf;
+    else if (mimeType.includes('zip') || mimeType.includes('rar') || mimeType.includes('tar')) fileIcon = fileIconSVGs.archive;
     
     div.innerHTML = `
-        <div style="background: var(--bg-secondary); padding: 16px; border-radius: 8px; border: 1px solid var(--border);">
+        <div style="background: var(--bg-secondary); padding: 16px; border-radius: 8px; border: 1px solid var(--border); border-left: 3px solid var(--warning);">
             <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 12px;">
-                <div style="font-size: 32px;">${fileIcon}</div>
+                <div style="color: var(--text-muted); opacity: 0.7; flex-shrink:0;">${fileIcon}</div>
                 <div style="flex: 1; min-width: 0;">
-                    <div style="font-weight: 600; color: var(--text); margin-bottom: 4px;">
-                        ${senderName} wants to send you a file
+                    <div style="font-weight: 600; font-size:12px; color: var(--text-main); margin-bottom: 6px; font-family:var(--font-mono);">
+                        incoming file from ${Security.escapeHtml(senderName)}
                     </div>
-                    <div style="font-size: 11px; color: var(--text-muted); word-break: break-all;">
-                        <strong>Name:</strong> ${Security.escapeHtml(fileName)}
-                    </div>
-                    <div style="font-size: 11px; color: var(--text-muted);">
-                        <strong>Size:</strong> ${formatBytes(fileSize)}
-                    </div>
-                    <div style="font-size: 11px; color: var(--text-muted);">
-                        <strong>Type:</strong> ${Security.escapeHtml(mimeType)}
+                    <div style="font-size: 11px; color: var(--text-muted); word-break: break-all; line-height:1.8;">
+                        <span style="color:var(--text-secondary);">${Security.escapeHtml(fileName)}</span>
+                        <br>${formatBytes(fileSize)} &bull; ${Security.escapeHtml(mimeType)}
                     </div>
                 </div>
             </div>
             <div style="display: flex; gap: 8px;">
                 <button onclick="acceptFileTransfer('${fileId}', '${peerId}')" 
-                        style="flex: 1; padding: 8px; background: var(--success); border: none; border-radius: 6px; color: white; font-weight: 600; cursor: pointer;">
-                    ✓ Accept
+                        style="flex: 1; padding: 8px; background: var(--success-dim); border: 1px solid var(--success-border); border-radius: 6px; color: var(--success); font-weight: 700; cursor: pointer; font-family:var(--font-mono); font-size:11px;">
+                    accept
                 </button>
                 <button onclick="rejectFileTransfer('${fileId}', '${peerId}')" 
-                        style="flex: 1; padding: 8px; background: var(--danger); border: none; border-radius: 6px; color: white; font-weight: 600; cursor: pointer;">
-                    ✗ Deny
+                        style="flex: 1; padding: 8px; background: rgba(255,68,68,0.1); border: 1px solid var(--danger); border-radius: 6px; color: var(--danger); font-weight: 700; cursor: pointer; font-family:var(--font-mono); font-size:11px;">
+                    deny
                 </button>
             </div>
-            <div style="margin-top: 8px; font-size: 9px; color: var(--text-muted); text-align: center;">
-                 Always scan downloads for malware
+            <div style="margin-top: 8px; font-size: 9px; color: var(--text-muted); text-align: center; font-family:var(--font-mono);">
+                always scan downloads for malware
             </div>
         </div>
     `;
@@ -3993,24 +4134,20 @@ window.acceptFileTransfer = function(fileId, peerId) {
     const fileName = prompt.dataset.fileName;
     const fileSize = parseInt(prompt.dataset.fileSize);
     const mimeType = prompt.dataset.mimeType;
-    const totalChunks = parseInt(prompt.dataset.totalChunks);
+    const totalChunks = parseInt(prompt.dataset.totalChunks) || 0;
     
     prompt.remove();
     
-    // Initialize file transfer with metadata
+    // Initialize file transfer — chunks stored as sparse indexed array for correct ordering
     App.fileTransfers = App.fileTransfers || {};
     App.fileTransfers[fileId] = {
-        chunks: [],
-        meta: {
-            fileId: fileId,
-            name: fileName,
-            size: fileSize,
-            mime: mimeType
-        },
-        received: 0,
+        chunks: [],          // sparse array indexed by chunkIndex
+        receivedCount: 0,    // count of actually received chunks
+        meta: { fileId, name: fileName, size: fileSize, mime: mimeType },
         peerId: peerId,
         startTime: Date.now(),
         totalChunks: totalChunks,
+        assembled: false,    // prevent double-assembly
         accepted: true
     };
     
@@ -4043,6 +4180,41 @@ window.rejectFileTransfer = function(fileId, peerId) {
     addSystemMsg(`file transfer rejected`);
 };
 
+// Assembles and downloads a received file from indexed chunks.
+// Safe to call multiple times — guarded by transfer.assembled flag.
+function assembleReceivedFile(fileId, peerId, appCtx) {
+    const transfer = (appCtx || App).fileTransfers[fileId];
+    if (!transfer || !transfer.accepted || transfer.assembled) return;
+    transfer.assembled = true; // prevent double-assembly from race
+    
+    // Build ordered array from the sparse indexed chunk array
+    const ordered = [];
+    for (let i = 0; i < transfer.totalChunks; i++) {
+        if (transfer.chunks[i] !== undefined) {
+            ordered.push(transfer.chunks[i]);
+        } else {
+            console.warn(`Missing chunk ${i} of ${transfer.totalChunks} — file may be corrupt`);
+        }
+    }
+    
+    if (ordered.length === 0) {
+        addSystemMsg('file assembly failed — no chunks received');
+        delete (appCtx || App).fileTransfers[fileId];
+        return;
+    }
+    
+    const blob = new Blob(ordered, { type: transfer.meta.mime || 'application/octet-stream' });
+    const users = (appCtx || App).users;
+    const u = users[peerId] || { name: 'unknown', color: '#888' };
+    const url = URL.createObjectURL(blob);
+    
+    const timeElapsed = ((Date.now() - transfer.startTime) / 1000).toFixed(1);
+    addSystemMsg(`file received (${ordered.length}/${transfer.totalChunks} chunks) in ${timeElapsed}s`);
+    addFileMessage(url, transfer.meta.name || 'file', blob.size, u.color, u.name);
+    play('x');
+    delete (appCtx || App).fileTransfers[fileId];
+}
+
 function downloadFile(url, name) {
     // Validate that URL is a blob URL (created by our app)
     if (!url.startsWith('blob:')) {
@@ -4055,7 +4227,7 @@ function downloadFile(url, name) {
     const safeName = Security.sanitizeFilename(name);
     
     // Show malware warning
-    const warning = ` security warning \n\nyou are about to download: ${safeName}\n\nthis file has not been scanned for malware or viruses.\n\nonly download files from people you trust.\nalways scan downloads with antivirus software before opening.\n\ndo you want to download this file?`;
+    const warning = `[!] SECURITY WARNING\n\nYou are about to download: ${safeName}\n\nThis file has NOT been scanned for malware or viruses.\n\nOnly download files from people you trust.\nAlways scan downloads with antivirus software before opening.\n\nDo you want to download this file?`;
     
     if (!window.confirm(warning)) {
         return;
@@ -4307,18 +4479,18 @@ async function processFileSend(file) {
         return;
     }
     
-    // Validate file size (10GB limit)
-    const MAX_FILE_SIZE = 10 * 1024 * 1024 * 1024; // 10GB
+    // Validate file size (5GB limit)
+    const MAX_FILE_SIZE = 5 * 1024 * 1024 * 1024; // 5GB
     if (file.size > MAX_FILE_SIZE) {
-        addSystemMsg('file too large (max 10GB)');
+        addSystemMsg('file too large (max 5gb)');
         return;
     }
     
     // Warn for large files
     if (file.size > 100 * 1024 * 1024) { // > 100MB
         const sizeText = formatBytes(file.size);
-        const confirm = window.confirm(`This file is ${sizeText}. Large files may take a while to send. Continue?`);
-        if (!confirm) return;
+        const ok = window.confirm(`this file is ${sizeText}. large files may take a while to send. continue?`);
+        if (!ok) return;
     }
     
     // Sanitize filename
@@ -4330,87 +4502,119 @@ async function processFileSend(file) {
         return;
     }
     
-    addSystemMsg(`sending file: ${safeName} (${formatBytes(file.size)})`);
-    const fileId = crypto.randomUUID();
-    const buffer = await file.arrayBuffer();
+    if (Object.keys(App.conns).length === 0) {
+        addSystemMsg('no active connections to send to');
+        return;
+    }
     
-    // Split into chunks (64KB each for better reliability)
-    const CHUNK_SIZE = 64 * 1024;
+    const fileId = crypto.randomUUID();
+    const CHUNK_SIZE = 8 * 1024; // 8KB raw — stays well under WebRTC 16KB limit after base64
+    const buffer = await file.arrayBuffer();
     const totalChunks = Math.ceil(buffer.byteLength / CHUNK_SIZE);
-    let sentChunks = 0;
+    
+    // Store file data so we can send chunks when receiver accepts
+    App.pendingFileSends = App.pendingFileSends || {};
+    App.pendingFileSends[fileId] = {
+        file,
+        buffer,
+        safeName,
+        totalChunks,
+        CHUNK_SIZE,
+        pendingPeers: new Set(Object.keys(App.conns).filter(id => App.crypto.sessions[id]))
+    };
+    
+    addSystemMsg(`sending file: ${safeName} (${formatBytes(file.size)})`);
+    
+    // Send metadata offer to all connected peers
+    for (const peerId of App.pendingFileSends[fileId].pendingPeers) {
+        App.conns[peerId].send({
+            type: 'file_meta',
+            fileId,
+            name: safeName,
+            size: file.size,
+            mime: file.type || 'application/octet-stream',
+            chunks: totalChunks
+        });
+    }
+}
 
-    for(let peerId in App.conns) {
-        if(!App.crypto.sessions[peerId]) {
-            console.warn(`No session for peer ${peerId}, skipping file`);
-            continue;
+// Called when a receiver accepts — now actually send the chunks
+async function sendFileChunksTo(fileId, peerId) {
+    const pending = App.pendingFileSends && App.pendingFileSends[fileId];
+    if (!pending) {
+        console.warn('No pending file send for', fileId);
+        return;
+    }
+    
+    const conn = App.conns[peerId];
+    const session = App.crypto.sessions[peerId];
+    if (!conn || !session) {
+        console.warn('No connection/session for peer', peerId);
+        return;
+    }
+    
+    const { buffer, safeName, totalChunks, CHUNK_SIZE } = pending;
+    
+    try {
+        for (let i = 0; i < totalChunks; i++) {
+            const start = i * CHUNK_SIZE;
+            const end = Math.min(start + CHUNK_SIZE, buffer.byteLength);
+            const chunk = buffer.slice(start, end);
+            const b64 = bufferToStr(chunk);              // raw bytes → base64
+            const encrypted = await App.crypto.encrypt(b64, peerId);
+            
+            conn.send({
+                type: 'file_chunk',
+                fileId,
+                payload: encrypted,
+                chunkIndex: i,
+                totalChunks
+            });
+            
+            // Yield every 4 chunks so the WebRTC buffer can drain.
+            // Prevents "message-too-big" / buffer overflow on large files.
+            if (i % 4 === 3) {
+                await new Promise(r => setTimeout(r, 0));
+            }
         }
         
-        try {
-            // Send metadata
-            App.conns[peerId].send({
-                type: 'file_meta',
-                fileId: fileId,
-                name: safeName,
-                size: file.size,
-                mime: file.type || 'application/octet-stream',
-                chunks: totalChunks
-            });
-            
-            // Send file in chunks
-            for (let i = 0; i < totalChunks; i++) {
-                const start = i * CHUNK_SIZE;
-                const end = Math.min(start + CHUNK_SIZE, buffer.byteLength);
-                const chunk = buffer.slice(start, end);
-                const binaryStr = bufferToStr(chunk);
-                
-                const encrypted = await App.crypto.encrypt(binaryStr, peerId);
-                
-                App.conns[peerId].send({
-                    type: 'file_chunk',
-                    fileId: fileId,
-                    payload: encrypted,
-                    chunkIndex: i,
-                    totalChunks: totalChunks
-                });
-                
-                sentChunks++;
-                
-                // Small delay between chunks to avoid overwhelming connection
-                if (i < totalChunks - 1) {
-                    await new Promise(resolve => setTimeout(resolve, 10));
-                }
-            }
-            
-            // Send completion signal
-            App.conns[peerId].send({
-                type: 'file_end',
-                fileId: fileId
-            });
-            
-            console.log(`Sent ${totalChunks} chunks to ${peerId}`);
-            
-        } catch(e) { 
-            console.error(`Failed to send file to ${peerId}:`, e);
-            addSystemMsg(`failed to send to ${App.users[peerId]?.name || 'user'}`);
-        }
+        // Signal end (receiver uses count-based assembly but this is a fallback)
+        conn.send({ type: 'file_end', fileId });
+        addSystemMsg(`file sent to ${App.users[peerId]?.name || 'user'}`);
+        
+    } catch(e) {
+        console.error(`Failed to send file to ${peerId}:`, e);
+        addSystemMsg(`file send failed: ${e.message || 'unknown error'}`);
     }
     
-    if (sentChunks > 0) {
-        addSystemMsg(`file sent successfully`);
+    // Clean up if no more pending peers
+    pending.pendingPeers.delete(peerId);
+    if (pending.pendingPeers.size === 0) {
+        delete App.pendingFileSends[fileId];
     }
 }
 
+// Convert binary buffer → base64 string for safe transit through TextEncoder/TextDecoder
 function bufferToStr(buf) {
-    let binary = '';
     const bytes = new Uint8Array(buf);
-    for (let i = 0; i < bytes.byteLength; i++) binary += String.fromCharCode(bytes[i]);
-    return binary;
+    // Process in chunks to avoid call stack limits on large arrays
+    let binary = '';
+    const len = bytes.byteLength;
+    const BATCH = 8192;
+    for (let i = 0; i < len; i += BATCH) {
+        binary += String.fromCharCode(...bytes.subarray(i, Math.min(i + BATCH, len)));
+    }
+    return btoa(binary);
 }
 
+// Decode base64 string → Uint8Array
 function strToBuffer(str) {
-    const buf = new Uint8Array(str.length);
-    for (let i=0; i<str.length; i++) buf[i] = str.charCodeAt(i);
-    return buf;
+    const binary = atob(str);
+    const bytes = new Uint8Array(binary.length);
+    for (let i = 0; i < binary.length; i++) {
+        bytes[i] = binary.charCodeAt(i);
+    }
+    return bytes;
 }
 
 function formatBytes(bytes, decimals = 2) {
@@ -4527,7 +4731,7 @@ window.toggleScreenShare = async () => {
         addSystemMsg('screen sharing stopped');
     } else {
         // Show warning before starting
-        const warning = ` screen sharing warning \n\neverything on your screen will be visible to all connected peers, including:\n• passwords and login credentials\n• private messages and emails\n• personal information\n•  notifications that appear\n• other open windows/tabs\n\nmake sure to:\n✓ close sensitive applications\n✓ disable notifications\n✓ only share with trusted people\n\ndo you want to share your screen?`;
+        const warning = `[!] SCREEN SHARING WARNING\n\nEverything on your screen will be visible to all connected peers, including:\n• Passwords and login credentials\n• Private messages and emails\n• Personal information\n• Notifications that appear\n• Other open windows/tabs\n\nMake sure to:\n- Close sensitive applications\n- Disable notifications\n- Only share with trusted people\n\nDo you want to share your screen?`;
         
         if (!window.confirm(warning)) {
             return;
@@ -4545,7 +4749,7 @@ function updateScreenShareButton() {
     if (App.myScreenShare) {
         btn.textContent = 'stop sharing';
         btn.classList.add('danger');
-        btn.style.background = 'rgba(255, 68, 68, 0.1)';
+        btn.style.background = 'var(--danger-dim)';
         btn.style.borderColor = 'var(--danger)';
         btn.style.color = 'var(--danger)';
     } else {
