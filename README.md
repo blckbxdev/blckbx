@@ -6,7 +6,7 @@
 download the HTML file (V1.4 or V1.5 beta) and open it in your browser
 
 ## **w features**
-has calling, infinite file sharing sizes (file sharing have been removed in 1.5 temporarily), screen sharing, mute button, nice animations ig, easily customizable themes + code based deeper themes 
+has calling, 5gb sharing sizes, screen sharing, mute button, nice animations ig, easily customizable themes + code based deeper themes 
 
 ## **notes:**
 new truely public rooms system called "beacon" basically very unprotected or something but works very well
@@ -18,7 +18,7 @@ to use public rooms all  you need to do is search for them, or discover then wit
 to use private rooms share the **"xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"** code, this is very hard to geuss so its pretty secure
 
 ### file sharing:
-file sharing has temporarily been nerfed/disabled, this is temprary and will be re-added back when v1.5 releases
+file sharing has been added back with an accept/decline system with a 5gb limit (u can change this by modifying the way bits are transfered but gl)
 
 ## license
 open source, you may use, modify, and distribute the code with proper credit
