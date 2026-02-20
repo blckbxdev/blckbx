@@ -9,8 +9,10 @@ download the HTML file (V1.4 or V1.5 beta) and open it in your browser
 has calling, infinite file sharing sizes (file sharing have been removed in 1.5 temporarily), screen sharing, mute button, nice animations ig, easily customizable themes + code based deeper themes 
 
 ## **notes:**
+new truely public rooms system called "beacon" basically very unprotected or something but works very well
+
 ### public rooms:
-to use the new public rooms system you need atleast two people in a room at the same time in order for the room to be discoverable, to share the room with others use the "blckbx-" code and share it with another person, once shared the room will be discoverable to everyone.
+to use public rooms all  you need to do is search for them, or discover then without using any codes, the more people in a room at once the more likely it is to stay public for longer periods (public rooms run on a reputation system on the beacon thing)
 
 ### private rooms:
 to use private rooms share the **"xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"** code, this is very hard to geuss so its pretty secure
