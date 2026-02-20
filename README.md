@@ -3,7 +3,7 @@
 [official static website](https://blckbxdev.github.io/blckbx/)
 
 ## local/custom file (up to v1.5 Beta):
-download the HTML file (V1.4 or V1.5 beta) and open it in your browser
+other versions have been removed permenantly
 
 ## **w features**
 has calling, 5gb sharing sizes, screen sharing, mute button, nice animations ig, easily customizable themes + code based deeper themes 
