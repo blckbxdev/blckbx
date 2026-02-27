@@ -5,7 +5,10 @@
 ## local/custom file (up to v1.5 Beta):
 other versions have been removed permenantly
 
-## **w features**
+## **mobile**
+the apk version uses the static website so whenever that updates the app should sync with the same version, so no need to update the app at all, also most features on the pc version does not carry over to the mobile version, this is just to get a basic version running on mobile, oh yeah also the layout it different
+
+## **features**
 has calling, 5gb sharing sizes, screen sharing, mute button, nice animations ig, easily customizable themes + code based deeper themes 
 
 ## **notes:**
