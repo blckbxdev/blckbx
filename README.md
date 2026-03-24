@@ -6,13 +6,14 @@
 other versions have been removed permenantly
 
 ## **mobile**
-coming soon
+finally the wrapper app works, right now it will be laggy on mobile due to the glassmorphism effects, ths will be removed only on the mobile version to make it a smoother app, because this is a wrapper app, it updates in real time so once you download it, you never need to update it (unless a urgent security updates released)
 
 ## **features**
 has calling, 5gb sharing sizes, screen sharing, deep theme customization (beta)
 
 ## **notes:**
-new truely public rooms system called "beacon" basically very unprotected or something but works very well
+new truely public rooms system called "beacon" basically servers without servers or something but works very well
+new apk wrapper app is finally out and released
 
 ### public rooms:
 to use public rooms all  you need to do is search for them, or discover then without using any codes, the more people in a room at once the more likely it is to stay public for longer periods (public rooms run on a reputation system on the beacon thing)
