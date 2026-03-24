@@ -1,6 +1,6 @@
 
 ## website (v1.5.x - beta) (used for wrapper app too):
-[official static website](https://blckbxdev.github.io/blckbx/)
+[official website](https://blckbxdev.github.io/blckbx/)
 
 ## local/custom file (up to v1.5.x Beta):
 other versions have been removed permenantly
