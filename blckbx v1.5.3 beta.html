@@ -49,7 +49,7 @@
     --danger-dim:     rgba(220,80,80,0.08);
     --danger-border:  rgba(220,80,80,0.25);
     --btn-bg:         var(--bg-secondary);
-    --btn-text:       #ffffff;
+    --btn-text:       #e8e8e8;
 
     /* typography */
     --font-ui:   'Inter', -apple-system, sans-serif;
@@ -114,6 +114,8 @@
     --success-border: rgba(77,225,255,0.22);
     --warning:        #ffc266;
     --warning-dim:    rgba(255,194,102,0.08);
+    --btn-bg:         #18243a;
+    --btn-text:       #c8d8f8;
 }
 [data-theme="white"] {
     --glass-bg-base:  rgba(255, 255, 255, 0.72);
@@ -142,6 +144,8 @@
     --danger:         #b03030;
     --danger-dim:     rgba(176,48,48,0.08);
     --danger-border:  rgba(176,48,48,0.25);
+    --btn-bg:         #c8c8c8;
+    --btn-text:       #111111;
 }
 [data-theme="orange"] {
     --glass-bg-base:  rgba(30, 16, 5, 0.56);
@@ -165,6 +169,8 @@
     --success-border: rgba(255,179,102,0.22);
     --warning:        #ffcc44;
     --warning-dim:    rgba(255,204,68,0.07);
+    --btn-bg:         #2e1a08;
+    --btn-text:       #ffb87a;
 }
 [data-theme="purple"] {
     --glass-bg-base:  rgba(24, 10, 34, 0.56);
@@ -188,6 +194,8 @@
     --success-border: rgba(224,170,255,0.22);
     --warning:        #ff6ec7;
     --warning-dim:    rgba(255,110,199,0.07);
+    --btn-bg:         #251535;
+    --btn-text:       #d8a8ff;
 }
 [data-theme="red"] {
     --glass-bg-base:  rgba(32, 0, 0, 0.56);
@@ -214,6 +222,8 @@
     --danger:         #ff2222;
     --danger-dim:     rgba(255,34,34,0.08);
     --danger-border:  rgba(255,34,34,0.25);
+    --btn-bg:         #300000;
+    --btn-text:       #ff9999;
 }
 
 
@@ -2256,6 +2266,168 @@ progress::-webkit-progress-value { background: #fff; border-radius: 2px; }
         scroll-behavior: auto !important;
     }
 }
+
+/* ── Performance mode: disable all blur/backdrop effects ─────────────────── */
+body.no-blur .panel,
+body.no-blur #title,
+body.no-blur .connection-status,
+body.no-blur #howToModal,
+body.no-blur #themeModal,
+body.no-blur #settingsModal,
+body.no-blur #screenShareModal,
+body.no-blur #usernameModal,
+body.no-blur #toastHost,
+body.no-blur .jump-to-bottom {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+}
+body.no-blur .panel,
+body.no-blur #title {
+    background: var(--bg-panel) !important;
+    box-shadow: none !important;
+}
+body.no-blur .panel-center {
+    background: var(--bg-tertiary) !important;
+}
+body.no-blur .connection-status {
+    background: var(--bg-panel) !important;
+    box-shadow: none !important;
+}
+body.no-blur #howToModal,
+body.no-blur #themeModal,
+body.no-blur #settingsModal,
+body.no-blur #screenShareModal,
+body.no-blur #usernameModal {
+    background: var(--bg-panel) !important;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.6) !important;
+}
+body.no-blur #howToOverlay,
+body.no-blur #themeOverlay,
+body.no-blur #settingsOverlay,
+body.no-blur #screenShareOverlay {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    background: rgba(0,0,0,0.82) !important;
+}
+body.no-blur .jump-to-bottom,
+body.no-blur #toastHost {
+    background: var(--bg-secondary) !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+}
+body.no-blur .panel::before,
+body.no-blur #title::after {
+    display: none !important;
+}
+
+/* ── Settings modal improvements ─────────────────────────────────────────── */
+.settings-search-wrap {
+    position: relative;
+    margin-bottom: 14px;
+}
+#settingsSearchInput {
+    width: 100%;
+    padding: 10px 38px 10px 14px;
+    background: var(--bg-input);
+    color: var(--text-main);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    font-family: var(--font-mono);
+    font-size: 12px;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    margin: 0;
+}
+#settingsSearchInput:focus {
+    outline: none;
+    border-color: var(--border-strong);
+    box-shadow: 0 0 0 2px var(--accent-dim);
+}
+.settings-search-icon {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 16px;
+    height: 16px;
+    color: var(--text-muted);
+    pointer-events: none;
+}
+.settings-search-clear {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: var(--bg-secondary);
+    border: 1px solid var(--border);
+    color: var(--text-muted);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    cursor: pointer;
+    padding: 0;
+    margin: 0;
+    line-height: 1;
+}
+.settings-search-clear.visible {
+    display: flex;
+}
+.settings-nav-tabs {
+    display: flex;
+    gap: 4px;
+    flex-wrap: wrap;
+    margin-bottom: 14px;
+    padding-bottom: 14px;
+    border-bottom: 1px solid var(--border);
+}
+.settings-nav-tab {
+    flex: 1;
+    min-width: 0;
+    padding: 7px 8px !important;
+    font-size: 9px !important;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    border-radius: 8px !important;
+    background: var(--bg-input) !important;
+    border: 1px solid var(--border) !important;
+    color: var(--text-muted) !important;
+    margin: 0 !important;
+    transition: all 0.15s ease !important;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+.settings-nav-tab:hover {
+    background: var(--bg-secondary) !important;
+    color: var(--text-secondary) !important;
+    border-color: var(--border-hover) !important;
+    transform: none !important;
+}
+.settings-nav-tab.active {
+    background: var(--accent-dim) !important;
+    border-color: var(--accent-border) !important;
+    color: var(--accent) !important;
+}
+.settings-no-results {
+    text-align: center;
+    padding: 32px 16px;
+    color: var(--text-muted);
+    font-family: var(--font-mono);
+    font-size: 11px;
+    display: none;
+}
+.settings-section.settings-hidden {
+    display: none;
+}
+.settings-section.settings-search-match mark {
+    background: var(--accent-dim);
+    color: var(--accent);
+    border-radius: 2px;
+    padding: 0 2px;
+}
 </style>
 </head>
 <body data-theme="default">
@@ -2758,7 +2930,29 @@ progress::-webkit-progress-value { background: #fff; border-radius: 2px; }
         <h3>settings</h3>
         <button type="button" class="close-btn" onclick="closeSettingsModal()" aria-label="close settings">×</button>
     </div>
-    <div class="settings-section">
+
+    <!-- Search -->
+    <div class="settings-search-wrap">
+        <input type="text" id="settingsSearchInput" placeholder="search settings…" autocomplete="off" oninput="filterSettingsSearch(this.value)" onkeydown="if(event.key==='Escape'){clearSettingsSearch();}">
+        <svg class="settings-search-icon" id="settingsSearchIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <button type="button" class="settings-search-clear" id="settingsSearchClear" onclick="clearSettingsSearch()" aria-label="clear search">×</button>
+    </div>
+
+    <!-- Quick nav tabs -->
+    <div class="settings-nav-tabs" id="settingsNavTabs">
+        <button type="button" class="settings-nav-tab active" onclick="scrollToSettings('settings-sec-presets', this)">presets</button>
+        <button type="button" class="settings-nav-tab" onclick="scrollToSettings('settings-sec-profile', this)">profile</button>
+        <button type="button" class="settings-nav-tab" onclick="scrollToSettings('settings-sec-chat', this)">chat</button>
+        <button type="button" class="settings-nav-tab" onclick="scrollToSettings('settings-sec-notif', this)">alerts</button>
+        <button type="button" class="settings-nav-tab" onclick="scrollToSettings('settings-sec-appearance', this)">glass</button>
+        <button type="button" class="settings-nav-tab" onclick="scrollToSettings('settings-sec-perf', this)">perf</button>
+        <button type="button" class="settings-nav-tab" onclick="scrollToSettings('settings-sec-gradients', this)">gradients</button>
+        <button type="button" class="settings-nav-tab" onclick="scrollToSettings('settings-sec-frames', this)">frames</button>
+    </div>
+
+    <div class="settings-no-results" id="settingsNoResults">no settings match your search</div>
+
+    <div class="settings-section" id="settings-sec-presets" data-search-tags="presets hub frames glass ui chat bubble preset minimal cinema flat">
         <h4>presets hub</h4>
         <div class="settings-group-title">theme-matched frame presets</div>
         <div class="preset-grid">
@@ -2789,7 +2983,7 @@ progress::-webkit-progress-value { background: #fff; border-radius: 2px; }
             <button type="button" class="preset-btn" onclick="applyBubblePreset('simple')">simple</button>
         </div>
     </div>
-    <div class="settings-section">
+    <div class="settings-section" id="settings-sec-profile" data-search-tags="profile nickname avatar picture name display sync">
         <h4>profile</h4>
         <label for="settingsNickname">display nickname</label>
         <input type="text" id="settingsNickname" maxlength="20" autocomplete="off" spellcheck="false" placeholder="how others see you">
@@ -2806,7 +3000,7 @@ progress::-webkit-progress-value { background: #fff; border-radius: 2px; }
         <button type="button" onclick="saveNicknameFromSettings()">sync nickname to peers</button>
         <div class="username-hint" style="margin-top:10px;">updates your name for everyone already connected</div>
     </div>
-    <div class="settings-section">
+    <div class="settings-section" id="settings-sec-chat" data-search-tags="chat read receipts typing indicators bubble layout avatar name time status">
         <h4>chat behavior</h4>
         <label class="settings-toggle"><span>send read receipts</span><input type="checkbox" id="prefReadReceipts"></label>
         <label class="settings-toggle"><span>show typing indicators</span><input type="checkbox" id="prefTyping"></label>
@@ -2826,12 +3020,12 @@ progress::-webkit-progress-value { background: #fff; border-radius: 2px; }
             <label class="settings-toggle"><span>show status (my messages)</span><input type="checkbox" id="prefBubbleShowStatus"></label>
         </details>
     </div>
-    <div class="settings-section">
+    <div class="settings-section" id="settings-sec-notif" data-search-tags="notifications sound effects tab title flash alerts">
         <h4>notifications</h4>
         <label class="settings-toggle"><span>sound effects</span><input type="checkbox" id="prefSounds"></label>
         <label class="settings-toggle"><span>flash tab title when hidden</span><input type="checkbox" id="prefTitleFlash"></label>
     </div>
-    <div class="settings-section">
+    <div class="settings-section" id="settings-sec-appearance" data-search-tags="appearance glass intensity blur top left right middle frame bubbles theme gallery">
         <h4>appearance</h4>
         <div class="settings-inline" style="margin-bottom:10px;">
             <label style="margin:0;">glass intensity</label>
@@ -2845,7 +3039,16 @@ progress::-webkit-progress-value { background: #fff; border-radius: 2px; }
         <label class="settings-toggle"><span>glass chat bubbles</span><input type="checkbox" id="prefBubbleGlass"></label>
         <button type="button" onclick="closeSettingsModal(); showThemeModal();">open theme gallery…</button>
     </div>
-    <div class="settings-section">
+    <div class="settings-section" id="settings-sec-perf" data-search-tags="performance mobile blur disable backdrop filter speed battery smooth optimise optimize">
+        <h4>performance</h4>
+        <div class="username-hint" style="margin-bottom:10px; color:var(--text-secondary);">recommended for mobile or low-end devices</div>
+        <label class="settings-toggle">
+            <span>disable all blur effects <span style="font-size:9px;color:var(--text-muted);margin-left:4px;">(best for mobile)</span></span>
+            <input type="checkbox" id="prefDisableBlur">
+        </label>
+        <div class="username-hint" style="margin-top:2px;">removes backdrop-filter blur from all panels, modals and overlays — significantly improves scroll and animation performance on mobile</div>
+    </div>
+    <div class="settings-section" id="settings-sec-gradients" data-search-tags="gradients global enable animate speed easing direction angle app panel colors">
         <h4>global gradients</h4>
         <label class="settings-toggle"><span>enable gradients</span><input type="checkbox" id="prefGradientsEnabled"></label>
         <label class="settings-toggle"><span>animate gradients</span><input type="checkbox" id="prefGradientAnimate"></label>
@@ -2883,7 +3086,7 @@ progress::-webkit-progress-value { background: #fff; border-radius: 2px; }
             <span id="prefGradPanelAngleLabel" class="settings-subtle">135°</span>
         </div>
     </div>
-    <div class="settings-section">
+    <div class="settings-section" id="settings-sec-frames" data-search-tags="frames gradients left right top middle independent custom colors animate speed direction angle">
         <h4>independent frame gradients</h4>
         <div class="settings-subtle" style="margin:0 0 8px 0;">tip: keep global gradients on, then override specific frames here.</div>
         <details class="settings-collapsible" open>
@@ -5076,6 +5279,7 @@ const BlckbxPrefs = {
     gradientMiddle: { enabled: false, animate: false, speed: 22, c1: '#1a1b22', c2: '#12151d', c3: '#0c1016', angle: 145 },
     gradientLeft: { enabled: false, animate: false, speed: 20, c1: '#1c2435', c2: '#101723', c3: '#0f1014', angle: 145 },
     gradientRight: { enabled: false, animate: false, speed: 24, c1: '#241a34', c2: '#151128', c3: '#100f14', angle: 225 },
+    disableBlur: false,
     load() {
         try {
             const raw = localStorage.getItem('blckbx_prefs');
@@ -5106,6 +5310,7 @@ const BlckbxPrefs = {
             if (j.gradientMiddle && typeof j.gradientMiddle === 'object') this.gradientMiddle = { ...this.gradientMiddle, ...j.gradientMiddle };
             if (j.gradientLeft && typeof j.gradientLeft === 'object') this.gradientLeft = { ...this.gradientLeft, ...j.gradientLeft };
             if (j.gradientRight && typeof j.gradientRight === 'object') this.gradientRight = { ...this.gradientRight, ...j.gradientRight };
+            if (typeof j.disableBlur === 'boolean') this.disableBlur = j.disableBlur;
         } catch (e) { /* ignore corrupt prefs */ }
     },
     save() {
@@ -5135,7 +5340,8 @@ const BlckbxPrefs = {
                 gradientTop: this.gradientTop,
                 gradientMiddle: this.gradientMiddle,
                 gradientLeft: this.gradientLeft,
-                gradientRight: this.gradientRight
+                gradientRight: this.gradientRight,
+                disableBlur: this.disableBlur
             }));
         } catch (e) { /* quota / private mode */ }
     }
@@ -5206,6 +5412,10 @@ function applyFrameGlassPrefs() {
     document.body.classList.toggle('no-glass-left', !BlckbxPrefs.glassLeft);
     document.body.classList.toggle('no-glass-right', !BlckbxPrefs.glassRight);
     document.body.classList.toggle('no-glass-middle', !BlckbxPrefs.glassMiddle);
+}
+
+function applyBlurPrefs() {
+    document.body.classList.toggle('no-blur', !!BlckbxPrefs.disableBlur);
 }
 
 function applyBubblePrefs() {
@@ -5381,7 +5591,10 @@ function rgbaWithAlphaScale(color, scale, fallback) {
 
 function applyGlassIntensity() {
     const root = document.documentElement;
-    const cs = getComputedStyle(root);
+    // IMPORTANT: read computed styles from document.body — that's where [data-theme]
+    // attribute CSS rules live. Reading from documentElement (html) would return
+    // the :root defaults instead of the active theme's overrides.
+    const cs = getComputedStyle(document.body);
     const intensity = Math.max(20, Math.min(100, Number(BlckbxPrefs.glassIntensity) || 72));
     const scale = 0.45 + (intensity / 100) * 0.95;
     const blurPx = Math.round(8 + intensity * 0.22);
@@ -6823,6 +7036,8 @@ window.showSettingsModal = () => {
     if (ga) ga.checked = BlckbxPrefs.gradientAnimation;
     if (gs) gs.value = String(BlckbxPrefs.gradientSpeed || 22);
     if (gz) gz.value = BlckbxPrefs.gradientEasing || 'linear';
+    const pdb = document.getElementById('prefDisableBlur');
+    if (pdb) pdb.checked = !!BlckbxPrefs.disableBlur;
     const setVal = (id, v) => { const el = document.getElementById(id); if (el != null && v != null) el.value = String(v); };
     setVal('prefGradApp1', BlckbxPrefs.gradientApp.c1); setVal('prefGradApp2', BlckbxPrefs.gradientApp.c2); setVal('prefGradApp3', BlckbxPrefs.gradientApp.c3); setVal('prefGradAppAngle', BlckbxPrefs.gradientApp.angle);
     setVal('prefGradPanel1', BlckbxPrefs.gradientPanel.c1); setVal('prefGradPanel2', BlckbxPrefs.gradientPanel.c2); setVal('prefGradPanel3', BlckbxPrefs.gradientPanel.c3); setVal('prefGradPanelAngle', BlckbxPrefs.gradientPanel.angle);
@@ -6844,6 +7059,9 @@ window.showSettingsModal = () => {
     if (rAn) rAn.checked = !!BlckbxPrefs.gradientRight.animate;
     syncGradientSettingsLabels();
     refreshSavedThemeSelect();
+    // Reset search state
+    const searchInput = document.getElementById('settingsSearchInput');
+    if (searchInput) { searchInput.value = ''; filterSettingsSearch(''); }
     document.getElementById('settingsOverlay').style.display = 'block';
     document.getElementById('settingsModal').style.display = 'block';
     setTimeout(() => {
@@ -6892,6 +7110,8 @@ window.closeSettingsModal = () => {
     if (ga) BlckbxPrefs.gradientAnimation = !!ga.checked;
     if (gs) BlckbxPrefs.gradientSpeed = Math.max(4, Number(gs.value) || 22);
     if (gz) BlckbxPrefs.gradientEasing = gz.value || 'linear';
+    const pdb = document.getElementById('prefDisableBlur');
+    if (pdb) BlckbxPrefs.disableBlur = !!pdb.checked;
     const get = (id, d) => document.getElementById(id)?.value || d;
     BlckbxPrefs.gradientApp = { c1: get('prefGradApp1', '#0a0f1a'), c2: get('prefGradApp2', '#1a1f33'), c3: get('prefGradApp3', '#050505'), angle: Number(get('prefGradAppAngle', 135)) };
     BlckbxPrefs.gradientPanel = { c1: get('prefGradPanel1', '#141414'), c2: get('prefGradPanel2', '#0d0d0d'), c3: get('prefGradPanel3', '#151b2a'), angle: Number(get('prefGradPanelAngle', 135)) };
@@ -6936,6 +7156,7 @@ window.closeSettingsModal = () => {
     applyGradientSystem();
     applyGlassIntensity();
     applyBubblePrefs();
+    applyBlurPrefs();
     const m = document.getElementById('settingsModal');
     const o = document.getElementById('settingsOverlay');
     if (m) m.classList.add('closing');
@@ -7185,6 +7406,7 @@ window.addEventListener('DOMContentLoaded', () => {
     applyGradientSystem();
     applyGlassIntensity();
     applyBubblePrefs();
+    applyBlurPrefs();
     initSettingsInputBindings();
     refreshSavedThemeSelect();
     syncGradientSettingsLabels();
@@ -7325,6 +7547,55 @@ function initMessageComposer() {
 }
 
 initMessageComposer();
+
+// Settings search & navigation
+window.filterSettingsSearch = function(query) {
+    const q = (query || '').toLowerCase().trim();
+    const clearBtn = document.getElementById('settingsSearchClear');
+    const searchIcon = document.getElementById('settingsSearchIcon');
+    const noResults = document.getElementById('settingsNoResults');
+    const navTabs = document.getElementById('settingsNavTabs');
+
+    if (clearBtn) clearBtn.classList.toggle('visible', q.length > 0);
+    if (searchIcon) searchIcon.style.display = q.length > 0 ? 'none' : '';
+    if (navTabs) navTabs.style.display = q ? 'none' : '';
+
+    const sections = document.querySelectorAll('#settingsModal .settings-section');
+    let anyVisible = false;
+
+    sections.forEach(section => {
+        const text = (section.textContent + ' ' + (section.dataset.searchTags || '')).toLowerCase();
+        const match = !q || text.includes(q);
+        section.classList.toggle('settings-hidden', !match);
+        if (match) anyVisible = true;
+    });
+
+    if (noResults) noResults.style.display = (!anyVisible && q) ? 'block' : 'none';
+};
+
+window.clearSettingsSearch = function() {
+    const input = document.getElementById('settingsSearchInput');
+    if (input) { input.value = ''; input.focus(); }
+    filterSettingsSearch('');
+};
+
+window.scrollToSettings = function(sectionId, tabEl) {
+    // Activate tab
+    document.querySelectorAll('.settings-nav-tab').forEach(t => t.classList.remove('active'));
+    if (tabEl) tabEl.classList.add('active');
+    // Reveal section and scroll to it
+    filterSettingsSearch('');
+    const el = document.getElementById(sectionId);
+    const modal = document.getElementById('settingsModal');
+    if (el && modal) {
+        // Small delay to let display change settle
+        requestAnimationFrame(() => {
+            const modalTop = modal.getBoundingClientRect().top;
+            const elTop = el.getBoundingClientRect().top;
+            modal.scrollTop += (elTop - modalTop) - 70;
+        });
+    }
+};
 
 // 3D Canvas Animation
 const canvas3d = document.getElementById('canvas3d');
