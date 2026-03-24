@@ -8,6 +8,12 @@ other versions have been removed permenantly
 ## **mobile**
 finally the wrapper app works, right now it will be laggy on mobile due to the glassmorphism effects, ths will be removed only on the mobile version to make it a smoother app, because this is a wrapper app, it updates in real time so once you download it, you never need to update it (unless a urgent security updates released)
 
+## donations?
+built by the blckbx team, feel free to donate to help support development **0x86bE8d1ECfe7aBed9f1A3BE2139e0300aaD0CFBf** ❤️
+### ethereum: **0x86bE8d1ECfe7aBed9f1A3BE2139e0300aaD0CFBf**
+### bitcoin: **bc1qvjanpkddk8rjhzeep7qhddqzwkal6znauqdgva**
+### litecoin: **LeCHNAJ7kuCAFsUAuifKjfdWpTSEgxBWYc**
+
 ## **features**
 has calling, 5gb sharing sizes, screen sharing, deep theme customization (beta)
 
@@ -30,4 +36,4 @@ open source, you may use, modify, and distribute the code with proper credit
 #### legal notice:
 blckbx is an open source project intended for educational and experimental use. the developers do not control or monitor user activity and do not condone illegal activity, abuse, discrimination, or misuse of the software. all third-party components used are open source or freely licensed. no official support is provided. do not try to contact
 
-built by the blckbx team, feel free to donate ethereum to help support development **0x86bE8d1ECfe7aBed9f1A3BE2139e0300aaD0CFBf**. ❤️
+
