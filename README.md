@@ -10,9 +10,9 @@ finally the wrapper app works, right now it will be laggy on mobile due to the g
 
 ## donations?
 built by the blckbx team, feel free to donate to help support development **0x86bE8d1ECfe7aBed9f1A3BE2139e0300aaD0CFBf** ❤️
-### ethereum: **0x86bE8d1ECfe7aBed9f1A3BE2139e0300aaD0CFBf**
-### bitcoin: **bc1qvjanpkddk8rjhzeep7qhddqzwkal6znauqdgva**
-### litecoin: **LeCHNAJ7kuCAFsUAuifKjfdWpTSEgxBWYc**
+###### ethereum: **0x86bE8d1ECfe7aBed9f1A3BE2139e0300aaD0CFBf**
+###### bitcoin: **bc1qvjanpkddk8rjhzeep7qhddqzwkal6znauqdgva**
+###### litecoin: **LeCHNAJ7kuCAFsUAuifKjfdWpTSEgxBWYc**
 
 ## **features**
 has calling, 5gb sharing sizes, screen sharing, deep theme customization (beta)
