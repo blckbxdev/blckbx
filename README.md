@@ -13,7 +13,7 @@ has calling, 5gb sharing sizes, screen sharing, deep theme customization (beta)
 
 ## **notes:**
 new truely public rooms system called "beacon" basically servers without servers or something but works very well
-new apk wrapper app is finally out and released
+#### new apk wrapper app is finally out and released
 
 ### public rooms:
 to use public rooms all  you need to do is search for them, or discover then without using any codes, the more people in a room at once the more likely it is to stay public for longer periods (public rooms run on a reputation system on the beacon thing)
@@ -30,4 +30,4 @@ open source, you may use, modify, and distribute the code with proper credit
 #### legal notice:
 blckbx is an open source project intended for educational and experimental use. the developers do not control or monitor user activity and do not condone illegal activity, abuse, discrimination, or misuse of the software. all third-party components used are open source or freely licensed. no official support is provided. do not try to contact
 
-built by the blckbx team, feel free to donate ethereum to help support development *0x86bE8d1ECfe7aBed9f1A3BE2139e0300aaD0CFBf*. ❤️
+built by the blckbx team, feel free to donate ethereum to help support development **0x86bE8d1ECfe7aBed9f1A3BE2139e0300aaD0CFBf**. ❤️
