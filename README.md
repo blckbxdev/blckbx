@@ -9,7 +9,7 @@ other versions have been removed permenantly
 coming soon
 
 ## **features**
-has calling, 5gb sharing sizes, screen sharing, mute button, nice animations ig, easily customizable themes + code based deeper themes 
+has calling, 5gb sharing sizes, screen sharing, deep theme customization (beta)
 
 ## **notes:**
 new truely public rooms system called "beacon" basically very unprotected or something but works very well
