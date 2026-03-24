@@ -9,7 +9,7 @@ other versions have been removed permenantly
 finally the wrapper app works, right now it will be laggy on mobile due to the glassmorphism effects, ths will be removed only on the mobile version to make it a smoother app, because this is a wrapper app, it updates in real time so once you download it, you never need to update it (unless a urgent security updates released)
 
 ## donations?
-built by the blckbx team, feel free to donate to help support development **0x86bE8d1ECfe7aBed9f1A3BE2139e0300aaD0CFBf** ❤️
+built by the blckbx team, feel free to donate crypto to help motivate development ❤️
 ###### ethereum: **0x86bE8d1ECfe7aBed9f1A3BE2139e0300aaD0CFBf**
 ###### bitcoin: **bc1qvjanpkddk8rjhzeep7qhddqzwkal6znauqdgva**
 ###### litecoin: **LeCHNAJ7kuCAFsUAuifKjfdWpTSEgxBWYc**
