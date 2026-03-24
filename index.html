@@ -7,7 +7,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta http-equiv="Permissions-Policy" content="microphone=*, camera=*">
-<title>blackbox secure</title>
+<title>blckbx</title>
 <script src="https://unpkg.com/peerjs@1.5.2/dist/peerjs.min.js"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -48,6 +48,8 @@
     --danger:         #e05050;
     --danger-dim:     rgba(220,80,80,0.08);
     --danger-border:  rgba(220,80,80,0.25);
+    --btn-bg:         var(--bg-secondary);
+    --btn-text:       #ffffff;
 
     /* typography */
     --font-ui:   'Inter', -apple-system, sans-serif;
@@ -57,8 +59,44 @@
     --radius:    12px;
     --radius-sm: 6px;
     --spacing:   16px;
+
+    /* glass / motion */
+    --glass-bg-base:  rgba(14, 14, 16, 0.52);
+    --glass-border-base: rgba(255, 255, 255, 0.1);
+    --glass-highlight-base: rgba(255, 255, 255, 0.06);
+    --glass-shadow-base: 0 12px 40px rgba(0, 0, 0, 0.45);
+    --glass-bg:       var(--glass-bg-base);
+    --glass-border:   var(--glass-border-base);
+    --glass-highlight: var(--glass-highlight-base);
+    --glass-shadow:   var(--glass-shadow-base);
+    --glass-blur: 20px;
+    --glass-sat: 130%;
+    --ease-out:       cubic-bezier(0.16, 1, 0.3, 1);
+
+    /* gradient system */
+    --grad-app: none;
+    --grad-panel: none;
+    --grad-ui: none;
+    --grad-left: none;
+    --grad-right: none;
+    --grad-top: none;
+    --grad-anim-dur: 22s;
+    --grad-anim-ease: linear;
+    --grad-anim-state: paused;
+    --grad-left-anim-dur: 20s;
+    --grad-right-anim-dur: 24s;
+    --grad-top-anim-dur: 22s;
+    --grad-middle-anim-dur: 22s;
+    --grad-left-anim-state: paused;
+    --grad-right-anim-state: paused;
+    --grad-top-anim-state: paused;
+    --grad-middle-anim-state: paused;
 }
 [data-theme="midnight"] {
+    --glass-bg-base:  rgba(12, 18, 32, 0.56);
+    --glass-border-base: rgba(107,159,255,0.18);
+    --glass-highlight-base: rgba(255,255,255,0.06);
+    --glass-shadow-base: 0 14px 44px rgba(0, 0, 0, 0.45);
     --bg-app:        #080d18;
     --bg-panel:      #0f1624;
     --bg-secondary:  #18243a;
@@ -78,6 +116,10 @@
     --warning-dim:    rgba(255,194,102,0.08);
 }
 [data-theme="white"] {
+    --glass-bg-base:  rgba(255, 255, 255, 0.72);
+    --glass-border-base: rgba(0, 0, 0, 0.08);
+    --glass-highlight-base: rgba(255, 255, 255, 0.5);
+    --glass-shadow-base: 0 12px 40px rgba(0, 0, 0, 0.12);
     --bg-app:        #f0f0f0;
     --bg-panel:      #e4e4e4;
     --bg-secondary:  #d8d8d8;
@@ -102,6 +144,10 @@
     --danger-border:  rgba(176,48,48,0.25);
 }
 [data-theme="orange"] {
+    --glass-bg-base:  rgba(30, 16, 5, 0.56);
+    --glass-border-base: rgba(255,154,68,0.16);
+    --glass-highlight-base: rgba(255,255,255,0.06);
+    --glass-shadow-base: 0 14px 44px rgba(0, 0, 0, 0.55);
     --bg-app:        #130b02;
     --bg-panel:      #1e1005;
     --bg-secondary:  #2e1a08;
@@ -121,6 +167,10 @@
     --warning-dim:    rgba(255,204,68,0.07);
 }
 [data-theme="purple"] {
+    --glass-bg-base:  rgba(24, 10, 34, 0.56);
+    --glass-border-base: rgba(199,125,255,0.16);
+    --glass-highlight-base: rgba(255,255,255,0.06);
+    --glass-shadow-base: 0 14px 44px rgba(0, 0, 0, 0.55);
     --bg-app:        #0e0614;
     --bg-panel:      #180a22;
     --bg-secondary:  #251535;
@@ -140,6 +190,10 @@
     --warning-dim:    rgba(255,110,199,0.07);
 }
 [data-theme="red"] {
+    --glass-bg-base:  rgba(32, 0, 0, 0.56);
+    --glass-border-base: rgba(255,68,68,0.16);
+    --glass-highlight-base: rgba(255,255,255,0.06);
+    --glass-shadow-base: 0 14px 44px rgba(0, 0, 0, 0.55);
     --bg-app:        #160000;
     --bg-panel:      #200000;
     --bg-secondary:  #300000;
@@ -195,7 +249,27 @@ body {
     width: 100%;
     top: 0;
     left: 0;
-    transition: background-color 0.3s ease;
+    transition: background-color 0.35s var(--ease-out), color 0.25s ease;
+}
+body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    background:
+        var(--grad-app),
+        radial-gradient(ellipse 90% 60% at 15% -10%, rgba(255, 255, 255, 0.07), transparent 55%),
+        radial-gradient(ellipse 70% 50% at 100% 110%, rgba(255, 255, 255, 0.05), transparent 50%),
+        var(--bg-app);
+    background-size: 240% 240%, auto, auto, auto;
+    animation: gradientShift var(--grad-anim-dur) var(--grad-anim-ease) infinite;
+    animation-play-state: var(--grad-anim-state);
+}
+@keyframes gradientShift {
+    0% { background-position: 0% 50%, 0 0, 0 0, 0 0; }
+    50% { background-position: 100% 50%, 0 0, 0 0, 0 0; }
+    100% { background-position: 0% 50%, 0 0, 0 0, 0 0; }
 }
 #usernameOverlay {
     position: fixed;
@@ -213,15 +287,17 @@ body {
     pointer-events: none;
 }
 #usernameModal {
-    background: var(--bg-panel);
-    border: 1px solid var(--border);
+    background: var(--glass-bg);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    border: 1px solid var(--glass-border);
     border-radius: var(--radius);
     padding: 40px;
     width: 90%;
     max-width: 420px;
     text-align: center;
-    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8);
-    animation: modalFadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    box-shadow: var(--glass-shadow);
+    animation: modalFadeIn 0.4s var(--ease-out);
 }
 @keyframes modalFadeIn {
     from {
@@ -539,18 +615,25 @@ body {
 }
 .connection-status {
     position: fixed;
-    top: 20px;
-    right: 20px;
+    top: max(16px, env(safe-area-inset-top));
+    right: max(16px, env(safe-area-inset-right));
     font-family: var(--font-mono);
     font-size: 10px;
-    padding: 8px 12px;
+    padding: 10px 14px;
     border-radius: 100px;
-    border: 1px solid;
+    border: 1px solid var(--glass-border);
     z-index: 100;
     display: flex;
     align-items: center;
-    gap: 6px;
-    transition: all 0.3s ease;
+    gap: 8px;
+    transition: transform 0.35s var(--ease-out), box-shadow 0.35s ease, border-color 0.25s ease, background 0.25s ease;
+    background: var(--glass-bg);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    box-shadow: var(--glass-shadow);
+}
+.connection-status:hover {
+    transform: translateY(-1px);
 }
 .connection-status.connected {
     background: var(--success-dim);
@@ -580,12 +663,14 @@ body {
 }
 #app {
     width: 100%;
-    max-width: 1600px;
+    max-width: 1680px;
     height: 100%;
+    max-height: min(100vh, 920px);
     display: grid;
-    grid-template-columns: 260px 1fr 260px;
-    grid-template-rows: 80px 1fr;
-    gap: var(--spacing);
+    grid-template-columns: minmax(240px, 280px) 1fr minmax(240px, 280px);
+    grid-template-rows: auto 1fr;
+    gap: clamp(12px, 2vw, 20px);
+    filter: drop-shadow(0 4px 24px rgba(0, 0, 0, 0.25));
 }
 #mobileNav {
     display: none;
@@ -601,8 +686,8 @@ body {
 }
 .mobile-nav-grid {
     display: grid;
-    grid-template-columns: repeat(5, 1fr);
-    gap: 8px;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 6px;
 }
 .mobile-nav-btn {
     background: var(--bg-secondary);
@@ -695,12 +780,37 @@ body {
     grid-column: span 3;
     display: flex;
     align-items: center;
-    padding: 0 var(--spacing);
-    background: var(--bg-panel);
-    border: 1px solid var(--border);
+    padding: 10px clamp(12px, 2vw, 20px);
+    min-height: 72px;
+    background: var(--glass-bg);
+    background-image: var(--grad-top), var(--grad-panel);
+    background-size: 240% 240%, 220% 220%;
+    animation:
+        gradientShift var(--grad-top-anim-dur) var(--grad-anim-ease) infinite,
+        gradientShift var(--grad-anim-dur) var(--grad-anim-ease) infinite;
+    animation-play-state: var(--grad-top-anim-state), var(--grad-anim-state);
+    backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-sat));
+    -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-sat));
+    border: 1px solid var(--glass-border);
     border-radius: var(--radius);
     position: relative;
     overflow: hidden;
+    box-shadow: var(--glass-shadow);
+}
+#title.no-glass {
+    background: var(--bg-panel);
+    border-color: var(--border);
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    box-shadow: none;
+}
+#title::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: linear-gradient(105deg, var(--glass-highlight), transparent 40%);
+    opacity: 0.5;
 }
 #canvas3d {
     width: 70px; 
@@ -751,26 +861,132 @@ body {
     width: 10px;
     height: 10px;
 }
+#title > * {
+    position: relative;
+    z-index: 1;
+}
+.icon-btn {
+    width: auto !important;
+    min-width: 42px;
+    padding: 8px 12px !important;
+    margin-top: 0 !important;
+    margin-left: 6px !important;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--bg-secondary) !important;
+    border: 1px solid var(--glass-border) !important;
+    border-radius: 10px !important;
+    transition: transform 0.2s var(--ease-out), border-color 0.2s ease, background 0.2s ease, box-shadow 0.25s ease !important;
+}
+.icon-btn:hover {
+    transform: translateY(-2px);
+    border-color: var(--border-hover) !important;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+}
+.icon-btn:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+}
 .panel {
-    background: var(--bg-panel);
-    border: 1px solid var(--border);
+    background: var(--glass-bg);
+    background-image: var(--grad-panel);
+    background-size: 220% 220%;
+    animation: gradientShift var(--grad-anim-dur) var(--grad-anim-ease) infinite;
+    animation-play-state: var(--grad-anim-state);
+    backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-sat));
+    -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-sat));
+    border: 1px solid var(--glass-border);
     border-radius: var(--radius);
-    padding: 20px;
+    padding: clamp(16px, 2vw, 22px);
     display: flex;
     flex-direction: column;
     overflow: hidden;
-    transition: all 0.3s ease;
+    transition: border-color 0.3s var(--ease-out), box-shadow 0.35s ease, transform 0.25s ease;
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.2);
+    position: relative;
+}
+.panel::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: linear-gradient(120deg, var(--glass-highlight), transparent 40%);
+    opacity: 0.55;
+}
+.panel.no-glass {
+    background: var(--bg-panel);
+    border-color: var(--border);
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    box-shadow: none;
+}
+.panel.no-glass::before {
+    display: none;
+}
+.no-glass-top #title {
+    background: var(--bg-panel);
+    border-color: var(--border);
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    box-shadow: none;
+}
+.no-glass-left .left-panel {
+    background: var(--bg-panel);
+    border-color: var(--border);
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    box-shadow: none;
+}
+.no-glass-right .right-panel {
+    background: var(--bg-panel);
+    border-color: var(--border);
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    box-shadow: none;
+}
+.no-glass-middle .panel-center {
+    background: var(--bg-tertiary) !important;
+    background-image: none !important;
+    border-color: var(--border);
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    box-shadow: none;
+}
+.left-panel {
+    background-image: var(--grad-left), var(--grad-panel);
+    background-size: 240% 240%, 220% 220%;
+    animation:
+        gradientShift var(--grad-left-anim-dur) var(--grad-anim-ease) infinite,
+        gradientShift var(--grad-anim-dur) var(--grad-anim-ease) infinite;
+    animation-play-state: var(--grad-left-anim-state), var(--grad-anim-state);
+}
+.right-panel {
+    background-image: var(--grad-right), var(--grad-panel);
+    background-size: 240% 240%, 220% 220%;
+    animation:
+        gradientShift var(--grad-right-anim-dur) var(--grad-anim-ease) infinite,
+        gradientShift var(--grad-anim-dur) var(--grad-anim-ease) infinite;
+    animation-play-state: var(--grad-right-anim-state), var(--grad-anim-state);
+}
+.panel-center {
+    background: var(--glass-bg);
+    background-image: var(--grad-ui), var(--grad-panel);
+    background-size: 240% 240%, 220% 220%;
+    animation:
+        gradientShift var(--grad-middle-anim-dur) var(--grad-anim-ease) infinite,
+        gradientShift var(--grad-anim-dur) var(--grad-anim-ease) infinite;
+    animation-play-state: var(--grad-middle-anim-state), var(--grad-anim-state);
+    backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-sat));
+    -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-sat));
 }
 .panel:hover {
     border-color: var(--border-hover);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.28);
 }
 .left-panel, .right-panel {
     gap: 12px;
     overflow-y: auto;
-}
-.panel-center {
-    position: relative;
-    background: var(--bg-tertiary);
 }
 label {
     font-family: var(--font-mono);
@@ -811,8 +1027,8 @@ input[type="color"] {
 button {
     width: 100%;
     cursor: pointer;
-    background: var(--bg-secondary);
-    color: #fff;
+    background: var(--btn-bg);
+    color: var(--btn-text);
     border: 1px solid var(--border);
     padding: 10px 16px;
     font-family: var(--font-mono);
@@ -845,24 +1061,56 @@ button.danger:hover {
     flex: 1;
     overflow-y: auto;
     padding-right: 8px;
+    padding-bottom: 8px;
     display: flex;
     flex-direction: column;
-    gap: 12px;
-    margin-bottom: 20px;
+    gap: 10px;
+    margin-bottom: 16px;
+    scroll-behavior: smooth;
 }
 .message {
-    max-width: 80%;
-    padding: 12px 16px;
+    max-width: min(80%, 560px);
+    padding: 8px 10px 6px;
     font-size: 13px;
-    line-height: 1.5;
+    line-height: 1.55;
     position: relative;
     word-wrap: break-word;
-    animation: messageSlideIn 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-    border-radius: 20px; 
+    animation: messageSlideIn 0.38s var(--ease-out);
+    border-radius: 14px;
     align-self: flex-start;
     background: var(--bg-secondary);
     border: 1px solid var(--border);
-    border-top-left-radius: 4px;
+    border-top-left-radius: 8px;
+    box-shadow: none;
+    transition: border-color 0.2s ease, background 0.2s ease;
+}
+.message:hover {
+    border-color: var(--border-hover);
+}
+.message.msg-continue {
+    margin-top: -4px;
+    padding-top: 8px;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    animation: messageSlideInSoft 0.22s var(--ease-out);
+}
+.message.msg-continue.is-me {
+    border-top-right-radius: 10px;
+    border-top-left-radius: 18px;
+}
+.message.msg-continue:not(.is-me) {
+    border-top-left-radius: 10px;
+    border-top-right-radius: 18px;
+}
+.message.msg-continue .username {
+    display: none;
+}
+.message.msg-continue .msg-avatar {
+    display: none;
+}
+@keyframes messageSlideInSoft {
+    from { opacity: 0; transform: translateY(6px); }
+    to { opacity: 1; transform: translateY(0); }
 }
 @keyframes messageSlideIn { 
     from { 
@@ -879,13 +1127,72 @@ button.danger:hover {
     background: var(--bg-input);
     border: 1px solid var(--border);
     text-align: right;
-    border-top-left-radius: 20px;
-    border-top-right-radius: 4px;
+    border-top-left-radius: 14px;
+    border-top-right-radius: 8px;
+}
+.message.bubble-glass {
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+}
+.message.is-me.bubble-glass {
+    background: color-mix(in srgb, var(--glass-bg) 92%, transparent);
+}
+.msg-head {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 4px;
+}
+.message.is-me .msg-head {
+    justify-content: flex-end;
+}
+.bubble-simple .msg-avatar,
+.bubble-simple .message-toolbar .msg-time,
+.bubble-simple .message-toolbar .msg-status {
+    display: none !important;
+}
+.bubble-normal .message-toolbar .msg-status {
+    display: none !important;
+}
+.bubble-no-avatar .msg-avatar { display: none !important; }
+.bubble-no-name .username { display: none !important; }
+.bubble-no-time .msg-time { display: none !important; }
+.bubble-no-status .msg-status { display: none !important; }
+.msg-avatar {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    border: 1px solid var(--border);
+    background: var(--bg-tertiary);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    flex: 0 0 auto;
+}
+.msg-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+.msg-avatar-letter {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    font-weight: 800;
+    line-height: 1;
+    color: #000;
+    width: 100%;
+    height: 100%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
 }
 .message .username {
     font-family: var(--font-mono);
     font-size: 10px;
-    margin-bottom: 4px;
     display: block;
     opacity: 0.8;
 }
@@ -903,6 +1210,108 @@ button.danger:hover {
 .message-content a {
     color: var(--success);
     text-decoration: underline;
+    word-break: break-all;
+}
+.message-toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 8px;
+    margin-top: 8px;
+    flex-wrap: wrap;
+}
+.message:not(.is-me) .message-toolbar {
+    justify-content: space-between;
+}
+.msg-time {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    color: var(--text-muted);
+    letter-spacing: 0.04em;
+    opacity: 0.85;
+}
+.msg-actions {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+.msg-copy-btn {
+    width: auto !important;
+    min-width: 0 !important;
+    margin: 0 !important;
+    padding: 4px 8px !important;
+    font-size: 9px !important;
+    letter-spacing: 0.5px;
+    border-radius: 6px !important;
+    background: var(--accent-dim) !important;
+    border: 1px solid var(--accent-border) !important;
+    color: var(--text-secondary) !important;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s ease, transform 0.15s ease !important;
+}
+.message:hover .msg-copy-btn,
+.message:focus-within .msg-copy-btn {
+    opacity: 1;
+    pointer-events: auto;
+}
+.msg-copy-btn:hover {
+    transform: scale(1.05);
+    color: var(--accent) !important;
+}
+.msg-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+    font-size: 11px;
+    color: var(--text-muted);
+    user-select: none;
+}
+.msg-status[data-tier="sent"] { color: var(--text-muted); }
+.msg-status[data-tier="delivered"] { color: var(--text-secondary); }
+.msg-status[data-tier="read"] { color: var(--success); }
+.typing-bar {
+    align-self: flex-start;
+    max-width: 100%;
+    font-size: 10px;
+    font-family: var(--font-mono);
+    color: var(--text-secondary);
+    padding: 8px 14px;
+    margin-bottom: 4px;
+    border-radius: 100px;
+    background: var(--accent-dim);
+    border: 1px solid var(--accent-border);
+    animation: typingFade 0.3s var(--ease-out);
+    min-height: 32px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+.typing-bar[hidden] {
+    display: none !important;
+}
+.typing-dots {
+    display: inline-flex;
+    gap: 3px;
+    align-items: center;
+}
+.typing-dots span {
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: var(--accent);
+    animation: typingBounce 1.1s ease-in-out infinite;
+    opacity: 0.7;
+}
+.typing-dots span:nth-child(2) { animation-delay: 0.15s; }
+.typing-dots span:nth-child(3) { animation-delay: 0.3s; }
+@keyframes typingFade {
+    from { opacity: 0; transform: translateY(6px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+@keyframes typingBounce {
+    0%, 80%, 100% { transform: translateY(0); opacity: 0.4; }
+    40% { transform: translateY(-4px); opacity: 1; }
 }
 .system {
     align-self: center;
@@ -918,15 +1327,39 @@ button.danger:hover {
 .message-input-row {
     display: flex;
     gap: 10px;
+    align-items: flex-end;
     background: var(--bg-input);
-    padding: 6px;
+    padding: 8px 10px;
     border-radius: var(--radius);
-    border: 1px solid var(--border);
+    border: 1px solid var(--glass-border);
+    box-shadow: inset 0 1px 0 var(--glass-highlight);
+    transition: border-color 0.25s ease, box-shadow 0.25s ease;
 }
+.message-input-row:focus-within {
+    border-color: var(--border-strong);
+    box-shadow: inset 0 1px 0 var(--glass-highlight), 0 0 0 3px var(--accent-dim);
+}
+.message-input-row textarea,
 .message-input-row input {
     border: none;
     background: transparent;
-    padding: 10px;
+    padding: 10px 8px;
+    flex: 1;
+    resize: none;
+    min-height: 44px;
+    max-height: 160px;
+    line-height: 1.45;
+    font-family: var(--font-ui);
+    font-size: 14px;
+    color: var(--text-main);
+}
+.message-input-row textarea:focus,
+.message-input-row input:focus {
+    outline: none;
+    box-shadow: none;
+}
+.message-input-row textarea::placeholder {
+    color: var(--text-muted);
 }
 .message-input-row input:focus { box-shadow: none; }
 .gif-btn {
@@ -1221,7 +1654,7 @@ progress::-webkit-progress-value { background: #fff; border-radius: 2px; }
     position: fixed;
     top: 50%; 
     left: 50%;
-    transform: translate(-50%, -50%) scale(0.95);
+    transform: translate(-50%, -50%) scale(1);
     width: 480px;
     max-width: 90vw;
     height: 600px;
@@ -1231,12 +1664,21 @@ progress::-webkit-progress-value { background: #fff; border-radius: 2px; }
     border-radius: 16px;
     padding: 24px;
     z-index: 999;
-    display: none;
+    display: flex;
     flex-direction: column;
     box-shadow: 0 20px 50px rgba(0,0,0,0.8);
-    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.22s ease, transform 0.22s var(--ease-out);
 }
-#gifPicker.active { display: flex; transform: translate(-50%, -50%) scale(1); }
+#gifPicker.active {
+    opacity: 1;
+    pointer-events: auto;
+}
+#gifPicker.closing {
+    opacity: 0;
+    pointer-events: none;
+}
 .gif-header {
     display: flex;
     justify-content: space-between;
@@ -1282,40 +1724,217 @@ progress::-webkit-progress-value { background: #fff; border-radius: 2px; }
     transition: transform 0.3s;
 }
 .gif-item:hover img { transform: scale(1.1); }
-#howToOverlay, #themeOverlay, #screenShareOverlay {
+#howToOverlay, #themeOverlay, #settingsOverlay, #screenShareOverlay {
     position: fixed;
     inset: 0;
-    background: rgba(0,0,0,0.8);
+    background: rgba(0,0,0,0.72);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
     z-index: 998;
     opacity: 0;
-    transition: opacity 0.2s;
+    transition: opacity 0.25s var(--ease-out);
     display: none;
 }
-#howToOverlay.active, #themeOverlay.active, #screenShareOverlay.active {
+#howToOverlay.active, #themeOverlay.active, #settingsOverlay.active, #screenShareOverlay.active {
     opacity: 1;
     display: block;
 }
-#howToModal, #themeModal, #screenShareModal {
+#howToModal, #themeModal, #settingsModal, #screenShareModal {
     position: fixed;
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -50%) scale(0.95);
+    transform: translate(-50%, -50%) scale(1);
     width: 90%;
     max-width: 520px;
     max-height: 80vh;
-    background: var(--bg-panel);
-    border: 1px solid var(--border);
-    border-radius: 16px;
+    background: var(--glass-bg);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    border: 1px solid var(--glass-border);
+    border-radius: 18px;
     padding: 24px;
     z-index: 999;
-    box-shadow: 0 20px 50px rgba(0,0,0,0.8);
-    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    box-shadow: var(--glass-shadow);
+    transition: transform 0.28s var(--ease-out), opacity 0.25s ease;
     overflow-y: auto;
     display: none;
+    opacity: 0;
 }
-#howToModal.active, #themeModal.active, #screenShareModal.active {
-    transform: translate(-50%, -50%) scale(1);
+#howToModal.active, #themeModal.active, #settingsModal.active, #screenShareModal.active {
     display: block;
+    opacity: 1;
+}
+#howToModal.closing, #themeModal.closing, #settingsModal.closing, #screenShareModal.closing {
+    opacity: 0;
+}
+
+.jump-to-bottom {
+    position: absolute;
+    right: 18px;
+    bottom: 76px;
+    width: auto !important;
+    margin: 0 !important;
+    padding: 8px 12px !important;
+    border-radius: 999px !important;
+    background: var(--glass-bg) !important;
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border: 1px solid var(--glass-border) !important;
+    box-shadow: var(--glass-shadow);
+    color: var(--text-main) !important;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(6px);
+    transition: opacity 0.22s ease, transform 0.25s var(--ease-out);
+    z-index: 5;
+}
+.jump-to-bottom.visible {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateY(0);
+}
+.jump-to-bottom-badge {
+    min-width: 18px;
+    height: 18px;
+    border-radius: 999px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 6px;
+    background: var(--accent);
+    color: #000;
+    font-weight: 800;
+    line-height: 1;
+}
+#settingsModal {
+    max-width: 480px;
+}
+.settings-section {
+    margin-bottom: 14px;
+    padding: 14px;
+    border: 1px solid var(--glass-border);
+    border-radius: 12px;
+    background: rgba(0,0,0,0.12);
+}
+.settings-section:last-of-type {
+    margin-bottom: 0;
+}
+.settings-section h4 {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 1.5px;
+    color: var(--text-muted);
+    margin: 0 0 12px 0;
+    text-transform: lowercase;
+}
+.settings-group-title {
+    margin: 0 0 10px 0;
+    font-size: 10px;
+    letter-spacing: 1px;
+    color: var(--text-muted);
+}
+.settings-collapsible {
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 10px;
+    margin-top: 8px;
+    background: rgba(0,0,0,0.12);
+}
+.settings-collapsible summary {
+    cursor: pointer;
+    list-style: none;
+    font-size: 11px;
+    color: var(--text-secondary);
+    font-family: var(--font-mono);
+}
+.settings-collapsible summary::-webkit-details-marker { display: none; }
+.settings-collapsible[open] summary { margin-bottom: 10px; color: var(--text-main); }
+.settings-collapsible .settings-grid-3 { margin-top: 8px; }
+.settings-collapsible .settings-toggle { margin-top: 8px; }
+.preset-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+}
+.preset-btn {
+    margin: 0 !important;
+    padding: 8px 10px !important;
+    font-size: 10px !important;
+    border-radius: 9px !important;
+    background: var(--accent-dim) !important;
+    border: 1px solid var(--accent-border) !important;
+}
+.preset-btn:hover {
+    background: var(--bg-secondary) !important;
+}
+.preset-row {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 8px;
+}
+.settings-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 12px;
+    font-size: 12px;
+    color: var(--text-secondary);
+}
+.settings-toggle input[type="checkbox"] {
+    width: auto;
+    accent-color: var(--accent);
+}
+.settings-grid-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+}
+.settings-grid-3 {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+}
+.settings-inline {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+.settings-inline > * { flex: 1; }
+.settings-subtle {
+    font-size: 10px;
+    color: var(--text-muted);
+    margin-top: 6px;
+}
+#toastHost {
+    position: fixed;
+    bottom: max(24px, env(safe-area-inset-bottom));
+    left: 50%;
+    transform: translateX(-50%) translateY(20px);
+    z-index: 10001;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.3s var(--ease-out), transform 0.35s var(--ease-out);
+    font-family: var(--font-mono);
+    font-size: 11px;
+    padding: 10px 18px;
+    border-radius: 100px;
+    background: var(--glass-bg);
+    backdrop-filter: blur(12px);
+    border: 1px solid var(--glass-border);
+    color: var(--text-main);
+    box-shadow: var(--glass-shadow);
+    max-width: 90vw;
+    text-align: center;
+}
+#toastHost.visible {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
 }
 .security-modal, .fingerprint-modal {
     position: fixed;
@@ -1619,10 +2238,29 @@ progress::-webkit-progress-value { background: #fff; border-radius: 2px; }
     .theme-grid {
         grid-template-columns: 1fr;
     }
+    .msg-copy-btn {
+        opacity: 1 !important;
+        pointer-events: auto !important;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .message,
+    .typing-bar,
+    .user,
+    .room-item,
+    .connection-status {
+        animation: none !important;
+    }
+    * {
+        scroll-behavior: auto !important;
+    }
 }
 </style>
 </head>
 <body data-theme="default">
+
+<div id="toastHost" role="status" aria-live="polite"></div>
 
 <div class="connection-status disconnected" id="connectionStatus">
     <span class="status-dot"></span>
@@ -1786,14 +2424,14 @@ progress::-webkit-progress-value { background: #fff; border-radius: 2px; }
             </svg>
             <span>e2ee</span>
         </div>
-        <button id="muteToggle" onclick="toggleMute()" style="margin-left: auto; width: auto; padding: 8px 16px; background: transparent; border: 1px solid var(--border); margin-top: 0;" title="mute sounds">
+        <button type="button" id="muteToggle" class="icon-btn" onclick="toggleMute()" style="margin-left: auto;" title="mute sounds" aria-label="toggle sound">
             <svg id="muteIcon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
                 <path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path>
                 <path d="M19.07 4.93a10 10 0 0 1 0 14.14"></path>
             </svg>
         </button>
-        <button onclick="showThemeModal()" style="width: auto; padding: 8px 16px; background: transparent; border: 1px solid var(--border); margin-top: 0; margin-left: 8px;" title="change theme">
+        <button type="button" class="icon-btn" onclick="showThemeModal()" title="themes" aria-label="open themes">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <circle cx="12" cy="12" r="5"></circle>
                 <line x1="12" y1="1" x2="12" y2="3"></line>
@@ -1804,6 +2442,12 @@ progress::-webkit-progress-value { background: #fff; border-radius: 2px; }
                 <line x1="21" y1="12" x2="23" y2="12"></line>
                 <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
                 <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+            </svg>
+        </button>
+        <button type="button" class="icon-btn" onclick="showSettingsModal()" title="settings" aria-label="open settings">
+            <svg width="20" height="20" viewBox="-2.4 -2.4 28.8 28.8" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 15C13.6569 15 15 13.6569 15 12C15 10.3431 13.6569 9 12 9C10.3431 9 9 10.3431 9 12C9 13.6569 10.3431 15 12 15Z" stroke="currentColor" stroke-width="1.272"/>
+                <path d="M2 12.8799V11.1199C2 10.0799 2.85 9.21994 3.9 9.21994C5.71 9.21994 6.45 7.93994 5.54 6.36994C5.02 5.46994 5.33 4.29994 6.24 3.77994L7.97 2.78994C8.76 2.31994 9.78 2.59994 10.25 3.38994L10.36 3.57994C11.26 5.14994 12.74 5.14994 13.65 3.57994L13.76 3.38994C14.23 2.59994 15.25 2.31994 16.04 2.78994L17.77 3.77994C18.68 4.29994 18.99 5.46994 18.47 6.36994C17.56 7.93994 18.3 9.21994 20.11 9.21994C21.15 9.21994 22.01 10.0699 22.01 11.1199V12.8799C22.01 13.9199 21.16 14.7799 20.11 14.7799C18.3 14.7799 17.56 16.0599 18.47 17.6299C18.99 18.5399 18.68 19.6999 17.77 20.2199L16.04 21.2099C15.25 21.6799 14.23 21.3999 13.76 20.6099L13.65 20.4199C12.75 18.8499 11.27 18.8499 10.36 20.4199L10.25 20.6099C9.78 21.3999 8.76 21.6799 7.97 21.2099L6.24 20.2199C5.33 19.6999 5.02 18.5299 5.54 17.6299C6.45 16.0599 5.71 14.7799 3.9 14.7799C2.85 14.7799 2 13.9199 2 12.8799Z" stroke="currentColor" stroke-width="1.272"/>
             </svg>
         </button>
     </div>
@@ -1843,17 +2487,24 @@ progress::-webkit-progress-value { background: #fff; border-radius: 2px; }
     </div>
 
     <div class="panel panel-center">
-        <div id="messages">
+        <div id="messages" role="log" aria-live="polite" aria-relevant="additions">
             <div class="system">secure p2p with aes-256-gcm encryption</div>
         </div>
-        
+        <div id="typingIndicator" class="typing-bar" hidden aria-live="polite">
+            <span class="typing-dots" aria-hidden="true"><span></span><span></span><span></span></span>
+            <span id="typingIndicatorText"></span>
+        </div>
+        <button type="button" id="jumpToBottomBtn" class="jump-to-bottom" onclick="jumpToBottom()" aria-label="jump to newest messages">
+            newest
+            <span id="jumpToBottomBadge" class="jump-to-bottom-badge" aria-hidden="true">0</span>
+        </button>
         <div class="message-input-row">
-            <input id="msg" placeholder="type encrypted message..." maxlength="250" onkeypress="if(event.key==='Enter')sendMessage()">
-            <button class="gif-btn" onclick="toggleGifPicker()" title="insert gif">
+            <textarea id="msg" placeholder="type a message… (enter to send, shift+enter for line)" maxlength="5000" rows="1" autocomplete="off" spellcheck="true"></textarea>
+            <button type="button" class="gif-btn" onclick="toggleGifPicker()" title="insert gif" aria-label="open gif picker">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>
             </button>
         </div>
-        <button id="sendMsgBtn" onclick="sendMessage()">send encrypted</button>
+        <button type="button" id="sendMsgBtn" onclick="sendMessage()">send encrypted</button>
     </div>
 
     <div class="panel right-panel">
@@ -1910,7 +2561,13 @@ progress::-webkit-progress-value { background: #fff; border-radius: 2px; }
             </svg>
             <span>theme</span>
         </button>
-        
+        <button class="mobile-nav-btn" onclick="showSettingsModal()">
+            <svg viewBox="-2.4 -2.4 28.8 28.8" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 15C13.6569 15 15 13.6569 15 12C15 10.3431 13.6569 9 12 9C10.3431 9 9 10.3431 9 12C9 13.6569 10.3431 15 12 15Z" stroke="currentColor" stroke-width="1.272"/>
+                <path d="M2 12.8799V11.1199C2 10.0799 2.85 9.21994 3.9 9.21994C5.71 9.21994 6.45 7.93994 5.54 6.36994C5.02 5.46994 5.33 4.29994 6.24 3.77994L7.97 2.78994C8.76 2.31994 9.78 2.59994 10.25 3.38994L10.36 3.57994C11.26 5.14994 12.74 5.14994 13.65 3.57994L13.76 3.38994C14.23 2.59994 15.25 2.31994 16.04 2.78994L17.77 3.77994C18.68 4.29994 18.99 5.46994 18.47 6.36994C17.56 7.93994 18.3 9.21994 20.11 9.21994C21.15 9.21994 22.01 10.0699 22.01 11.1199V12.8799C22.01 13.9199 21.16 14.7799 20.11 14.7799C18.3 14.7799 17.56 16.0599 18.47 17.6299C18.99 18.5399 18.68 19.6999 17.77 20.2199L16.04 21.2099C15.25 21.6799 14.23 21.3999 13.76 20.6099L13.65 20.4199C12.75 18.8499 11.27 18.8499 10.36 20.4199L10.25 20.6099C9.78 21.3999 8.76 21.6799 7.97 21.2099L6.24 20.2199C5.33 19.6999 5.02 18.5299 5.54 17.6299C6.45 16.0599 5.71 14.7799 3.9 14.7799C2.85 14.7799 2 13.9199 2 12.8799Z" stroke="currentColor" stroke-width="1.272"/>
+            </svg>
+            <span>settings</span>
+        </button>
         <button class="mobile-nav-btn" onclick="showHowToUse()">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <circle cx="12" cy="12" r="10"></circle>
@@ -2002,7 +2659,7 @@ progress::-webkit-progress-value { background: #fff; border-radius: 2px; }
         <button class="close-btn" onclick="closeThemeModal()">×</button>
     </div>
     <div class="theme-grid">
-        <div class="theme-option active" onclick="applyTheme('default')">
+        <div class="theme-option active" data-theme="default" onclick="applyTheme('default', this)">
             <div class="theme-preview" style="background: #050505;">
                 <div class="theme-preview-color" style="background: var(--bg-tertiary);"></div>
                 <div class="theme-preview-color" style="background: #111111;"></div>
@@ -2010,7 +2667,7 @@ progress::-webkit-progress-value { background: #fff; border-radius: 2px; }
             </div>
             <div>default (dark)</div>
         </div>
-        <div class="theme-option" onclick="applyTheme('midnight')">
+        <div class="theme-option" data-theme="midnight" onclick="applyTheme('midnight', this)">
             <div class="theme-preview" style="background: #0a0e1a;">
                 <div class="theme-preview-color" style="background: #131a2e;"></div>
                 <div class="theme-preview-color" style="background: #1a2740;"></div>
@@ -2018,7 +2675,7 @@ progress::-webkit-progress-value { background: #fff; border-radius: 2px; }
             </div>
             <div>midnight blue</div>
         </div>
-        <div class="theme-option" onclick="applyTheme('white')">
+        <div class="theme-option" data-theme="white" onclick="applyTheme('white', this)">
             <div class="theme-preview" style="background: #acacac;">
                 <div class="theme-preview-color" style="background: #ffffff;"></div>
                 <div class="theme-preview-color" style="background: #bafff9;"></div>
@@ -2026,7 +2683,7 @@ progress::-webkit-progress-value { background: #fff; border-radius: 2px; }
             </div>
             <div>light mode</div>
         </div>
-        <div class="theme-option" onclick="applyTheme('red')">
+        <div class="theme-option" data-theme="red" onclick="applyTheme('red', this)">
             <div class="theme-preview" style="background: #1a0a0a;">
                 <div class="theme-preview-color" style="background: #200000;"></div>
                 <div class="theme-preview-color" style="background: #460000;"></div>
@@ -2034,7 +2691,7 @@ progress::-webkit-progress-value { background: #fff; border-radius: 2px; }
             </div>
             <div>dark red</div>
         </div>
-        <div class="theme-option" onclick="applyTheme('orange')">
+        <div class="theme-option" data-theme="orange" onclick="applyTheme('orange', this)">
             <div class="theme-preview" style="background: #1a0f05;">
                 <div class="theme-preview-color" style="background: #2e1a0a;"></div>
                 <div class="theme-preview-color" style="background: #3d2410;"></div>
@@ -2042,7 +2699,7 @@ progress::-webkit-progress-value { background: #fff; border-radius: 2px; }
             </div>
             <div>orange sunset</div>
         </div>
-        <div class="theme-option" onclick="applyTheme('purple')">
+        <div class="theme-option" data-theme="purple" onclick="applyTheme('purple', this)">
             <div class="theme-preview" style="background: #140a1a;">
                 <div class="theme-preview-color" style="background: #1f0f2e;"></div>
                 <div class="theme-preview-color" style="background: #2a1640;"></div>
@@ -2052,24 +2709,263 @@ progress::-webkit-progress-value { background: #fff; border-radius: 2px; }
         </div>
     </div>
     <div class="custom-theme-section">
-        <label>custom theme</label>
-        <div class="color-picker-row">
-            <label>background</label>
-            <input type="color" id="customBg" value="#050505">
+        <label>custom theme creator</label>
+        <div class="settings-grid-2">
+            <div class="color-picker-row"><label>app bg 1</label><input type="color" id="customBg1" value="#050505" oninput="previewCustomThemeLive()"></div>
+            <div class="color-picker-row"><label>app bg 2</label><input type="color" id="customBg2" value="#0d1020" oninput="previewCustomThemeLive()"></div>
+            <div class="color-picker-row"><label>panel bg 1</label><input type="color" id="customPanel1" value="#0a0a0a" oninput="previewCustomThemeLive()"></div>
+            <div class="color-picker-row"><label>panel bg 2</label><input type="color" id="customPanel2" value="#151515" oninput="previewCustomThemeLive()"></div>
+            <div class="color-picker-row"><label>ui glow</label><input type="color" id="customGlow" value="#6b9fff" oninput="previewCustomThemeLive()"></div>
+            <div class="color-picker-row"><label>accent</label><input type="color" id="customAccent" value="#ffffff" oninput="previewCustomThemeLive()"></div>
+            <div class="color-picker-row"><label>text main</label><input type="color" id="customTextMain" value="#e8e8e8" oninput="previewCustomThemeLive()"></div>
+            <div class="color-picker-row"><label>text secondary</label><input type="color" id="customTextSecondary" value="#aaaaaa" oninput="previewCustomThemeLive()"></div>
+            <div class="color-picker-row"><label>button bg</label><input type="color" id="customBtnBg" value="#242424" oninput="previewCustomThemeLive()"></div>
+            <div class="color-picker-row"><label>button text</label><input type="color" id="customBtnText" value="#ffffff" oninput="previewCustomThemeLive()"></div>
+            <div class="color-picker-row"><label>border</label><input type="color" id="customBorder" value="#4a4a4a" oninput="previewCustomThemeLive()"></div>
+            <div class="color-picker-row"><label>shadow tint</label><input type="color" id="customShadowTint" value="#000000" oninput="previewCustomThemeLive()"></div>
         </div>
-        <div class="color-picker-row">
-            <label>panel</label>
-            <input type="color" id="customPanel" value="#0a0a0a">
+        <div class="settings-inline" style="margin-top:10px;">
+            <label style="margin:0;">bg angle</label>
+            <input id="customBgAngle" type="range" min="0" max="360" value="135" oninput="previewCustomThemeLive()">
+            <span id="customBgAngleLabel" class="settings-subtle">135°</span>
         </div>
-        <div class="color-picker-row">
-            <label>input</label>
-            <input type="color" id="customInput" value="#111111">
+        <div class="settings-inline" style="margin-top:8px;">
+            <label style="margin:0;">panel angle</label>
+            <input id="customPanelAngle" type="range" min="0" max="360" value="135" oninput="previewCustomThemeLive()">
+            <span id="customPanelAngleLabel" class="settings-subtle">135°</span>
         </div>
-        <div class="color-picker-row">
-            <label>accent</label>
-            <input type="color" id="customAccent" value="#ffffff">
+        <div class="settings-inline" style="margin-top:8px;">
+            <label style="margin:0;">glow strength</label>
+            <input id="customGlowStrength" type="range" min="0" max="100" value="35" oninput="previewCustomThemeLive()">
+            <span id="customGlowStrengthLabel" class="settings-subtle">35%</span>
         </div>
-        <button onclick="applyCustomTheme()">apply custom theme</button>
+        <div class="settings-grid-2" style="margin-top:12px;">
+            <button type="button" onclick="applyCustomTheme()">apply custom theme</button>
+            <button type="button" onclick="resetCustomThemeEditor()" style="background:transparent;border-color:var(--border);color:var(--text-muted);">reset editor</button>
+            <button type="button" onclick="saveCustomThemeToLibrary()">save theme</button>
+            <button type="button" onclick="loadSelectedCustomTheme()">load selected</button>
+        </div>
+        <div class="settings-inline" style="margin-top:10px;">
+            <input id="customThemeName" placeholder="theme name..." maxlength="30">
+            <select id="savedCustomThemes"></select>
+        </div>
+    </div>
+</div>
+
+<div id="settingsOverlay" onclick="closeSettingsModal()"></div>
+<div id="settingsModal">
+    <div class="gif-header">
+        <h3>settings</h3>
+        <button type="button" class="close-btn" onclick="closeSettingsModal()" aria-label="close settings">×</button>
+    </div>
+    <div class="settings-section">
+        <h4>presets hub</h4>
+        <div class="settings-group-title">theme-matched frame presets</div>
+        <div class="preset-grid">
+            <button type="button" class="preset-btn" onclick="applyFramePreset('default')">default frames</button>
+            <button type="button" class="preset-btn" onclick="applyFramePreset('midnight')">midnight frames</button>
+            <button type="button" class="preset-btn" onclick="applyFramePreset('white')">white frames</button>
+            <button type="button" class="preset-btn" onclick="applyFramePreset('red')">red frames</button>
+            <button type="button" class="preset-btn" onclick="applyFramePreset('orange')">orange frames</button>
+            <button type="button" class="preset-btn" onclick="applyFramePreset('purple')">purple frames</button>
+        </div>
+        <div class="settings-group-title" style="margin-top:10px;">glass presets</div>
+        <div class="preset-row">
+            <button type="button" class="preset-btn" onclick="applyGlassPreset('subtle')">subtle</button>
+            <button type="button" class="preset-btn" onclick="applyGlassPreset('balanced')">balanced</button>
+            <button type="button" class="preset-btn" onclick="applyGlassPreset('frosted')">frosted</button>
+        </div>
+        <div class="settings-group-title" style="margin-top:10px;">quick ui presets</div>
+        <div class="preset-grid">
+            <button type="button" class="preset-btn" onclick="applyUIPreset('minimal')">minimal</button>
+            <button type="button" class="preset-btn" onclick="applyUIPreset('balanced')">balanced</button>
+            <button type="button" class="preset-btn" onclick="applyUIPreset('cinema')">cinema</button>
+            <button type="button" class="preset-btn" onclick="applyUIPreset('flat')">flat</button>
+        </div>
+        <div class="settings-group-title" style="margin-top:10px;">chat bubble presets</div>
+        <div class="preset-row">
+            <button type="button" class="preset-btn" onclick="applyBubblePreset('information')">information</button>
+            <button type="button" class="preset-btn" onclick="applyBubblePreset('normal')">normal</button>
+            <button type="button" class="preset-btn" onclick="applyBubblePreset('simple')">simple</button>
+        </div>
+    </div>
+    <div class="settings-section">
+        <h4>profile</h4>
+        <label for="settingsNickname">display nickname</label>
+        <input type="text" id="settingsNickname" maxlength="20" autocomplete="off" spellcheck="false" placeholder="how others see you">
+        <label for="settingsAvatarInput" style="margin-top:14px;">profile picture (64×64)</label>
+        <input type="file" id="settingsAvatarInput" accept="image/*" style="padding: 10px; font-size: 11px; background: var(--bg-input);">
+        <div style="display:flex; align-items:center; gap:12px; margin-top:10px;">
+            <div id="settingsAvatarPreview" class="msg-avatar" style="width:42px;height:42px;border-radius:50%;"></div>
+            <div style="flex:1;">
+                <button type="button" onclick="applyAvatarFromSettings()">use selected image</button>
+                <button type="button" onclick="clearAvatarFromSettings()" style="margin-top:6px;background:transparent;border-color:var(--border);color:var(--text-muted);">use letter avatar</button>
+                <div class="username-hint" style="margin-top:10px;">images are downscaled + re-encoded as png for safety</div>
+            </div>
+        </div>
+        <button type="button" onclick="saveNicknameFromSettings()">sync nickname to peers</button>
+        <div class="username-hint" style="margin-top:10px;">updates your name for everyone already connected</div>
+    </div>
+    <div class="settings-section">
+        <h4>chat behavior</h4>
+        <label class="settings-toggle"><span>send read receipts</span><input type="checkbox" id="prefReadReceipts"></label>
+        <label class="settings-toggle"><span>show typing indicators</span><input type="checkbox" id="prefTyping"></label>
+        <details class="settings-collapsible">
+            <summary>chat bubble layout</summary>
+            <label class="settings-inline" style="margin-top:8px;">
+                <span style="flex:0 0 auto;">style</span>
+                <select id="prefBubbleLayout">
+                    <option value="information">information</option>
+                    <option value="normal">normal</option>
+                    <option value="simple">simple</option>
+                </select>
+            </label>
+            <label class="settings-toggle"><span>show avatar</span><input type="checkbox" id="prefBubbleShowAvatar"></label>
+            <label class="settings-toggle"><span>show name</span><input type="checkbox" id="prefBubbleShowName"></label>
+            <label class="settings-toggle"><span>show time</span><input type="checkbox" id="prefBubbleShowTime"></label>
+            <label class="settings-toggle"><span>show status (my messages)</span><input type="checkbox" id="prefBubbleShowStatus"></label>
+        </details>
+    </div>
+    <div class="settings-section">
+        <h4>notifications</h4>
+        <label class="settings-toggle"><span>sound effects</span><input type="checkbox" id="prefSounds"></label>
+        <label class="settings-toggle"><span>flash tab title when hidden</span><input type="checkbox" id="prefTitleFlash"></label>
+    </div>
+    <div class="settings-section">
+        <h4>appearance</h4>
+        <div class="settings-inline" style="margin-bottom:10px;">
+            <label style="margin:0;">glass intensity</label>
+            <input id="prefGlassIntensity" type="range" min="20" max="100" value="72">
+            <span id="prefGlassIntensityLabel" class="settings-subtle">72%</span>
+        </div>
+        <label class="settings-toggle"><span>glass top frame</span><input type="checkbox" id="prefGlassTop"></label>
+        <label class="settings-toggle"><span>glass left frame</span><input type="checkbox" id="prefGlassLeft"></label>
+        <label class="settings-toggle"><span>glass right frame</span><input type="checkbox" id="prefGlassRight"></label>
+        <label class="settings-toggle"><span>glass middle frame</span><input type="checkbox" id="prefGlassMiddle"></label>
+        <label class="settings-toggle"><span>glass chat bubbles</span><input type="checkbox" id="prefBubbleGlass"></label>
+        <button type="button" onclick="closeSettingsModal(); showThemeModal();">open theme gallery…</button>
+    </div>
+    <div class="settings-section">
+        <h4>global gradients</h4>
+        <label class="settings-toggle"><span>enable gradients</span><input type="checkbox" id="prefGradientsEnabled"></label>
+        <label class="settings-toggle"><span>animate gradients</span><input type="checkbox" id="prefGradientAnimate"></label>
+        <div class="settings-inline">
+            <label style="margin:0;">speed</label>
+            <input id="prefGradientSpeed" type="range" min="4" max="60" value="22">
+            <span id="prefGradientSpeedLabel" class="settings-subtle">22s</span>
+        </div>
+        <div class="settings-inline" style="margin-top:8px;">
+            <label style="margin:0;">easing</label>
+            <select id="prefGradientEasing">
+                <option value="linear">linear</option>
+                <option value="ease">ease</option>
+                <option value="ease-in-out">ease-in-out</option>
+            </select>
+        </div>
+        <div class="settings-grid-3" style="margin-top:10px;">
+            <div><label>app 1</label><input type="color" id="prefGradApp1" value="#0a0f1a"></div>
+            <div><label>app 2</label><input type="color" id="prefGradApp2" value="#1a1f33"></div>
+            <div><label>app 3</label><input type="color" id="prefGradApp3" value="#050505"></div>
+        </div>
+        <div class="settings-inline" style="margin-top:8px;">
+            <label style="margin:0;">app direction</label>
+            <input id="prefGradAppAngle" type="range" min="0" max="360" value="135">
+            <span id="prefGradAppAngleLabel" class="settings-subtle">135°</span>
+        </div>
+        <div class="settings-grid-3" style="margin-top:10px;">
+            <div><label>panel 1</label><input type="color" id="prefGradPanel1" value="#141414"></div>
+            <div><label>panel 2</label><input type="color" id="prefGradPanel2" value="#0d0d0d"></div>
+            <div><label>panel 3</label><input type="color" id="prefGradPanel3" value="#151b2a"></div>
+        </div>
+        <div class="settings-inline" style="margin-top:8px;">
+            <label style="margin:0;">panel direction</label>
+            <input id="prefGradPanelAngle" type="range" min="0" max="360" value="135">
+            <span id="prefGradPanelAngleLabel" class="settings-subtle">135°</span>
+        </div>
+    </div>
+    <div class="settings-section">
+        <h4>independent frame gradients</h4>
+        <div class="settings-subtle" style="margin:0 0 8px 0;">tip: keep global gradients on, then override specific frames here.</div>
+        <details class="settings-collapsible" open>
+            <summary>left frame</summary>
+            <label class="settings-toggle"><span>left frame gradient</span><input type="checkbox" id="prefGradLeftEnabled"></label>
+            <div class="settings-grid-3">
+                <div><label>left 1</label><input type="color" id="prefGradLeft1" value="#1c2435"></div>
+                <div><label>left 2</label><input type="color" id="prefGradLeft2" value="#101723"></div>
+                <div><label>left 3</label><input type="color" id="prefGradLeft3" value="#0f1014"></div>
+            </div>
+            <div class="settings-inline" style="margin-top:8px;">
+                <label style="margin:0;">left direction</label>
+                <input id="prefGradLeftAngle" type="range" min="0" max="360" value="145">
+                <span id="prefGradLeftAngleLabel" class="settings-subtle">145°</span>
+            </div>
+            <label class="settings-toggle"><span>animate left frame</span><input type="checkbox" id="prefGradLeftAnimate"></label>
+            <div class="settings-inline">
+                <label style="margin:0;">left speed</label>
+                <input id="prefGradLeftSpeed" type="range" min="4" max="60" value="20">
+                <span id="prefGradLeftSpeedLabel" class="settings-subtle">20s</span>
+            </div>
+        </details>
+        <details class="settings-collapsible">
+            <summary>top frame</summary>
+            <label class="settings-toggle"><span>top frame gradient</span><input type="checkbox" id="prefGradTopEnabled"></label>
+            <div class="settings-grid-3">
+                <div><label>top 1</label><input type="color" id="prefGradTop1" value="#1e1e22"></div>
+                <div><label>top 2</label><input type="color" id="prefGradTop2" value="#141820"></div>
+                <div><label>top 3</label><input type="color" id="prefGradTop3" value="#0c0f14"></div>
+            </div>
+            <div class="settings-inline" style="margin-top:8px;">
+                <label style="margin:0;">top direction</label>
+                <input id="prefGradTopAngle" type="range" min="0" max="360" value="140">
+                <span id="prefGradTopAngleLabel" class="settings-subtle">140°</span>
+            </div>
+            <label class="settings-toggle"><span>animate top frame</span><input type="checkbox" id="prefGradTopAnimate"></label>
+            <div class="settings-inline">
+                <label style="margin:0;">top speed</label>
+                <input id="prefGradTopSpeed" type="range" min="4" max="60" value="22">
+                <span id="prefGradTopSpeedLabel" class="settings-subtle">22s</span>
+            </div>
+        </details>
+        <details class="settings-collapsible">
+            <summary>middle frame</summary>
+            <label class="settings-toggle"><span>middle frame gradient</span><input type="checkbox" id="prefGradMiddleEnabled"></label>
+            <div class="settings-grid-3">
+                <div><label>mid 1</label><input type="color" id="prefGradMiddle1" value="#1a1b22"></div>
+                <div><label>mid 2</label><input type="color" id="prefGradMiddle2" value="#12151d"></div>
+                <div><label>mid 3</label><input type="color" id="prefGradMiddle3" value="#0c1016"></div>
+            </div>
+            <div class="settings-inline" style="margin-top:8px;">
+                <label style="margin:0;">middle direction</label>
+                <input id="prefGradMiddleAngle" type="range" min="0" max="360" value="145">
+                <span id="prefGradMiddleAngleLabel" class="settings-subtle">145°</span>
+            </div>
+            <label class="settings-toggle"><span>animate middle frame</span><input type="checkbox" id="prefGradMiddleAnimate"></label>
+            <div class="settings-inline">
+                <label style="margin:0;">middle speed</label>
+                <input id="prefGradMiddleSpeed" type="range" min="4" max="60" value="22">
+                <span id="prefGradMiddleSpeedLabel" class="settings-subtle">22s</span>
+            </div>
+        </details>
+        <details class="settings-collapsible">
+            <summary>right frame</summary>
+            <label class="settings-toggle"><span>right frame gradient</span><input type="checkbox" id="prefGradRightEnabled"></label>
+            <div class="settings-grid-3">
+                <div><label>right 1</label><input type="color" id="prefGradRight1" value="#241a34"></div>
+                <div><label>right 2</label><input type="color" id="prefGradRight2" value="#151128"></div>
+                <div><label>right 3</label><input type="color" id="prefGradRight3" value="#100f14"></div>
+            </div>
+            <div class="settings-inline" style="margin-top:8px;">
+                <label style="margin:0;">right direction</label>
+                <input id="prefGradRightAngle" type="range" min="0" max="360" value="225">
+                <span id="prefGradRightAngleLabel" class="settings-subtle">225°</span>
+            </div>
+            <label class="settings-toggle"><span>animate right frame</span><input type="checkbox" id="prefGradRightAnimate"></label>
+            <div class="settings-inline">
+                <label style="margin:0;">right speed</label>
+                <input id="prefGradRightSpeed" type="range" min="4" max="60" value="24">
+                <span id="prefGradRightSpeedLabel" class="settings-subtle">24s</span>
+            </div>
+        </details>
     </div>
 </div>
 
@@ -2464,6 +3360,33 @@ class Security {
             .replace(/"/g, "&quot;")
             .replace(/'/g, "&#039;");
     }
+
+    /** Strip control chars / bidi overrides; cap length (plain text, not HTML). */
+    static sanitizePlainText(str, maxLen = 5000) {
+        if (typeof str !== 'string') return '';
+        let s = str.replace(/\u0000/g, '').replace(/[\u202E\u202D\u200F\uFEFF]/g, '');
+        if (s.length > maxLen) s = s.slice(0, maxLen);
+        return s;
+    }
+
+    static isSafeControlMessage(data) {
+        if (data === null || typeof data !== 'object' || Array.isArray(data)) return false;
+        const t = data.type;
+        if (typeof t !== 'string' || t.length < 1 || t.length > 48) return false;
+        return /^[a-z0-9_-]+$/i.test(t);
+    }
+
+    static isSafeAvatarDataUrl(s) {
+        if (typeof s !== 'string') return false;
+        if (!s.startsWith('data:image/png;base64,')) return false;
+        // ~64x64 PNG is usually tiny; cap to prevent memory abuse
+        return s.length <= 120000;
+    }
+
+    static safeInitial(name) {
+        const s = (name || '').trim();
+        return s ? s[0].toUpperCase() : '?';
+    }
     
     static isValidUrl(urlString) {
         try {
@@ -2552,77 +3475,150 @@ class Security {
         return true;
     }
 
-    static createSafeMessageElement(text, isMe, color, user, type = 'text') {
-        const div = document.createElement('div');
-        div.className = isMe ? 'message is-me' : 'message';
-
-        const nameSpan = document.createElement('span');
-        nameSpan.className = 'username';
-        nameSpan.style.color = color;
-        nameSpan.textContent = isMe ? 'me' : user;
-        div.appendChild(nameSpan);
-
-        const contentDiv = document.createElement('div');
-        contentDiv.className = 'message-content';
-
+    static fillMessageContent(contentDiv, text, type = 'text') {
+        contentDiv.textContent = '';
         if (type === 'image' || type === 'image_gif') {
-            // Validate image URL
             const sanitizedUrl = this.sanitizeUrl(text);
             if (!sanitizedUrl || !this.isValidImageUrl(sanitizedUrl)) {
-                contentDiv.textContent = '[Invalid or unsafe image URL]';
+                contentDiv.textContent = '[invalid or unsafe image url]';
             } else {
                 const img = document.createElement('img');
                 img.src = sanitizedUrl;
-                img.alt = 'Shared Image';
+                img.alt = 'shared image';
                 img.loading = 'lazy';
-                
-                // Add error handler
+                img.referrerPolicy = 'no-referrer';
                 img.onerror = function() {
                     this.style.display = 'none';
                     const errorText = document.createElement('span');
-                    errorText.textContent = '[Image failed to load]';
+                    errorText.textContent = '[image failed to load]';
                     errorText.style.color = 'var(--danger)';
                     this.parentNode.appendChild(errorText);
                 };
-                
                 contentDiv.appendChild(img);
             }
         } else {
-            // Text message - detect and sanitize URLs
             const urlRegex = /(https?:\/\/[^\s]+)/g;
-            const parts = text.split(urlRegex);
-            
+            const parts = String(text).split(urlRegex);
             parts.forEach(part => {
                 if (part.match(/^https?:\/\//)) {
                     const sanitizedUrl = this.sanitizeUrl(part);
                     if (sanitizedUrl) {
                         const a = document.createElement('a');
                         a.href = sanitizedUrl;
-                        a.target = "_blank";
-                        a.rel = "noopener noreferrer";
+                        a.target = '_blank';
+                        a.rel = 'noopener noreferrer';
                         a.textContent = part;
                         contentDiv.appendChild(a);
-                        
-                        // Auto-embed images from URLs
                         if (this.isValidImageUrl(sanitizedUrl)) {
                             const br = document.createElement('br');
                             const img = document.createElement('img');
                             img.src = sanitizedUrl;
                             img.loading = 'lazy';
+                            img.referrerPolicy = 'no-referrer';
                             img.onerror = function() { this.style.display = 'none'; };
                             contentDiv.appendChild(br);
                             contentDiv.appendChild(img);
                         }
                     } else {
-                        contentDiv.appendChild(document.createTextNode('[blocked URL]'));
+                        contentDiv.appendChild(document.createTextNode('[blocked url]'));
                     }
                 } else {
                     contentDiv.appendChild(document.createTextNode(part));
                 }
             });
         }
-        
+    }
+
+    /**
+     * @param {object} opts — msgId, ts (ms), status ('sending'|'sent'|'delivered'|'read'), remotePeerId, showCompact
+     */
+    static createSafeMessageElement(text, isMe, color, user, type = 'text', opts = {}) {
+        const div = document.createElement('article');
+        div.className = isMe ? 'message is-me' : 'message';
+        if (opts.msgId) {
+            div.dataset.msgId = opts.msgId;
+            div.dataset.remotePeer = opts.remotePeerId || '';
+        }
+
+        if (BlckbxPrefs?.bubbleGlass) {
+            div.classList.add('bubble-glass');
+        }
+
+        const head = document.createElement('div');
+        head.className = 'msg-head';
+
+        if (!isMe) {
+            const avatarWrap = document.createElement('span');
+            avatarWrap.className = 'msg-avatar';
+            if (opts.avatar && Security.isSafeAvatarDataUrl(opts.avatar)) {
+                const img = document.createElement('img');
+                img.src = opts.avatar;
+                img.alt = '';
+                img.decoding = 'async';
+                img.loading = 'lazy';
+                avatarWrap.appendChild(img);
+            } else {
+                const letter = document.createElement('span');
+                letter.className = 'msg-avatar-letter';
+                const safeColor = (typeof color === 'string' && /^#[0-9a-fA-F]{6}$/.test(color)) ? color : '#888888';
+                letter.style.background = safeColor;
+                letter.textContent = Security.safeInitial(user);
+                avatarWrap.appendChild(letter);
+            }
+            head.appendChild(avatarWrap);
+        }
+
+        const nameSpan = document.createElement('span');
+        nameSpan.className = 'username';
+        nameSpan.style.color = color;
+        nameSpan.textContent = isMe ? 'me' : user;
+        head.appendChild(nameSpan);
+        div.appendChild(head);
+
+        const contentDiv = document.createElement('div');
+        contentDiv.className = 'message-content';
+        this.fillMessageContent(contentDiv, text, type);
         div.appendChild(contentDiv);
+
+        const toolbar = document.createElement('div');
+        toolbar.className = 'message-toolbar';
+
+        const timeEl = document.createElement('time');
+        timeEl.className = 'msg-time';
+        const ts = opts.ts != null ? opts.ts : Date.now();
+        timeEl.dateTime = new Date(ts).toISOString();
+        timeEl.textContent = new Date(ts).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
+        const actions = document.createElement('div');
+        actions.className = 'msg-actions';
+
+        const copyBtn = document.createElement('button');
+        copyBtn.type = 'button';
+        copyBtn.className = 'msg-copy-btn';
+        copyBtn.textContent = 'copy';
+        copyBtn.title = 'copy to clipboard';
+        const plainCopy = type === 'image' || type === 'image_gif' ? String(text) : Security.sanitizePlainText(String(text), 5000);
+        copyBtn.addEventListener('click', () => {
+            navigator.clipboard.writeText(plainCopy).then(() => showToast('copied')).catch(() => showToast('copy failed'));
+        });
+        actions.appendChild(copyBtn);
+
+        if (isMe && opts.msgId) {
+            const statusEl = document.createElement('span');
+            statusEl.className = 'msg-status';
+            statusEl.dataset.tier = opts.status || 'sent';
+            statusEl.setAttribute('aria-label', 'message status');
+            statusEl.textContent = formatMsgStatus(opts.status || 'sent');
+            statusEl.title = (opts.status || 'sent').replace(/^\w/, c => c.toUpperCase());
+            actions.appendChild(statusEl);
+        }
+
+        toolbar.appendChild(timeEl);
+        toolbar.appendChild(actions);
+        div.appendChild(toolbar);
+
+        if (opts.showCompact) div.classList.add('msg-continue');
+
         return div;
     }
 }
@@ -2737,6 +3733,7 @@ const App = {
     id: null,
     username: 'Guest',
     color: '#' + Math.floor(Math.random()*16777215).toString(16),
+    avatarDataUrl: null, // data:image/png;base64,... (64x64)
     crypto: new CryptoManager(),
     conns: {},
     users: {},
@@ -2759,6 +3756,13 @@ const App = {
     peerMessageRates: {},
     screenShares: {}, // { peerId: { stream: MediaStream, userName: string } }
     myScreenShare: null,
+    /** @type {{ key: string, t: number } | null} */
+    lastMsgGroup: null,
+    /** @type {Record<string, { expected: Set<string>, delivered: Set<string>, read: Set<string> }>} */
+    pendingReceipts: {},
+    signalingReconnectAttempts: 0,
+    originalDocumentTitle: typeof document !== 'undefined' ? document.title : '',
+    typingPeers: new Map(),
 
     async start(name, roomType, roomNameOrCode = null) {
         this.username = name || 'Guest';
@@ -2799,6 +3803,7 @@ const App = {
         
         this.peer.on('open', (id) => {
             this.id = id;
+            this.signalingReconnectAttempts = 0;
             
             // Start keep-alive pings
             this.startKeepAlive();
@@ -2829,12 +3834,16 @@ const App = {
         
         this.peer.on('disconnected', () => {
             console.log('Peer signaling disconnected (cleanup handler)');
-            // Don't immediately show disconnected - just try to reconnect
-            setTimeout(() => {
+            this.signalingReconnectAttempts++;
+            const delay = Math.min(45000, 800 * Math.pow(2, Math.min(this.signalingReconnectAttempts, 6)));
+            addSystemMsg(`signaling paused — retry in ${Math.round(delay / 1000)}s`);
+            updateStatus('connecting', 'reconnecting signaling…');
+            clearTimeout(this._sigReconnTimer);
+            this._sigReconnTimer = setTimeout(() => {
                 if (this.peer && !this.peer.destroyed) {
-                    this.peer.reconnect();
+                    try { this.peer.reconnect(); } catch (e) { console.error(e); }
                 }
-            }, 1000);
+            }, delay);
         });
         
         this.peer.on('close', () => {
@@ -2845,6 +3854,11 @@ const App = {
         
         this.peer.on('error', (err) => {
             console.error(err);
+            if (err.type === 'webrtc' && this.peer && !this.peer.destroyed) {
+                setTimeout(() => {
+                    try { this.peer.reconnect(); } catch (e) { /* ignore */ }
+                }, 2000);
+            }
             if (err.type === 'unavailable-id') {
                 if (this.roomType === 'public') {
                     this.joinExistingPublicRoom(this.roomCode);
@@ -2959,6 +3973,10 @@ const App = {
         delete this.connectionHealth[peerId];
         delete this.lastPingTime[peerId];
         delete this.peerMessageRates[peerId];
+        if (this.typingPeers && this.typingPeers.has(peerId)) {
+            this.typingPeers.delete(peerId);
+            scheduleTypingIndicatorUpdate();
+        }
         
         // Clean up crypto sessions and keys
         if (this.crypto) {
@@ -3022,6 +4040,7 @@ const App = {
         
         this.peer.on('open', (id) => {
             this.id = id;
+            this.signalingReconnectAttempts = 0;
             
             // Start keep-alive pings
             this.startKeepAlive();
@@ -3046,14 +4065,16 @@ const App = {
         
         this.peer.on('disconnected', () => {
             console.log('Peer signaling disconnected');
-            // Don't change UI status - data connections are still working
-            // Just try to reconnect to signaling server
-            setTimeout(() => {
+            this.signalingReconnectAttempts++;
+            const delay = Math.min(45000, 800 * Math.pow(2, Math.min(this.signalingReconnectAttempts, 6)));
+            addSystemMsg(`signaling paused — retry in ${Math.round(delay / 1000)}s`);
+            updateStatus('connecting', 'reconnecting signaling…');
+            clearTimeout(this._sigReconnTimer);
+            this._sigReconnTimer = setTimeout(() => {
                 if (this.peer && !this.peer.destroyed) {
-                    console.log('Attempting to reconnect to signaling server...');
-                    this.peer.reconnect();
+                    try { this.peer.reconnect(); } catch (e) { console.error(e); }
                 }
-            }, 1000);
+            }, delay);
         });
         
         this.peer.on('close', () => {
@@ -3063,6 +4084,11 @@ const App = {
         
         this.peer.on('error', (err) => {
             console.error(err);
+            if (err.type === 'webrtc' && this.peer && !this.peer.destroyed) {
+                setTimeout(() => {
+                    try { this.peer.reconnect(); } catch (e) { /* ignore */ }
+                }, 2000);
+            }
             if (err.type === 'network' && Object.keys(this.conns).length > 0) {
                 console.log('Network error but connections still active');
             } else if (err.type !== 'peer-unavailable') {
@@ -3140,6 +4166,7 @@ const App = {
                     key: pub,
                     user: this.username,
                     color: this.color,
+                    avatar: this.avatarDataUrl || null,
                     roomType: this.roomType,
                     roomName: this.roomName
                 });
@@ -3161,14 +4188,25 @@ const App = {
 
         conn.on('data', async (data) => {
             try {
+                if (!Security.isSafeControlMessage(data)) {
+                    console.warn('dropped malformed control message');
+                    return;
+                }
                 if (data.type === 'handshake') {
+                    if (typeof data.key !== 'string' || data.key.length < 80 || data.key.length > 12000) {
+                        console.warn('invalid handshake key');
+                        return;
+                    }
+                    const safeUser = Security.sanitizePlainText(String(data.user || ''), 24) || 'peer';
+                    const safeColor = typeof data.color === 'string' && /^#[0-9a-fA-F]{6}$/.test(data.color) ? data.color : '#888888';
+                    const safeAvatar = (typeof data.avatar === 'string' && Security.isSafeAvatarDataUrl(data.avatar)) ? data.avatar : null;
                     await this.crypto.deriveSession(data.key, conn.peer);
                     sessionEstablished = true;
-                    this.users[conn.peer] = { name: data.user, color: data.color };
+                    this.users[conn.peer] = { name: safeUser, color: safeColor, avatar: safeAvatar };
                     this.updateUserList();
                     
                     if (data.roomType === 'public') {
-                        addSystemMsg(`${data.user} joined the room`);
+                        addSystemMsg(`${safeUser} joined the room`);
                         
                         // Add this room to our directory (we just confirmed it exists!)
                         if (this.roomCode && this.roomName) {
@@ -3177,7 +4215,7 @@ const App = {
                             console.log(`Added room to directory: ${this.roomName}`);
                         }
                     } else {
-                        addSystemMsg(`secure connection: ${data.user}`);
+                        addSystemMsg(`secure connection: ${safeUser}`);
                     }
                     
                     updateStatus('connected', this.roomType === 'public' ? `room: ${this.roomName}` : 'encrypted link active');
@@ -3267,9 +4305,47 @@ const App = {
                         console.log(`Peer ${peerId} latency: ${latency}ms`);
                     }
                 }
+                else if (data.type === 'typing') {
+                    if (!BlckbxPrefs.typingIndicators) return;
+                    const active = !!data.active;
+                    const uname = this.users[conn.peer]?.name || 'someone';
+                    if (active) {
+                        App.typingPeers.set(conn.peer, uname);
+                    } else {
+                        App.typingPeers.delete(conn.peer);
+                    }
+                    scheduleTypingIndicatorUpdate();
+                }
+                else if (data.type === 'profile') {
+                    const nu = Security.sanitizePlainText(String(data.user || ''), 24);
+                    const nc = typeof data.color === 'string' && /^#[0-9a-fA-F]{6}$/.test(data.color) ? data.color : null;
+                    const na = (typeof data.avatar === 'string' && Security.isSafeAvatarDataUrl(data.avatar)) ? data.avatar : null;
+                    if (this.users[conn.peer] && nu) {
+                        const prev = this.users[conn.peer].name;
+                        this.users[conn.peer].name = nu;
+                        if (nc) this.users[conn.peer].color = nc;
+                        if (na !== null) this.users[conn.peer].avatar = na;
+                        this.updateUserList();
+                        if (prev !== nu) addSystemMsg(`${nu} updated their nickname`);
+                    }
+                }
+                else if (data.type === 'msg_receipt') {
+                    const mid = typeof data.forMsgId === 'string' && data.forMsgId.length < 80 ? data.forMsgId : null;
+                    const kind = data.kind === 'read' ? 'read' : data.kind === 'delivered' ? 'delivered' : null;
+                    if (!mid || !kind) return;
+                    const meta = this.pendingReceipts[mid];
+                    if (!meta) return;
+                    if (kind === 'delivered') meta.delivered.add(conn.peer);
+                    if (kind === 'read') meta.read.add(conn.peer);
+                    updateOutgoingMessageStatus(mid);
+                }
                 else if (data.type === 'msg') {
                     if (!sessionEstablished) {
                         console.warn('Received message before session established');
+                        return;
+                    }
+                    if (typeof data.payload !== 'string' || data.payload.length > 500000) {
+                        console.warn('invalid message payload');
                         return;
                     }
                     
@@ -3300,16 +4376,33 @@ const App = {
                     
                     try {
                         const text = await this.crypto.decrypt(data.payload, conn.peer);
-                        
-                        // Validate decrypted text
-                        if (!text || text.length > 5000) {
-                            console.warn('Invalid message length');
+                        const safeText = Security.sanitizePlainText(String(text || ''), 5000);
+                        if (!safeText && (data.contentType || 'text') === 'text') {
+                            console.warn('empty message after sanitize');
                             return;
                         }
-                        
-                        const u = this.users[conn.peer] || { name: 'Unknown', color: '#888' };
-                        addMessage(text, false, u.color, u.name, data.contentType || 'text');
+                        const u = this.users[conn.peer] || { name: 'unknown', color: '#888888' };
+                        const mid = typeof data.msgId === 'string' && /^[0-9a-f-]{16,48}$/i.test(data.msgId) ? data.msgId : null;
+                        addChatMessage({
+                            text: safeText,
+                            isMe: false,
+                            color: u.color,
+                            user: u.name,
+                            type: data.contentType || 'text',
+                            msgId: mid || undefined,
+                            remotePeerId: conn.peer,
+                            ts: typeof data.ts === 'number' ? data.ts : Date.now()
+                        });
                         play('r');
+                        maybeFlashTitle();
+                        if (mid && conn.open) {
+                            try {
+                                conn.send({ type: 'msg_receipt', forMsgId: mid, kind: 'delivered' });
+                            } catch (e) { /* ignore */ }
+                            if (BlckbxPrefs.readReceipts) {
+                                queueReadReceipt(conn.peer, mid);
+                            }
+                        }
                     } catch(e) {
                         console.error('Failed to decrypt message:', e);
                     }
@@ -3449,6 +4542,10 @@ const App = {
             delete this.conns[conn.peer];
             delete this.users[conn.peer];
             delete this.peerMessageRates[conn.peer];
+            if (this.typingPeers && this.typingPeers.has(conn.peer)) {
+                this.typingPeers.delete(conn.peer);
+                scheduleTypingIndicatorUpdate();
+            }
             
             // Clean up crypto sessions and keys
             if (this.crypto) {
@@ -3491,11 +4588,12 @@ const App = {
             const u = this.users[peerId];
             const inVoice = this.calls[peerId] ? 'talking' : '';
             const isSharing = this.screenShares[peerId] ? true : false;
+            const hasAvatar = u && u.avatar && Security.isSafeAvatarDataUrl(u.avatar);
             
             const html = `
                 <div class="user ${inVoice}" id="user-${peerId}">
                     <div class="user-avatar online" style="background:linear-gradient(135deg, ${u.color}, var(--bg-secondary))">
-                        ${u.name[0].toUpperCase()}
+                        ${hasAvatar ? `<img src="${u.avatar}" alt="" style="width:100%;height:100%;object-fit:cover;border-radius:50%;" referrerpolicy="no-referrer">` : `${Security.escapeHtml(u.name[0].toUpperCase())}`}
                     </div>
                     <div class="user-main">
                         <span class="username" style="color:${u.color};font-weight:600;font-size:12px">${u.name}</span>
@@ -3778,13 +4876,8 @@ window.refreshRoomList = function() {
 window.joinDiscoveredRoom = async function(roomId, roomName) {
     play('k');
     console.log(`Joining discovered room: ${roomName} (${roomId})`);
-    
-    // Hide setup modal
-    showStep('usernameStep'); // Reset to first step
-    document.getElementById('setupModal').classList.remove('active');
-    document.getElementById('setupOverlay').classList.remove('active');
-    
-    // Join the room (room host's peer ID IS the room ID)
+    showStep('usernameStep');
+    document.getElementById('usernameOverlay').classList.add('hidden');
     await App.joinExistingPublicRoom(roomId);
     App.roomName = roomName;
 };
@@ -3956,6 +5049,798 @@ window.backToPublicRoomSelection = function() {
     showBrowseRooms();
 };
 
+// --- persisted preferences & chat UI helpers (single-file module) ---
+const BlckbxPrefs = {
+    readReceipts: true,
+    typingIndicators: true,
+    sounds: true,
+    titleFlash: true,
+    glassTop: true,
+    glassLeft: true,
+    glassRight: true,
+    glassMiddle: true,
+    glassIntensity: 72,
+    bubbleGlass: false,
+    bubbleLayout: 'information',
+    bubbleShowAvatar: true,
+    bubbleShowName: true,
+    bubbleShowTime: true,
+    bubbleShowStatus: true,
+    gradientsEnabled: true,
+    gradientAnimation: true,
+    gradientSpeed: 22,
+    gradientEasing: 'linear',
+    gradientApp: { c1: '#0a0f1a', c2: '#1a1f33', c3: '#050505', angle: 135 },
+    gradientPanel: { c1: '#141414', c2: '#0d0d0d', c3: '#151b2a', angle: 135 },
+    gradientTop: { enabled: false, animate: false, speed: 22, c1: '#1e1e22', c2: '#141820', c3: '#0c0f14', angle: 140 },
+    gradientMiddle: { enabled: false, animate: false, speed: 22, c1: '#1a1b22', c2: '#12151d', c3: '#0c1016', angle: 145 },
+    gradientLeft: { enabled: false, animate: false, speed: 20, c1: '#1c2435', c2: '#101723', c3: '#0f1014', angle: 145 },
+    gradientRight: { enabled: false, animate: false, speed: 24, c1: '#241a34', c2: '#151128', c3: '#100f14', angle: 225 },
+    load() {
+        try {
+            const raw = localStorage.getItem('blckbx_prefs');
+            if (!raw) return;
+            const j = JSON.parse(raw);
+            if (typeof j.readReceipts === 'boolean') this.readReceipts = j.readReceipts;
+            if (typeof j.typingIndicators === 'boolean') this.typingIndicators = j.typingIndicators;
+            if (typeof j.sounds === 'boolean') this.sounds = j.sounds;
+            if (typeof j.titleFlash === 'boolean') this.titleFlash = j.titleFlash;
+            if (typeof j.glassTop === 'boolean') this.glassTop = j.glassTop;
+            if (typeof j.glassLeft === 'boolean') this.glassLeft = j.glassLeft;
+            if (typeof j.glassRight === 'boolean') this.glassRight = j.glassRight;
+            if (typeof j.glassMiddle === 'boolean') this.glassMiddle = j.glassMiddle;
+            if (typeof j.glassIntensity === 'number') this.glassIntensity = Math.max(20, Math.min(100, j.glassIntensity));
+            if (typeof j.bubbleGlass === 'boolean') this.bubbleGlass = j.bubbleGlass;
+            if (typeof j.bubbleLayout === 'string') this.bubbleLayout = j.bubbleLayout;
+            if (typeof j.bubbleShowAvatar === 'boolean') this.bubbleShowAvatar = j.bubbleShowAvatar;
+            if (typeof j.bubbleShowName === 'boolean') this.bubbleShowName = j.bubbleShowName;
+            if (typeof j.bubbleShowTime === 'boolean') this.bubbleShowTime = j.bubbleShowTime;
+            if (typeof j.bubbleShowStatus === 'boolean') this.bubbleShowStatus = j.bubbleShowStatus;
+            if (typeof j.gradientsEnabled === 'boolean') this.gradientsEnabled = j.gradientsEnabled;
+            if (typeof j.gradientAnimation === 'boolean') this.gradientAnimation = j.gradientAnimation;
+            if (typeof j.gradientSpeed === 'number') this.gradientSpeed = j.gradientSpeed;
+            if (typeof j.gradientEasing === 'string') this.gradientEasing = j.gradientEasing;
+            if (j.gradientApp && typeof j.gradientApp === 'object') this.gradientApp = { ...this.gradientApp, ...j.gradientApp };
+            if (j.gradientPanel && typeof j.gradientPanel === 'object') this.gradientPanel = { ...this.gradientPanel, ...j.gradientPanel };
+            if (j.gradientTop && typeof j.gradientTop === 'object') this.gradientTop = { ...this.gradientTop, ...j.gradientTop };
+            if (j.gradientMiddle && typeof j.gradientMiddle === 'object') this.gradientMiddle = { ...this.gradientMiddle, ...j.gradientMiddle };
+            if (j.gradientLeft && typeof j.gradientLeft === 'object') this.gradientLeft = { ...this.gradientLeft, ...j.gradientLeft };
+            if (j.gradientRight && typeof j.gradientRight === 'object') this.gradientRight = { ...this.gradientRight, ...j.gradientRight };
+        } catch (e) { /* ignore corrupt prefs */ }
+    },
+    save() {
+        try {
+            localStorage.setItem('blckbx_prefs', JSON.stringify({
+                readReceipts: this.readReceipts,
+                typingIndicators: this.typingIndicators,
+                sounds: this.sounds,
+                titleFlash: this.titleFlash,
+                glassTop: this.glassTop,
+                glassLeft: this.glassLeft,
+                glassRight: this.glassRight,
+                glassMiddle: this.glassMiddle,
+                glassIntensity: this.glassIntensity,
+                bubbleGlass: this.bubbleGlass,
+                bubbleLayout: this.bubbleLayout,
+                bubbleShowAvatar: this.bubbleShowAvatar,
+                bubbleShowName: this.bubbleShowName,
+                bubbleShowTime: this.bubbleShowTime,
+                bubbleShowStatus: this.bubbleShowStatus,
+                gradientsEnabled: this.gradientsEnabled,
+                gradientAnimation: this.gradientAnimation,
+                gradientSpeed: this.gradientSpeed,
+                gradientEasing: this.gradientEasing,
+                gradientApp: this.gradientApp,
+                gradientPanel: this.gradientPanel,
+                gradientTop: this.gradientTop,
+                gradientMiddle: this.gradientMiddle,
+                gradientLeft: this.gradientLeft,
+                gradientRight: this.gradientRight
+            }));
+        } catch (e) { /* quota / private mode */ }
+    }
+};
+BlckbxPrefs.load();
+
+let typingIndicatorTimer = null;
+let titleFlashTimer = null;
+let unreadWhileScrolled = 0;
+
+function isNearBottom(container) {
+    if (!container) return true;
+    const gap = container.scrollHeight - container.scrollTop - container.clientHeight;
+    return gap < 60;
+}
+
+function renderJumpToBottom() {
+    const btn = document.getElementById('jumpToBottomBtn');
+    const badge = document.getElementById('jumpToBottomBadge');
+    const container = document.getElementById('messages');
+    if (!btn || !badge || !container) return;
+    const show = unreadWhileScrolled > 0 && !isNearBottom(container);
+    badge.textContent = String(Math.min(99, unreadWhileScrolled));
+    btn.classList.toggle('visible', show);
+}
+
+function bumpUnreadIfNeeded() {
+    const container = document.getElementById('messages');
+    if (!container) return;
+    if (isNearBottom(container)) return;
+    unreadWhileScrolled = Math.min(99, unreadWhileScrolled + 1);
+    renderJumpToBottom();
+}
+
+function resetUnread() {
+    unreadWhileScrolled = 0;
+    renderJumpToBottom();
+}
+
+window.jumpToBottom = () => {
+    const container = document.getElementById('messages');
+    if (!container) return;
+    container.scrollTop = container.scrollHeight;
+    resetUnread();
+};
+
+function initMessageLogUX() {
+    const container = document.getElementById('messages');
+    if (!container) return;
+    container.addEventListener('scroll', () => {
+        if (isNearBottom(container)) resetUnread();
+        else renderJumpToBottom();
+    }, { passive: true });
+    renderJumpToBottom();
+}
+
+function showToast(msg) {
+    const host = document.getElementById('toastHost');
+    if (!host) return;
+    host.textContent = msg;
+    host.classList.add('visible');
+    clearTimeout(showToast._t);
+    showToast._t = setTimeout(() => host.classList.remove('visible'), 2200);
+}
+
+function applyFrameGlassPrefs() {
+    document.body.classList.toggle('no-glass-top', !BlckbxPrefs.glassTop);
+    document.body.classList.toggle('no-glass-left', !BlckbxPrefs.glassLeft);
+    document.body.classList.toggle('no-glass-right', !BlckbxPrefs.glassRight);
+    document.body.classList.toggle('no-glass-middle', !BlckbxPrefs.glassMiddle);
+}
+
+function applyBubblePrefs() {
+    const layout = ['information', 'normal', 'simple'].includes(BlckbxPrefs.bubbleLayout) ? BlckbxPrefs.bubbleLayout : 'information';
+    document.body.classList.remove('bubble-information', 'bubble-normal', 'bubble-simple', 'bubble-no-avatar', 'bubble-no-name', 'bubble-no-time', 'bubble-no-status');
+    document.body.classList.add(`bubble-${layout}`);
+    document.body.classList.toggle('bubble-no-avatar', !BlckbxPrefs.bubbleShowAvatar);
+    document.body.classList.toggle('bubble-no-name', !BlckbxPrefs.bubbleShowName);
+    document.body.classList.toggle('bubble-no-time', !BlckbxPrefs.bubbleShowTime);
+    document.body.classList.toggle('bubble-no-status', !BlckbxPrefs.bubbleShowStatus);
+}
+
+window.applyBubblePreset = (kind) => {
+    const map = {
+        information: { bubbleLayout: 'information', bubbleShowAvatar: true, bubbleShowName: true, bubbleShowTime: true, bubbleShowStatus: true },
+        normal: { bubbleLayout: 'normal', bubbleShowAvatar: true, bubbleShowName: true, bubbleShowTime: false, bubbleShowStatus: false },
+        simple: { bubbleLayout: 'simple', bubbleShowAvatar: false, bubbleShowName: true, bubbleShowTime: false, bubbleShowStatus: false }
+    };
+    const p = map[kind] || map.information;
+    Object.assign(BlckbxPrefs, p);
+    applyBubblePrefs();
+    syncSettingsFromPrefs();
+    BlckbxPrefs.save();
+    showToast(`bubble preset: ${kind}`);
+};
+
+window.applyGlassPreset = (kind) => {
+    const map = { subtle: 46, balanced: 72, frosted: 94 };
+    BlckbxPrefs.glassIntensity = map[kind] || 72;
+    applyGlassIntensity();
+    syncSettingsFromPrefs();
+    BlckbxPrefs.save();
+    showToast(`glass preset: ${kind}`);
+};
+
+window.applyFramePreset = (themeName) => {
+    const sets = {
+        default: { top:['#1e1e22','#141820','#0c0f14',140], mid:['#1a1b22','#12151d','#0c1016',145], left:['#1c2435','#101723','#0f1014',145], right:['#241a34','#151128','#100f14',225] },
+        midnight:{ top:['#112142','#142b52','#0b1630',140], mid:['#13233f','#10203a','#0b1628',145], left:['#122646','#0f1f3a','#0a1324',150], right:['#1f2d52','#112446','#0b1833',225] },
+        white:   { top:['#ffffff','#f2f5fa','#e8edf8',130], mid:['#ffffff','#f6f8fc','#edf1fa',140], left:['#f7f9fd','#edf1f8','#e3e9f4',145], right:['#f5f8fe','#edf2fb','#e6ecf8',225] },
+        red:     { top:['#2b0505','#3a0909','#200505',135], mid:['#260404','#340707','#1d0404',145], left:['#240404','#300606','#1a0303',150], right:['#2b0505','#3a0909','#200505',225] },
+        orange:  { top:['#2f1908','#43230c','#211205',135], mid:['#2b1708','#3c200c','#1d1105',145], left:['#2a1608','#3a1f0b','#1d1005',150], right:['#2f1908','#43230c','#211205',225] },
+        purple:  { top:['#241038','#351850','#1a0e28',135], mid:['#220f34','#301648','#180d24',145], left:['#201035','#2d1647','#170c22',150], right:['#241038','#351850','#1a0e28',225] }
+    };
+    const s = sets[themeName] || sets.default;
+    BlckbxPrefs.gradientTop = { enabled:true, animate:true, speed:22, c1:s.top[0], c2:s.top[1], c3:s.top[2], angle:s.top[3] };
+    BlckbxPrefs.gradientMiddle = { enabled:true, animate:true, speed:22, c1:s.mid[0], c2:s.mid[1], c3:s.mid[2], angle:s.mid[3] };
+    BlckbxPrefs.gradientLeft = { enabled:true, animate:true, speed:20, c1:s.left[0], c2:s.left[1], c3:s.left[2], angle:s.left[3] };
+    BlckbxPrefs.gradientRight = { enabled:true, animate:true, speed:24, c1:s.right[0], c2:s.right[1], c3:s.right[2], angle:s.right[3] };
+    BlckbxPrefs.gradientsEnabled = true;
+    BlckbxPrefs.gradientAnimation = true;
+    applyGradientSystem();
+    syncSettingsFromPrefs();
+    BlckbxPrefs.save();
+    showToast(`${themeName} frame preset applied`);
+};
+
+window.applyUIPreset = (kind) => {
+    if (kind === 'minimal') {
+        BlckbxPrefs.gradientAnimation = false;
+        BlckbxPrefs.bubbleGlass = false;
+        BlckbxPrefs.glassIntensity = 44;
+        Object.assign(BlckbxPrefs, { bubbleLayout:'simple', bubbleShowAvatar:false, bubbleShowName:true, bubbleShowTime:false, bubbleShowStatus:false });
+    } else if (kind === 'cinema') {
+        BlckbxPrefs.gradientAnimation = true;
+        BlckbxPrefs.bubbleGlass = true;
+        BlckbxPrefs.glassIntensity = 90;
+        Object.assign(BlckbxPrefs, { bubbleLayout:'information', bubbleShowAvatar:true, bubbleShowName:true, bubbleShowTime:true, bubbleShowStatus:true });
+    } else if (kind === 'flat') {
+        BlckbxPrefs.gradientAnimation = false;
+        BlckbxPrefs.bubbleGlass = false;
+        BlckbxPrefs.glassIntensity = 28;
+        BlckbxPrefs.glassTop = false; BlckbxPrefs.glassMiddle = false;
+        Object.assign(BlckbxPrefs, { bubbleLayout:'normal', bubbleShowAvatar:true, bubbleShowName:true, bubbleShowTime:false, bubbleShowStatus:false });
+    } else {
+        BlckbxPrefs.gradientAnimation = true;
+        BlckbxPrefs.bubbleGlass = true;
+        BlckbxPrefs.glassIntensity = 72;
+        BlckbxPrefs.glassTop = true; BlckbxPrefs.glassMiddle = true;
+        Object.assign(BlckbxPrefs, { bubbleLayout:'normal', bubbleShowAvatar:true, bubbleShowName:true, bubbleShowTime:true, bubbleShowStatus:false });
+    }
+    applyFrameGlassPrefs();
+    applyGradientSystem();
+    applyGlassIntensity();
+    applyBubblePrefs();
+    syncSettingsFromPrefs();
+    BlckbxPrefs.save();
+    showToast(`ui preset: ${kind}`);
+};
+
+function syncSettingsFromPrefs() {
+    const setCheck = (id, v) => { const el = document.getElementById(id); if (el) el.checked = !!v; };
+    const setVal = (id, v) => { const el = document.getElementById(id); if (el != null && v != null) el.value = String(v); };
+    setCheck('prefReadReceipts', BlckbxPrefs.readReceipts);
+    setCheck('prefTyping', BlckbxPrefs.typingIndicators);
+    setCheck('prefSounds', BlckbxPrefs.sounds);
+    setCheck('prefTitleFlash', BlckbxPrefs.titleFlash);
+    setCheck('prefGlassTop', BlckbxPrefs.glassTop);
+    setCheck('prefGlassLeft', BlckbxPrefs.glassLeft);
+    setCheck('prefGlassRight', BlckbxPrefs.glassRight);
+    setCheck('prefGlassMiddle', BlckbxPrefs.glassMiddle);
+    setCheck('prefGradientsEnabled', BlckbxPrefs.gradientsEnabled);
+    setCheck('prefGradientAnimate', BlckbxPrefs.gradientAnimation);
+    setVal('prefGradientSpeed', BlckbxPrefs.gradientSpeed || 22);
+    setVal('prefGradientEasing', BlckbxPrefs.gradientEasing || 'linear');
+    setVal('prefGlassIntensity', BlckbxPrefs.glassIntensity || 72);
+    setVal('prefBubbleLayout', BlckbxPrefs.bubbleLayout || 'information');
+    setCheck('prefBubbleShowAvatar', BlckbxPrefs.bubbleShowAvatar);
+    setCheck('prefBubbleShowName', BlckbxPrefs.bubbleShowName);
+    setCheck('prefBubbleShowTime', BlckbxPrefs.bubbleShowTime);
+    setCheck('prefBubbleShowStatus', BlckbxPrefs.bubbleShowStatus);
+    setCheck('prefBubbleGlass', BlckbxPrefs.bubbleGlass);
+    setVal('prefGradApp1', BlckbxPrefs.gradientApp?.c1); setVal('prefGradApp2', BlckbxPrefs.gradientApp?.c2); setVal('prefGradApp3', BlckbxPrefs.gradientApp?.c3); setVal('prefGradAppAngle', BlckbxPrefs.gradientApp?.angle);
+    setVal('prefGradPanel1', BlckbxPrefs.gradientPanel?.c1); setVal('prefGradPanel2', BlckbxPrefs.gradientPanel?.c2); setVal('prefGradPanel3', BlckbxPrefs.gradientPanel?.c3); setVal('prefGradPanelAngle', BlckbxPrefs.gradientPanel?.angle);
+    setCheck('prefGradTopEnabled', BlckbxPrefs.gradientTop?.enabled); setCheck('prefGradTopAnimate', BlckbxPrefs.gradientTop?.animate); setVal('prefGradTopSpeed', BlckbxPrefs.gradientTop?.speed); setVal('prefGradTop1', BlckbxPrefs.gradientTop?.c1); setVal('prefGradTop2', BlckbxPrefs.gradientTop?.c2); setVal('prefGradTop3', BlckbxPrefs.gradientTop?.c3); setVal('prefGradTopAngle', BlckbxPrefs.gradientTop?.angle);
+    setCheck('prefGradMiddleEnabled', BlckbxPrefs.gradientMiddle?.enabled); setCheck('prefGradMiddleAnimate', BlckbxPrefs.gradientMiddle?.animate); setVal('prefGradMiddleSpeed', BlckbxPrefs.gradientMiddle?.speed); setVal('prefGradMiddle1', BlckbxPrefs.gradientMiddle?.c1); setVal('prefGradMiddle2', BlckbxPrefs.gradientMiddle?.c2); setVal('prefGradMiddle3', BlckbxPrefs.gradientMiddle?.c3); setVal('prefGradMiddleAngle', BlckbxPrefs.gradientMiddle?.angle);
+    setCheck('prefGradLeftEnabled', BlckbxPrefs.gradientLeft?.enabled); setCheck('prefGradLeftAnimate', BlckbxPrefs.gradientLeft?.animate); setVal('prefGradLeftSpeed', BlckbxPrefs.gradientLeft?.speed); setVal('prefGradLeft1', BlckbxPrefs.gradientLeft?.c1); setVal('prefGradLeft2', BlckbxPrefs.gradientLeft?.c2); setVal('prefGradLeft3', BlckbxPrefs.gradientLeft?.c3); setVal('prefGradLeftAngle', BlckbxPrefs.gradientLeft?.angle);
+    setCheck('prefGradRightEnabled', BlckbxPrefs.gradientRight?.enabled); setCheck('prefGradRightAnimate', BlckbxPrefs.gradientRight?.animate); setVal('prefGradRightSpeed', BlckbxPrefs.gradientRight?.speed); setVal('prefGradRight1', BlckbxPrefs.gradientRight?.c1); setVal('prefGradRight2', BlckbxPrefs.gradientRight?.c2); setVal('prefGradRight3', BlckbxPrefs.gradientRight?.c3); setVal('prefGradRightAngle', BlckbxPrefs.gradientRight?.angle);
+    syncGradientSettingsLabels();
+}
+
+function renderAvatarPreview() {
+    const host = document.getElementById('settingsAvatarPreview');
+    if (!host) return;
+    host.innerHTML = '';
+    if (App.avatarDataUrl && Security.isSafeAvatarDataUrl(App.avatarDataUrl)) {
+        const img = document.createElement('img');
+        img.src = App.avatarDataUrl;
+        img.alt = '';
+        img.referrerPolicy = 'no-referrer';
+        img.style.width = '100%';
+        img.style.height = '100%';
+        img.style.objectFit = 'cover';
+        img.style.borderRadius = '50%';
+        host.appendChild(img);
+        return;
+    }
+    const letter = document.createElement('span');
+    letter.className = 'msg-avatar-letter';
+    letter.style.background = (typeof App.color === 'string' && /^#[0-9a-fA-F]{6}$/.test(App.color)) ? App.color : '#888888';
+    letter.textContent = Security.safeInitial(App.username);
+    host.appendChild(letter);
+}
+
+function hexToRgba(hex, a) {
+    const m = /^#?([0-9a-f]{6})$/i.exec(hex || '');
+    if (!m) return `rgba(14,14,16,${a})`;
+    const n = parseInt(m[1], 16);
+    const r = (n >> 16) & 255;
+    const g = (n >> 8) & 255;
+    const b = n & 255;
+    return `rgba(${r},${g},${b},${a})`;
+}
+
+function parseCssColor(color) {
+    const s = String(color || '').trim();
+    let m = /^rgba?\(\s*([0-9.]+)\s*[, ]\s*([0-9.]+)\s*[, ]\s*([0-9.]+)(?:\s*[,/]\s*([0-9.]+))?\s*\)$/i.exec(s);
+    if (m) return { r: Math.round(+m[1]), g: Math.round(+m[2]), b: Math.round(+m[3]), a: m[4] == null ? 1 : +m[4] };
+    m = /^#?([0-9a-f]{6})$/i.exec(s);
+    if (m) {
+        const n = parseInt(m[1], 16);
+        return { r: (n >> 16) & 255, g: (n >> 8) & 255, b: n & 255, a: 1 };
+    }
+    return null;
+}
+
+function rgbaWithAlphaScale(color, scale, fallback) {
+    const c = parseCssColor(color) || parseCssColor(fallback);
+    if (!c) return fallback;
+    const a = Math.max(0.03, Math.min(0.98, c.a * scale));
+    return `rgba(${c.r}, ${c.g}, ${c.b}, ${a.toFixed(3)})`;
+}
+
+function applyGlassIntensity() {
+    const root = document.documentElement;
+    const cs = getComputedStyle(root);
+    const intensity = Math.max(20, Math.min(100, Number(BlckbxPrefs.glassIntensity) || 72));
+    const scale = 0.45 + (intensity / 100) * 0.95;
+    const blurPx = Math.round(8 + intensity * 0.22);
+    const sat = Math.round(108 + intensity * 0.45);
+    root.style.setProperty('--glass-bg', rgbaWithAlphaScale(cs.getPropertyValue('--glass-bg-base'), scale, 'rgba(14,14,16,0.52)'));
+    root.style.setProperty('--glass-border', rgbaWithAlphaScale(cs.getPropertyValue('--glass-border-base'), Math.max(0.55, scale * 0.9), 'rgba(255,255,255,0.1)'));
+    root.style.setProperty('--glass-highlight', rgbaWithAlphaScale(cs.getPropertyValue('--glass-highlight-base'), Math.max(0.45, scale * 0.75), 'rgba(255,255,255,0.06)'));
+    root.style.setProperty('--glass-blur', `${blurPx}px`);
+    root.style.setProperty('--glass-sat', `${sat}%`);
+}
+
+function gradientFromConfig(g) {
+    if (!g) return 'none';
+    const angle = Number.isFinite(+g.angle) ? (+g.angle % 360 + 360) % 360 : 135;
+    const c1 = g.c1 || '#111111';
+    const c2 = g.c2 || '#222222';
+    const c3 = g.c3 || c2;
+    return `linear-gradient(${angle}deg, ${c1} 0%, ${c2} 55%, ${c3} 100%)`;
+}
+
+function applyGradientSystem() {
+    const root = document.documentElement;
+    if (!BlckbxPrefs.gradientsEnabled) {
+        root.style.setProperty('--grad-app', 'none');
+        root.style.setProperty('--grad-panel', 'none');
+        root.style.setProperty('--grad-ui', 'none');
+        root.style.setProperty('--grad-left', 'none');
+        root.style.setProperty('--grad-right', 'none');
+        root.style.setProperty('--grad-top', 'none');
+        root.style.setProperty('--grad-middle', 'none');
+        root.style.setProperty('--grad-anim-state', 'paused');
+        root.style.setProperty('--grad-left-anim-state', 'paused');
+        root.style.setProperty('--grad-right-anim-state', 'paused');
+        root.style.setProperty('--grad-top-anim-state', 'paused');
+        root.style.setProperty('--grad-middle-anim-state', 'paused');
+        return;
+    }
+    root.style.setProperty('--grad-app', gradientFromConfig(BlckbxPrefs.gradientApp));
+    root.style.setProperty('--grad-panel', gradientFromConfig(BlckbxPrefs.gradientPanel));
+    root.style.setProperty('--grad-ui', BlckbxPrefs.gradientMiddle.enabled ? gradientFromConfig(BlckbxPrefs.gradientMiddle) : 'none');
+    root.style.setProperty('--grad-top', BlckbxPrefs.gradientTop.enabled ? gradientFromConfig(BlckbxPrefs.gradientTop) : 'none');
+    root.style.setProperty('--grad-left', BlckbxPrefs.gradientLeft.enabled ? gradientFromConfig(BlckbxPrefs.gradientLeft) : 'none');
+    root.style.setProperty('--grad-right', BlckbxPrefs.gradientRight.enabled ? gradientFromConfig(BlckbxPrefs.gradientRight) : 'none');
+    root.style.setProperty('--grad-anim-dur', `${Math.max(4, Number(BlckbxPrefs.gradientSpeed) || 22)}s`);
+    root.style.setProperty('--grad-anim-ease', BlckbxPrefs.gradientEasing || 'linear');
+    root.style.setProperty('--grad-anim-state', BlckbxPrefs.gradientAnimation ? 'running' : 'paused');
+    root.style.setProperty('--grad-left-anim-dur', `${Math.max(4, Number(BlckbxPrefs.gradientLeft.speed) || 20)}s`);
+    root.style.setProperty('--grad-right-anim-dur', `${Math.max(4, Number(BlckbxPrefs.gradientRight.speed) || 24)}s`);
+    root.style.setProperty('--grad-top-anim-dur', `${Math.max(4, Number(BlckbxPrefs.gradientTop.speed) || 22)}s`);
+    root.style.setProperty('--grad-middle-anim-dur', `${Math.max(4, Number(BlckbxPrefs.gradientMiddle.speed) || 22)}s`);
+    root.style.setProperty('--grad-left-anim-state', (BlckbxPrefs.gradientAnimation && BlckbxPrefs.gradientLeft.animate) ? 'running' : 'paused');
+    root.style.setProperty('--grad-right-anim-state', (BlckbxPrefs.gradientAnimation && BlckbxPrefs.gradientRight.animate) ? 'running' : 'paused');
+    root.style.setProperty('--grad-top-anim-state', (BlckbxPrefs.gradientAnimation && BlckbxPrefs.gradientTop.animate) ? 'running' : 'paused');
+    root.style.setProperty('--grad-middle-anim-state', (BlckbxPrefs.gradientAnimation && BlckbxPrefs.gradientMiddle.animate) ? 'running' : 'paused');
+}
+
+function syncGradientSettingsLabels() {
+    const pairs = [
+        ['prefGradientSpeed', 'prefGradientSpeedLabel', 's'],
+        ['prefGlassIntensity', 'prefGlassIntensityLabel', '%'],
+        ['prefGradAppAngle', 'prefGradAppAngleLabel', '°'],
+        ['prefGradPanelAngle', 'prefGradPanelAngleLabel', '°'],
+        ['prefGradTopAngle', 'prefGradTopAngleLabel', '°'],
+        ['prefGradMiddleAngle', 'prefGradMiddleAngleLabel', '°'],
+        ['prefGradLeftAngle', 'prefGradLeftAngleLabel', '°'],
+        ['prefGradRightAngle', 'prefGradRightAngleLabel', '°'],
+        ['prefGradTopSpeed', 'prefGradTopSpeedLabel', 's'],
+        ['prefGradMiddleSpeed', 'prefGradMiddleSpeedLabel', 's'],
+        ['prefGradLeftSpeed', 'prefGradLeftSpeedLabel', 's'],
+        ['prefGradRightSpeed', 'prefGradRightSpeedLabel', 's'],
+        ['customBgAngle', 'customBgAngleLabel', '°'],
+        ['customPanelAngle', 'customPanelAngleLabel', '°'],
+        ['customGlowStrength', 'customGlowStrengthLabel', '%']
+    ];
+    pairs.forEach(([inputId, labelId, suf]) => {
+        const i = document.getElementById(inputId);
+        const l = document.getElementById(labelId);
+        if (i && l) l.textContent = `${i.value}${suf}`;
+    });
+}
+
+function previewCustomThemeLive() {
+    const get = id => document.getElementById(id)?.value;
+    const glow = Number(get('customGlowStrength') || 35);
+    const shadowAlpha = Math.min(0.85, Math.max(0.08, glow / 100));
+    const bg = { c1: get('customBg1') || '#050505', c2: get('customBg2') || '#0d1020', c3: get('customGlow') || '#0a0a0a', angle: Number(get('customBgAngle') || 135) };
+    const pnl = { c1: get('customPanel1') || '#0a0a0a', c2: get('customPanel2') || '#151515', c3: get('customGlow') || '#121620', angle: Number(get('customPanelAngle') || 135) };
+    document.documentElement.style.setProperty('--bg-app', bg.c1);
+    document.documentElement.style.setProperty('--bg-panel', pnl.c1);
+    document.documentElement.style.setProperty('--bg-input', get('customPanel2') || '#151515');
+    document.documentElement.style.setProperty('--accent', get('customAccent') || '#ffffff');
+    document.documentElement.style.setProperty('--text-main', get('customTextMain') || '#e8e8e8');
+    document.documentElement.style.setProperty('--text-secondary', get('customTextSecondary') || '#aaaaaa');
+    document.documentElement.style.setProperty('--btn-bg', get('customBtnBg') || '#242424');
+    document.documentElement.style.setProperty('--btn-text', get('customBtnText') || '#ffffff');
+    document.documentElement.style.setProperty('--border', hexToRgba(get('customBorder') || '#4a4a4a', 0.28));
+    document.documentElement.style.setProperty('--border-hover', hexToRgba(get('customBorder') || '#4a4a4a', 0.48));
+    document.documentElement.style.setProperty('--glass-bg-base', hexToRgba(pnl.c1, 0.56));
+    document.documentElement.style.setProperty('--glass-border-base', hexToRgba(get('customAccent') || '#ffffff', 0.18));
+    document.documentElement.style.setProperty('--glass-highlight-base', 'rgba(255,255,255,0.06)');
+    document.documentElement.style.setProperty('--glass-shadow-base', `0 14px 44px ${hexToRgba(get('customShadowTint') || '#000000', shadowAlpha)}`);
+    BlckbxPrefs.gradientApp = bg;
+    BlckbxPrefs.gradientPanel = pnl;
+    applyGradientSystem();
+    applyGlassIntensity();
+    syncGradientSettingsLabels();
+}
+
+function resetCustomThemeEditor() {
+    const defaults = {
+        customBg1: '#050505', customBg2: '#0d1020', customPanel1: '#0a0a0a', customPanel2: '#151515',
+        customGlow: '#6b9fff', customAccent: '#ffffff', customTextMain: '#e8e8e8', customTextSecondary: '#aaaaaa',
+        customBtnBg: '#242424', customBtnText: '#ffffff', customBorder: '#4a4a4a', customShadowTint: '#000000',
+        customBgAngle: '135', customPanelAngle: '135', customGlowStrength: '35'
+    };
+    Object.entries(defaults).forEach(([k, v]) => {
+        const el = document.getElementById(k);
+        if (el) el.value = v;
+    });
+    previewCustomThemeLive();
+}
+
+function getCustomThemeFromEditor() {
+    const get = id => document.getElementById(id)?.value;
+    return {
+        name: (document.getElementById('customThemeName')?.value || '').trim(),
+        bg1: get('customBg1'), bg2: get('customBg2'),
+        panel1: get('customPanel1'), panel2: get('customPanel2'),
+        glow: get('customGlow'), accent: get('customAccent'),
+        textMain: get('customTextMain'), textSecondary: get('customTextSecondary'),
+        btnBg: get('customBtnBg'), btnText: get('customBtnText'),
+        border: get('customBorder'), shadowTint: get('customShadowTint'),
+        bgAngle: Number(get('customBgAngle') || 135),
+        panelAngle: Number(get('customPanelAngle') || 135),
+        glowStrength: Number(get('customGlowStrength') || 35)
+    };
+}
+
+function setCustomThemeEditor(theme) {
+    if (!theme) return;
+    const map = {
+        customBg1: theme.bg1, customBg2: theme.bg2,
+        customPanel1: theme.panel1, customPanel2: theme.panel2,
+        customGlow: theme.glow, customAccent: theme.accent,
+        customTextMain: theme.textMain, customTextSecondary: theme.textSecondary,
+        customBtnBg: theme.btnBg, customBtnText: theme.btnText,
+        customBorder: theme.border, customShadowTint: theme.shadowTint,
+        customBgAngle: String(theme.bgAngle ?? 135),
+        customPanelAngle: String(theme.panelAngle ?? 135),
+        customGlowStrength: String(theme.glowStrength ?? 35)
+    };
+    Object.entries(map).forEach(([k, v]) => {
+        const el = document.getElementById(k);
+        if (el && v != null) el.value = v;
+    });
+    previewCustomThemeLive();
+}
+
+function getSavedCustomThemes() {
+    try {
+        const raw = localStorage.getItem('blckbx_custom_themes');
+        const arr = raw ? JSON.parse(raw) : [];
+        return Array.isArray(arr) ? arr : [];
+    } catch {
+        return [];
+    }
+}
+
+function setSavedCustomThemes(arr) {
+    try { localStorage.setItem('blckbx_custom_themes', JSON.stringify(arr)); } catch (e) { /* ignore */ }
+}
+
+function refreshSavedThemeSelect() {
+    const sel = document.getElementById('savedCustomThemes');
+    if (!sel) return;
+    const themes = getSavedCustomThemes();
+    sel.innerHTML = `<option value="">saved themes...</option>` + themes.map(t => `<option value="${Security.escapeHtml(t.name || 'unnamed')}">${Security.escapeHtml(t.name || 'unnamed')}</option>`).join('');
+}
+
+function initSettingsInputBindings() {
+    const ids = [
+        'prefGradientSpeed','prefGlassIntensity','prefGradAppAngle','prefGradPanelAngle','prefGradTopAngle','prefGradMiddleAngle','prefGradLeftAngle','prefGradRightAngle',
+        'prefGradTopSpeed','prefGradMiddleSpeed','prefGradLeftSpeed','prefGradRightSpeed','customBgAngle','customPanelAngle','customGlowStrength'
+    ];
+    ids.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.addEventListener('input', syncGradientSettingsLabels);
+    });
+    const liveApplyIds = [
+        'prefBubbleLayout','prefBubbleShowAvatar','prefBubbleShowName','prefBubbleShowTime','prefBubbleShowStatus',
+        'prefGradientsEnabled','prefGradientAnimate','prefGradientSpeed','prefGradientEasing',
+        'prefGradApp1','prefGradApp2','prefGradApp3','prefGradAppAngle',
+        'prefGradPanel1','prefGradPanel2','prefGradPanel3','prefGradPanelAngle',
+        'prefGradTopEnabled','prefGradTopAnimate','prefGradTopSpeed','prefGradTop1','prefGradTop2','prefGradTop3','prefGradTopAngle',
+        'prefGradMiddleEnabled','prefGradMiddleAnimate','prefGradMiddleSpeed','prefGradMiddle1','prefGradMiddle2','prefGradMiddle3','prefGradMiddleAngle',
+        'prefGradLeftEnabled','prefGradLeftAnimate','prefGradLeftSpeed','prefGradLeft1','prefGradLeft2','prefGradLeft3','prefGradLeftAngle',
+        'prefGradRightEnabled','prefGradRightAnimate','prefGradRightSpeed','prefGradRight1','prefGradRight2','prefGradRight3','prefGradRightAngle'
+    ];
+    liveApplyIds.forEach(id => {
+        const el = document.getElementById(id);
+        if (!el) return;
+        el.addEventListener('input', () => {
+            // mirror closeSettingsModal persistence logic for live preview
+            BlckbxPrefs.gradientsEnabled = !!document.getElementById('prefGradientsEnabled')?.checked;
+            BlckbxPrefs.gradientAnimation = !!document.getElementById('prefGradientAnimate')?.checked;
+            BlckbxPrefs.gradientSpeed = Math.max(4, Number(document.getElementById('prefGradientSpeed')?.value || 22));
+            BlckbxPrefs.gradientEasing = document.getElementById('prefGradientEasing')?.value || 'linear';
+            BlckbxPrefs.glassIntensity = Math.max(20, Math.min(100, Number(document.getElementById('prefGlassIntensity')?.value || 72)));
+            BlckbxPrefs.bubbleLayout = document.getElementById('prefBubbleLayout')?.value || 'information';
+            BlckbxPrefs.bubbleShowAvatar = !!document.getElementById('prefBubbleShowAvatar')?.checked;
+            BlckbxPrefs.bubbleShowName = !!document.getElementById('prefBubbleShowName')?.checked;
+            BlckbxPrefs.bubbleShowTime = !!document.getElementById('prefBubbleShowTime')?.checked;
+            BlckbxPrefs.bubbleShowStatus = !!document.getElementById('prefBubbleShowStatus')?.checked;
+            const get = (x, d) => document.getElementById(x)?.value || d;
+            BlckbxPrefs.gradientApp = { c1:get('prefGradApp1','#0a0f1a'), c2:get('prefGradApp2','#1a1f33'), c3:get('prefGradApp3','#050505'), angle:Number(get('prefGradAppAngle',135)) };
+            BlckbxPrefs.gradientPanel = { c1:get('prefGradPanel1','#141414'), c2:get('prefGradPanel2','#0d0d0d'), c3:get('prefGradPanel3','#151b2a'), angle:Number(get('prefGradPanelAngle',135)) };
+            BlckbxPrefs.gradientTop = { enabled:!!document.getElementById('prefGradTopEnabled')?.checked, animate:!!document.getElementById('prefGradTopAnimate')?.checked, speed:Math.max(4, Number(get('prefGradTopSpeed',22))), c1:get('prefGradTop1','#1e1e22'), c2:get('prefGradTop2','#141820'), c3:get('prefGradTop3','#0c0f14'), angle:Number(get('prefGradTopAngle',140)) };
+            BlckbxPrefs.gradientMiddle = { enabled:!!document.getElementById('prefGradMiddleEnabled')?.checked, animate:!!document.getElementById('prefGradMiddleAnimate')?.checked, speed:Math.max(4, Number(get('prefGradMiddleSpeed',22))), c1:get('prefGradMiddle1','#1a1b22'), c2:get('prefGradMiddle2','#12151d'), c3:get('prefGradMiddle3','#0c1016'), angle:Number(get('prefGradMiddleAngle',145)) };
+            BlckbxPrefs.gradientLeft = { enabled:!!document.getElementById('prefGradLeftEnabled')?.checked, animate:!!document.getElementById('prefGradLeftAnimate')?.checked, speed:Math.max(4, Number(get('prefGradLeftSpeed',20))), c1:get('prefGradLeft1','#1c2435'), c2:get('prefGradLeft2','#101723'), c3:get('prefGradLeft3','#0f1014'), angle:Number(get('prefGradLeftAngle',145)) };
+            BlckbxPrefs.gradientRight = { enabled:!!document.getElementById('prefGradRightEnabled')?.checked, animate:!!document.getElementById('prefGradRightAnimate')?.checked, speed:Math.max(4, Number(get('prefGradRightSpeed',24))), c1:get('prefGradRight1','#241a34'), c2:get('prefGradRight2','#151128'), c3:get('prefGradRight3','#100f14'), angle:Number(get('prefGradRightAngle',225)) };
+            applyGradientSystem();
+            applyGlassIntensity();
+            applyBubblePrefs();
+            syncGradientSettingsLabels();
+        });
+    });
+}
+
+window.saveCustomThemeToLibrary = () => {
+    const t = getCustomThemeFromEditor();
+    if (!t.name) return showToast('name the theme first');
+    const themes = getSavedCustomThemes().filter(x => x.name !== t.name);
+    themes.push(t);
+    setSavedCustomThemes(themes.slice(-30));
+    refreshSavedThemeSelect();
+    showToast('theme saved');
+};
+
+window.loadSelectedCustomTheme = () => {
+    const sel = document.getElementById('savedCustomThemes');
+    const themes = getSavedCustomThemes();
+    const t = themes.find(x => x.name === sel?.value);
+    if (!t) return showToast('pick a saved theme');
+    setCustomThemeEditor(t);
+    showToast('theme loaded');
+};
+
+async function downscaleAvatarToPng64(file) {
+    if (!file || !file.type || !file.type.startsWith('image/')) throw new Error('not an image');
+    if (file.size > 5 * 1024 * 1024) throw new Error('image too large');
+    const blobUrl = URL.createObjectURL(file);
+    try {
+        const img = new Image();
+        img.decoding = 'async';
+        img.referrerPolicy = 'no-referrer';
+        await new Promise((res, rej) => {
+            img.onload = res;
+            img.onerror = rej;
+            img.src = blobUrl;
+        });
+        const canvas = document.createElement('canvas');
+        canvas.width = 64;
+        canvas.height = 64;
+        const ctx = canvas.getContext('2d', { alpha: true });
+        ctx.clearRect(0, 0, 64, 64);
+        const s = Math.min(img.naturalWidth, img.naturalHeight);
+        const sx = Math.floor((img.naturalWidth - s) / 2);
+        const sy = Math.floor((img.naturalHeight - s) / 2);
+        ctx.drawImage(img, sx, sy, s, s, 0, 0, 64, 64);
+        const dataUrl = canvas.toDataURL('image/png');
+        if (!Security.isSafeAvatarDataUrl(dataUrl)) throw new Error('avatar rejected');
+        return dataUrl;
+    } finally {
+        URL.revokeObjectURL(blobUrl);
+    }
+}
+
+window.applyAvatarFromSettings = async () => {
+    play('k');
+    const input = document.getElementById('settingsAvatarInput');
+    const file = input?.files?.[0];
+    if (!file) return showToast('choose an image first');
+    try {
+        const url = await downscaleAvatarToPng64(file);
+        App.avatarDataUrl = url;
+        try { localStorage.setItem('blckbx_avatar', url); } catch (e) { /* ignore */ }
+        renderAvatarPreview();
+        // broadcast to connected peers
+        const payload = { type: 'profile', user: App.username, color: App.color, avatar: App.avatarDataUrl };
+        Object.keys(App.conns).forEach(pid => {
+            const c = App.conns[pid];
+            if (c && c.open) {
+                try { c.send(payload); } catch (e) { /* ignore */ }
+            }
+        });
+        showToast('avatar updated');
+    } catch (e) {
+        console.error(e);
+        showToast('could not use that image');
+    }
+};
+
+window.clearAvatarFromSettings = () => {
+    play('k');
+    App.avatarDataUrl = null;
+    try { localStorage.removeItem('blckbx_avatar'); } catch (e) { /* ignore */ }
+    renderAvatarPreview();
+    const payload = { type: 'profile', user: App.username, color: App.color, avatar: null };
+    Object.keys(App.conns).forEach(pid => {
+        const c = App.conns[pid];
+        if (c && c.open) {
+            try { c.send(payload); } catch (e) { /* ignore */ }
+        }
+    });
+    showToast('using letter avatar');
+};
+
+function formatMsgStatus(tier) {
+    if (tier === 'sending') return '…';
+    if (tier === 'sent') return '✓';
+    if (tier === 'delivered' || tier === 'read') return '✓✓';
+    return '';
+}
+
+function updateOutgoingMessageStatus(msgId) {
+    const meta = App.pendingReceipts[msgId];
+    const el = document.querySelector(`#messages [data-msg-id="${CSS.escape(msgId)}"]`);
+    if (!el) return;
+    const statusEl = el.querySelector('.msg-status');
+    if (!statusEl || !meta) return;
+    if (meta.expected.size === 0) {
+        statusEl.dataset.tier = 'sent';
+        statusEl.textContent = formatMsgStatus('sent');
+        statusEl.title = 'sent';
+        return;
+    }
+    let tier = 'sent';
+    if (meta.read.size >= meta.expected.size) tier = 'read';
+    else if (meta.delivered.size >= meta.expected.size) tier = 'delivered';
+    statusEl.dataset.tier = tier;
+    statusEl.textContent = formatMsgStatus(tier);
+    statusEl.title = tier;
+}
+
+const readReceiptObserverByEl = new WeakMap();
+
+function queueReadReceipt(peerId, msgId) {
+    const el = document.querySelector(`#messages [data-msg-id="${CSS.escape(msgId)}"]`);
+    if (!el || readReceiptObserverByEl.has(el)) return;
+    const root = document.getElementById('messages');
+    const obs = new IntersectionObserver((ents) => {
+        ents.forEach(en => {
+            if (en.intersectionRatio < 0.4) return;
+            obs.disconnect();
+            readReceiptObserverByEl.delete(el);
+            const c = App.conns[peerId];
+            if (c && c.open) {
+                try { c.send({ type: 'msg_receipt', forMsgId: msgId, kind: 'read' }); } catch (e) { /* ignore */ }
+            }
+        });
+    }, { root: root || null, threshold: [0, 0.4, 1] });
+    readReceiptObserverByEl.set(el, obs);
+    obs.observe(el);
+}
+
+function maybeFlashTitle() {
+    if (!BlckbxPrefs.titleFlash || !document.hidden) return;
+    if (titleFlashTimer) return;
+    const orig = App.originalDocumentTitle || document.title;
+    let on = true;
+    titleFlashTimer = setInterval(() => {
+        document.title = on ? '● new message — blckbx' : orig;
+        on = !on;
+    }, 900);
+}
+document.addEventListener('visibilitychange', () => {
+    if (!document.hidden && titleFlashTimer) {
+        clearInterval(titleFlashTimer);
+        titleFlashTimer = null;
+        document.title = App.originalDocumentTitle || document.title;
+    }
+});
+
+function scheduleTypingIndicatorUpdate() {
+    clearTimeout(typingIndicatorTimer);
+    typingIndicatorTimer = setTimeout(renderTypingIndicator, 50);
+}
+
+function renderTypingIndicator() {
+    const bar = document.getElementById('typingIndicator');
+    const txt = document.getElementById('typingIndicatorText');
+    if (!bar || !txt) return;
+    const names = [...App.typingPeers.values()];
+    if (names.length === 0) {
+        bar.hidden = true;
+        txt.textContent = '';
+        return;
+    }
+    bar.hidden = false;
+    if (names.length === 1) txt.textContent = `${names[0]} is typing…`;
+    else if (names.length === 2) txt.textContent = `${names[0]} and ${names[1]} are typing…`;
+    else txt.textContent = `${names.length} people are typing…`;
+}
+
+function broadcastTyping(active) {
+    if (!BlckbxPrefs.typingIndicators) return;
+    const payload = { type: 'typing', active };
+    Object.keys(App.conns).forEach(pid => {
+        const c = App.conns[pid];
+        if (c && c.open) {
+            try { c.send(payload); } catch (e) { /* ignore */ }
+        }
+    });
+}
+
+function addChatMessage({ text, isMe, color, user, type, msgId, remotePeerId, ts, status }) {
+    const container = document.getElementById('messages');
+    const shouldStickToBottom = isNearBottom(container);
+    const now = ts != null ? ts : Date.now();
+    const gkey = isMe ? '_me' : (user || 'anon');
+    let showCompact = false;
+    if (App.lastMsgGroup && App.lastMsgGroup.key === gkey && (now - App.lastMsgGroup.t) < 5 * 60 * 1000) {
+        showCompact = true;
+    }
+    App.lastMsgGroup = { key: gkey, t: now };
+
+    const avatar = (!isMe && remotePeerId && App.users?.[remotePeerId]?.avatar) ? App.users[remotePeerId].avatar : null;
+    const el = Security.createSafeMessageElement(text, isMe, color, user, type || 'text', {
+        msgId,
+        ts: now,
+        showCompact,
+        status: status || (isMe ? 'sent' : undefined),
+        remotePeerId,
+        avatar
+    });
+    container.appendChild(el);
+    if (shouldStickToBottom || isMe) {
+        container.scrollTop = container.scrollHeight;
+        if (isMe) resetUnread();
+    } else {
+        bumpUnreadIfNeeded();
+    }
+    return el;
+}
+
+function addMessage(text, isMe, color, user, type, extra = {}) {
+    addChatMessage({
+        text,
+        isMe,
+        color,
+        user,
+        type: type || 'text',
+        msgId: extra.msgId,
+        remotePeerId: extra.remotePeerId,
+        ts: extra.ts,
+        status: extra.status
+    });
+}
+
 // Audio
 const audioMap = {
     'l': new Audio('https://www.myinstants.com/media/sounds/message_2.mp3'),
@@ -3972,17 +5857,18 @@ Object.values(audioMap).forEach(a => a.volume = 0.4);
 let muted = false;
 
 function play(key) {
-    if(!muted && audioMap[key]) {
-        audioMap[key].currentTime = 0;
-        audioMap[key].play().catch(e=>{});
-    }
+    if (!BlckbxPrefs.sounds || muted || !audioMap[key]) return;
+    audioMap[key].currentTime = 0;
+    audioMap[key].play().catch(() => {});
 }
 
 function toggleMute() {
     muted = !muted;
     const btn = document.getElementById('muteToggle');
-    btn.style.borderColor = muted ? 'var(--danger)' : 'var(--border)';
-    btn.style.color = muted ? 'var(--danger)' : '';
+    if (btn) {
+        btn.style.borderColor = muted ? 'var(--danger)' : 'var(--border)';
+        btn.style.color = muted ? 'var(--danger)' : '';
+    }
 }
 
 function updateStatus(cls, text) {
@@ -3998,28 +5884,26 @@ function addSystemMsg(text) {
     const c = document.getElementById('messages');
     c.appendChild(div);
     c.scrollTop = c.scrollHeight;
-}
-
-function addMessage(text, isMe, color, user, type) {
-    const container = document.getElementById('messages');
-    const el = Security.createSafeMessageElement(text, isMe, color, user, type);
-    container.appendChild(el);
-    container.scrollTop = container.scrollHeight;
+    App.lastMsgGroup = null;
 }
 
 function addFileMessage(url, name, size, color, user) {
     const container = document.getElementById('messages');
     const div = document.createElement('div');
     div.className = 'message';
+    const u = Security.escapeHtml(user);
+    const nm = Security.escapeHtml(name);
+    const safeColor = typeof color === 'string' && /^#[0-9a-fA-F]{6}$/.test(color) ? color : '#888888';
     div.innerHTML = `
-        <span class="username" style="color:${color}">${user}</span>
+        <span class="username" style="color:${safeColor}">${u}</span>
         <div class="message-content">
-            <div>Shared file: ${Security.escapeHtml(name)} (${formatBytes(size)})</div>
-            <button style="margin-top:8px" onclick="downloadFile('${url}', '${Security.escapeHtml(name)}')">download</button>
+            <div>shared file: ${nm} (${formatBytes(size)})</div>
+            <button type="button" style="margin-top:8px" onclick="downloadFile('${url}', '${nm}')">download</button>
         </div>
     `;
     container.appendChild(div);
     container.scrollTop = container.scrollHeight;
+    App.lastMsgGroup = null;
 }
 
 function downloadFile(url, name) {
@@ -4215,45 +6099,6 @@ function assembleReceivedFile(fileId, peerId, appCtx) {
     delete (appCtx || App).fileTransfers[fileId];
 }
 
-function downloadFile(url, name) {
-    // Validate that URL is a blob URL (created by our app)
-    if (!url.startsWith('blob:')) {
-        console.error('Invalid file URL');
-        addSystemMsg('invalid file download');
-        return;
-    }
-    
-    // Sanitize filename
-    const safeName = Security.sanitizeFilename(name);
-    
-    // Show malware warning
-    const warning = `[!] SECURITY WARNING\n\nYou are about to download: ${safeName}\n\nThis file has NOT been scanned for malware or viruses.\n\nOnly download files from people you trust.\nAlways scan downloads with antivirus software before opening.\n\nDo you want to download this file?`;
-    
-    if (!window.confirm(warning)) {
-        return;
-    }
-    
-    try {
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = safeName;
-        a.style.display = 'none';
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
-        
-        // Revoke blob URL after download to free memory
-        setTimeout(() => {
-            URL.revokeObjectURL(url);
-        }, 1000);
-        
-        addSystemMsg(`file downloaded - scan for malware before opening`);
-    } catch(e) {
-        console.error('File download failed:', e);
-        addSystemMsg('file download failed');
-    }
-}
-
 window.joinRoom = function() {
     play('k');
     const id = document.getElementById('joinId').value.trim();
@@ -4376,87 +6221,121 @@ window.leavePublicRoomMobile = function() {
 
 window.sendMessage = async function() {
     const input = document.getElementById('msg');
-    const text = input.value.trim();
-    if(!text) return;
-    
-    // Rate limiting: max 10 messages per 10 seconds
+    const raw = input.value;
+    const text = Security.sanitizePlainText(raw.trim(), 5000);
+    if (!text) return;
+
     const now = Date.now();
     App.messageTimestamps = App.messageTimestamps.filter(t => now - t < 10000);
-    
     if (App.messageTimestamps.length >= 10) {
         addSystemMsg('sending too fast, please slow down');
         return;
     }
-    
-    // Prevent double-sending (debounce 500ms)
-    if (now - App.lastMessageTime < 500) {
-        return;
-    }
-    
+    if (now - App.lastMessageTime < 400) return;
     App.messageTimestamps.push(now);
     App.lastMessageTime = now;
-    
-    // Validate message length (prevent spam)
-    if (text.length > 5000) {
-        addSystemMsg('message too long (max 5000 characters)');
-        return;
-    }
-    
-    // Check for connections
+
     if (Object.keys(App.conns).length === 0) {
         addSystemMsg('no active connections');
         return;
     }
-    
-    addMessage(text, true, App.color, 'me', 'text');
+
+    broadcastTyping(false);
+    clearTimeout(window._typingIdleTimer);
+
+    const msgId = crypto.randomUUID();
+    const ts = Date.now();
+    addChatMessage({
+        text,
+        isMe: true,
+        color: App.color,
+        user: 'me',
+        type: 'text',
+        msgId,
+        ts,
+        status: 'sending'
+    });
     play('l');
     input.value = '';
+    autoResizeMessageInput();
 
-    for(let peerId in App.conns) {
-        try {
-            // Check if session exists before encrypting
-            if(!App.crypto.sessions[peerId]) {
-                console.warn(`No session for peer ${peerId}, skipping message`);
-                continue;
-            }
-            
-            // Check connection is open
-            if (!App.conns[peerId] || !App.conns[peerId].open) {
-                console.warn(`Connection to ${peerId} is not open`);
-                continue;
-            }
-            
-            const encrypted = await App.crypto.encrypt(text, peerId);
-            App.conns[peerId].send({ type: 'msg', payload: encrypted, contentType: 'text' });
-        } catch(e) { 
-            console.error(`Failed to send to ${peerId}:`, e);
+    const expected = new Set();
+    for (const peerId of Object.keys(App.conns)) {
+        if (App.crypto.sessions[peerId] && App.conns[peerId] && App.conns[peerId].open) {
+            expected.add(peerId);
         }
     }
+    App.pendingReceipts[msgId] = { expected, delivered: new Set(), read: new Set() };
+
+    let anyFail = false;
+    for (const peerId of expected) {
+        try {
+            const encrypted = await App.crypto.encrypt(text, peerId);
+            App.conns[peerId].send({
+                type: 'msg',
+                payload: encrypted,
+                contentType: 'text',
+                msgId,
+                ts
+            });
+        } catch (e) {
+            console.error(`Failed to send to ${peerId}:`, e);
+            anyFail = true;
+        }
+    }
+
+    updateOutgoingMessageStatus(msgId);
+    if (anyFail) addSystemMsg('some peers did not receive the message');
 };
 
 window.sendGif = async function(url) {
-    // Validate GIF URL
     const sanitizedUrl = Security.sanitizeUrl(url);
     if (!sanitizedUrl || !Security.isValidImageUrl(sanitizedUrl)) {
         addSystemMsg('invalid or unsafe GIF URL');
         return;
     }
-    
-    addMessage(sanitizedUrl, true, App.color, 'me', 'image_gif');
+    if (Object.keys(App.conns).length === 0) {
+        addSystemMsg('no active connections');
+        return;
+    }
+
+    const msgId = crypto.randomUUID();
+    const ts = Date.now();
+    addChatMessage({
+        text: sanitizedUrl,
+        isMe: true,
+        color: App.color,
+        user: 'me',
+        type: 'image_gif',
+        msgId,
+        ts,
+        status: 'sending'
+    });
     play('l');
-    
-    for(let peerId in App.conns) {
+
+    const expected = new Set();
+    for (const peerId of Object.keys(App.conns)) {
+        if (App.crypto.sessions[peerId] && App.conns[peerId] && App.conns[peerId].open) {
+            expected.add(peerId);
+        }
+    }
+    App.pendingReceipts[msgId] = { expected, delivered: new Set(), read: new Set() };
+
+    for (const peerId of expected) {
         try {
-            if(!App.crypto.sessions[peerId]) {
-                console.warn(`No session for peer ${peerId}, skipping GIF`);
-                continue;
-            }
             const encrypted = await App.crypto.encrypt(sanitizedUrl, peerId);
-            App.conns[peerId].send({ type: 'msg', payload: encrypted, contentType: 'image_gif' });
-        } catch(e) {
+            App.conns[peerId].send({
+                type: 'msg',
+                payload: encrypted,
+                contentType: 'image_gif',
+                msgId,
+                ts
+            });
+        } catch (e) {
             console.error(`Failed to send GIF to ${peerId}:`, e);
         }
     }
+    updateOutgoingMessageStatus(msgId);
     closeGifPicker();
 };
 
@@ -4887,32 +6766,264 @@ window.showThemeModal = () => {
 
 window.closeThemeModal = () => {
     play('k');
-    document.getElementById('themeModal').classList.remove('active');
-    document.getElementById('themeOverlay').classList.remove('active');
+    const m = document.getElementById('themeModal');
+    const o = document.getElementById('themeOverlay');
+    if (m) m.classList.add('closing');
+    if (m) m.classList.remove('active');
+    if (o) o.classList.remove('active');
     setTimeout(()=>{
-        document.getElementById('themeOverlay').style.display='none';
-        document.getElementById('themeModal').style.display='none';
+        if (o) o.style.display='none';
+        if (m) {
+            m.classList.remove('closing');
+            m.style.display='none';
+        }
     },200);
 };
 
-window.applyTheme = (theme) => {
+window.showSettingsModal = () => {
+    play('k');
+    const nick = document.getElementById('settingsNickname');
+    if (nick) nick.value = App.username || '';
+    renderAvatarPreview();
+    const pr = document.getElementById('prefReadReceipts');
+    const pt = document.getElementById('prefTyping');
+    const ps = document.getElementById('prefSounds');
+    const pf = document.getElementById('prefTitleFlash');
+    const gt = document.getElementById('prefGlassTop');
+    const gl = document.getElementById('prefGlassLeft');
+    const gr = document.getElementById('prefGlassRight');
+    const gm = document.getElementById('prefGlassMiddle');
+    const gi = document.getElementById('prefGlassIntensity');
+    const bg = document.getElementById('prefBubbleGlass');
+    const bl = document.getElementById('prefBubbleLayout');
+    const bsa = document.getElementById('prefBubbleShowAvatar');
+    const bsn = document.getElementById('prefBubbleShowName');
+    const bst = document.getElementById('prefBubbleShowTime');
+    const bss = document.getElementById('prefBubbleShowStatus');
+    const ge = document.getElementById('prefGradientsEnabled');
+    const ga = document.getElementById('prefGradientAnimate');
+    const gs = document.getElementById('prefGradientSpeed');
+    const gz = document.getElementById('prefGradientEasing');
+    if (pr) pr.checked = BlckbxPrefs.readReceipts;
+    if (pt) pt.checked = BlckbxPrefs.typingIndicators;
+    if (ps) ps.checked = BlckbxPrefs.sounds;
+    if (pf) pf.checked = BlckbxPrefs.titleFlash;
+    if (gt) gt.checked = BlckbxPrefs.glassTop;
+    if (gl) gl.checked = BlckbxPrefs.glassLeft;
+    if (gr) gr.checked = BlckbxPrefs.glassRight;
+    if (gm) gm.checked = BlckbxPrefs.glassMiddle;
+    if (gi) gi.value = String(BlckbxPrefs.glassIntensity || 72);
+    if (bg) bg.checked = BlckbxPrefs.bubbleGlass;
+    if (bl) bl.value = BlckbxPrefs.bubbleLayout || 'information';
+    if (bsa) bsa.checked = !!BlckbxPrefs.bubbleShowAvatar;
+    if (bsn) bsn.checked = !!BlckbxPrefs.bubbleShowName;
+    if (bst) bst.checked = !!BlckbxPrefs.bubbleShowTime;
+    if (bss) bss.checked = !!BlckbxPrefs.bubbleShowStatus;
+    if (ge) ge.checked = BlckbxPrefs.gradientsEnabled;
+    if (ga) ga.checked = BlckbxPrefs.gradientAnimation;
+    if (gs) gs.value = String(BlckbxPrefs.gradientSpeed || 22);
+    if (gz) gz.value = BlckbxPrefs.gradientEasing || 'linear';
+    const setVal = (id, v) => { const el = document.getElementById(id); if (el != null && v != null) el.value = String(v); };
+    setVal('prefGradApp1', BlckbxPrefs.gradientApp.c1); setVal('prefGradApp2', BlckbxPrefs.gradientApp.c2); setVal('prefGradApp3', BlckbxPrefs.gradientApp.c3); setVal('prefGradAppAngle', BlckbxPrefs.gradientApp.angle);
+    setVal('prefGradPanel1', BlckbxPrefs.gradientPanel.c1); setVal('prefGradPanel2', BlckbxPrefs.gradientPanel.c2); setVal('prefGradPanel3', BlckbxPrefs.gradientPanel.c3); setVal('prefGradPanelAngle', BlckbxPrefs.gradientPanel.angle);
+    setVal('prefGradTop1', BlckbxPrefs.gradientTop.c1); setVal('prefGradTop2', BlckbxPrefs.gradientTop.c2); setVal('prefGradTop3', BlckbxPrefs.gradientTop.c3); setVal('prefGradTopAngle', BlckbxPrefs.gradientTop.angle); setVal('prefGradTopSpeed', BlckbxPrefs.gradientTop.speed);
+    setVal('prefGradMiddle1', BlckbxPrefs.gradientMiddle.c1); setVal('prefGradMiddle2', BlckbxPrefs.gradientMiddle.c2); setVal('prefGradMiddle3', BlckbxPrefs.gradientMiddle.c3); setVal('prefGradMiddleAngle', BlckbxPrefs.gradientMiddle.angle); setVal('prefGradMiddleSpeed', BlckbxPrefs.gradientMiddle.speed);
+    setVal('prefGradLeft1', BlckbxPrefs.gradientLeft.c1); setVal('prefGradLeft2', BlckbxPrefs.gradientLeft.c2); setVal('prefGradLeft3', BlckbxPrefs.gradientLeft.c3); setVal('prefGradLeftAngle', BlckbxPrefs.gradientLeft.angle); setVal('prefGradLeftSpeed', BlckbxPrefs.gradientLeft.speed);
+    setVal('prefGradRight1', BlckbxPrefs.gradientRight.c1); setVal('prefGradRight2', BlckbxPrefs.gradientRight.c2); setVal('prefGradRight3', BlckbxPrefs.gradientRight.c3); setVal('prefGradRightAngle', BlckbxPrefs.gradientRight.angle); setVal('prefGradRightSpeed', BlckbxPrefs.gradientRight.speed);
+    const tEn = document.getElementById('prefGradTopEnabled'); const tAn = document.getElementById('prefGradTopAnimate');
+    const mEn = document.getElementById('prefGradMiddleEnabled'); const mAn = document.getElementById('prefGradMiddleAnimate');
+    const lEn = document.getElementById('prefGradLeftEnabled'); const lAn = document.getElementById('prefGradLeftAnimate');
+    const rEn = document.getElementById('prefGradRightEnabled'); const rAn = document.getElementById('prefGradRightAnimate');
+    if (tEn) tEn.checked = !!BlckbxPrefs.gradientTop.enabled;
+    if (tAn) tAn.checked = !!BlckbxPrefs.gradientTop.animate;
+    if (mEn) mEn.checked = !!BlckbxPrefs.gradientMiddle.enabled;
+    if (mAn) mAn.checked = !!BlckbxPrefs.gradientMiddle.animate;
+    if (lEn) lEn.checked = !!BlckbxPrefs.gradientLeft.enabled;
+    if (lAn) lAn.checked = !!BlckbxPrefs.gradientLeft.animate;
+    if (rEn) rEn.checked = !!BlckbxPrefs.gradientRight.enabled;
+    if (rAn) rAn.checked = !!BlckbxPrefs.gradientRight.animate;
+    syncGradientSettingsLabels();
+    refreshSavedThemeSelect();
+    document.getElementById('settingsOverlay').style.display = 'block';
+    document.getElementById('settingsModal').style.display = 'block';
+    setTimeout(() => {
+        document.getElementById('settingsOverlay').classList.add('active');
+        document.getElementById('settingsModal').classList.add('active');
+    }, 10);
+};
+
+window.closeSettingsModal = () => {
+    play('k');
+    const pr = document.getElementById('prefReadReceipts');
+    const pt = document.getElementById('prefTyping');
+    const ps = document.getElementById('prefSounds');
+    const pf = document.getElementById('prefTitleFlash');
+    const gt = document.getElementById('prefGlassTop');
+    const gl = document.getElementById('prefGlassLeft');
+    const gr = document.getElementById('prefGlassRight');
+    const gm = document.getElementById('prefGlassMiddle');
+    const gi = document.getElementById('prefGlassIntensity');
+    const bg = document.getElementById('prefBubbleGlass');
+    const bl = document.getElementById('prefBubbleLayout');
+    const bsa = document.getElementById('prefBubbleShowAvatar');
+    const bsn = document.getElementById('prefBubbleShowName');
+    const bst = document.getElementById('prefBubbleShowTime');
+    const bss = document.getElementById('prefBubbleShowStatus');
+    const ge = document.getElementById('prefGradientsEnabled');
+    const ga = document.getElementById('prefGradientAnimate');
+    const gs = document.getElementById('prefGradientSpeed');
+    const gz = document.getElementById('prefGradientEasing');
+    if (pr) BlckbxPrefs.readReceipts = !!pr.checked;
+    if (pt) BlckbxPrefs.typingIndicators = !!pt.checked;
+    if (ps) BlckbxPrefs.sounds = !!ps.checked;
+    if (pf) BlckbxPrefs.titleFlash = !!pf.checked;
+    if (gt) BlckbxPrefs.glassTop = !!gt.checked;
+    if (gl) BlckbxPrefs.glassLeft = !!gl.checked;
+    if (gr) BlckbxPrefs.glassRight = !!gr.checked;
+    if (gm) BlckbxPrefs.glassMiddle = !!gm.checked;
+    if (gi) BlckbxPrefs.glassIntensity = Math.max(20, Math.min(100, Number(gi.value) || 72));
+    if (bg) BlckbxPrefs.bubbleGlass = !!bg.checked;
+    if (bl) BlckbxPrefs.bubbleLayout = bl.value || 'information';
+    if (bsa) BlckbxPrefs.bubbleShowAvatar = !!bsa.checked;
+    if (bsn) BlckbxPrefs.bubbleShowName = !!bsn.checked;
+    if (bst) BlckbxPrefs.bubbleShowTime = !!bst.checked;
+    if (bss) BlckbxPrefs.bubbleShowStatus = !!bss.checked;
+    if (ge) BlckbxPrefs.gradientsEnabled = !!ge.checked;
+    if (ga) BlckbxPrefs.gradientAnimation = !!ga.checked;
+    if (gs) BlckbxPrefs.gradientSpeed = Math.max(4, Number(gs.value) || 22);
+    if (gz) BlckbxPrefs.gradientEasing = gz.value || 'linear';
+    const get = (id, d) => document.getElementById(id)?.value || d;
+    BlckbxPrefs.gradientApp = { c1: get('prefGradApp1', '#0a0f1a'), c2: get('prefGradApp2', '#1a1f33'), c3: get('prefGradApp3', '#050505'), angle: Number(get('prefGradAppAngle', 135)) };
+    BlckbxPrefs.gradientPanel = { c1: get('prefGradPanel1', '#141414'), c2: get('prefGradPanel2', '#0d0d0d'), c3: get('prefGradPanel3', '#151b2a'), angle: Number(get('prefGradPanelAngle', 135)) };
+    BlckbxPrefs.gradientTop = {
+        enabled: !!document.getElementById('prefGradTopEnabled')?.checked,
+        animate: !!document.getElementById('prefGradTopAnimate')?.checked,
+        speed: Math.max(4, Number(get('prefGradTopSpeed', 22))),
+        c1: get('prefGradTop1', '#1e1e22'),
+        c2: get('prefGradTop2', '#141820'),
+        c3: get('prefGradTop3', '#0c0f14'),
+        angle: Number(get('prefGradTopAngle', 140))
+    };
+    BlckbxPrefs.gradientMiddle = {
+        enabled: !!document.getElementById('prefGradMiddleEnabled')?.checked,
+        animate: !!document.getElementById('prefGradMiddleAnimate')?.checked,
+        speed: Math.max(4, Number(get('prefGradMiddleSpeed', 22))),
+        c1: get('prefGradMiddle1', '#1a1b22'),
+        c2: get('prefGradMiddle2', '#12151d'),
+        c3: get('prefGradMiddle3', '#0c1016'),
+        angle: Number(get('prefGradMiddleAngle', 145))
+    };
+    BlckbxPrefs.gradientLeft = {
+        enabled: !!document.getElementById('prefGradLeftEnabled')?.checked,
+        animate: !!document.getElementById('prefGradLeftAnimate')?.checked,
+        speed: Math.max(4, Number(get('prefGradLeftSpeed', 20))),
+        c1: get('prefGradLeft1', '#1c2435'),
+        c2: get('prefGradLeft2', '#101723'),
+        c3: get('prefGradLeft3', '#0f1014'),
+        angle: Number(get('prefGradLeftAngle', 145))
+    };
+    BlckbxPrefs.gradientRight = {
+        enabled: !!document.getElementById('prefGradRightEnabled')?.checked,
+        animate: !!document.getElementById('prefGradRightAnimate')?.checked,
+        speed: Math.max(4, Number(get('prefGradRightSpeed', 24))),
+        c1: get('prefGradRight1', '#241a34'),
+        c2: get('prefGradRight2', '#151128'),
+        c3: get('prefGradRight3', '#100f14'),
+        angle: Number(get('prefGradRightAngle', 225))
+    };
+    BlckbxPrefs.save();
+    applyFrameGlassPrefs();
+    applyGradientSystem();
+    applyGlassIntensity();
+    applyBubblePrefs();
+    const m = document.getElementById('settingsModal');
+    const o = document.getElementById('settingsOverlay');
+    if (m) m.classList.add('closing');
+    if (m) m.classList.remove('active');
+    if (o) o.classList.remove('active');
+    setTimeout(() => {
+        if (o) o.style.display = 'none';
+        if (m) {
+            m.classList.remove('closing');
+            m.style.display = 'none';
+        }
+    }, 200);
+};
+
+window.saveNicknameFromSettings = () => {
+    play('k');
+    const raw = document.getElementById('settingsNickname')?.value?.trim() || '';
+    const sanitized = raw.replace(/[^a-zA-Z0-9_\- ]/g, '');
+    if (sanitized.length < 2) {
+        showToast('nickname must be 2–20 characters');
+        return;
+    }
+    App.username = sanitized.slice(0, 20);
+    const payload = { type: 'profile', user: App.username, color: App.color, avatar: App.avatarDataUrl || null };
+    Object.keys(App.conns).forEach(pid => {
+        const c = App.conns[pid];
+        if (c && c.open) {
+            try { c.send(payload); } catch (e) { /* ignore */ }
+        }
+    });
+    showToast('nickname updated');
+    BlckbxPrefs.save();
+};
+
+window.applyTheme = (theme, el) => {
     play('k');
     document.body.setAttribute('data-theme', theme);
-    document.querySelectorAll('.theme-option').forEach(e=>e.classList.remove('active'));
-    event.currentTarget.classList.add('active');
+    try { localStorage.setItem('blckbx_theme', theme); } catch (e) { /* ignore */ }
+    // reset any custom inline overrides so theme variables fully apply
+    if (theme !== 'custom') {
+        ['--bg-app','--bg-panel','--bg-input','--accent','--glass-bg-base','--glass-border-base','--glass-highlight-base','--glass-shadow-base','--glass-bg','--glass-border','--glass-highlight','--glass-shadow','--text-main','--text-secondary','--border','--border-hover','--btn-bg','--btn-text'].forEach(k => {
+            document.documentElement.style.removeProperty(k);
+        });
+    }
+    document.querySelectorAll('.theme-option').forEach(e => e.classList.remove('active'));
+    const node = el || document.querySelector(`.theme-option[data-theme="${theme}"]`);
+    if (node) node.classList.add('active');
+    const presetGrad = {
+        default: { app:['#0a0f1a','#1a1f33','#050505'], panel:['#141414','#0d0d0d','#151b2a'] },
+        midnight:{ app:['#071225','#0f2347','#080d18'], panel:['#112142','#142b52','#0b1630'] },
+        white:   { app:['#f6f7fb','#e7ebf4','#f0f2f8'], panel:['#ffffff','#f2f5fa','#e8edf8'] },
+        red:     { app:['#220202','#3a0606','#140202'], panel:['#2b0505','#3a0909','#200505'] },
+        orange:  { app:['#241306','#3b1e08','#140b04'], panel:['#2f1908','#43230c','#211205'] },
+        purple:  { app:['#180826','#2a1040','#11071b'], panel:['#241038','#351850','#1a0e28'] }
+    }[theme];
+    if (presetGrad) {
+        BlckbxPrefs.gradientApp = { c1:presetGrad.app[0], c2:presetGrad.app[1], c3:presetGrad.app[2], angle: 135 };
+        BlckbxPrefs.gradientPanel = { c1:presetGrad.panel[0], c2:presetGrad.panel[1], c3:presetGrad.panel[2], angle: 135 };
+        applyGradientSystem();
+    }
+    applyGlassIntensity();
 };
 
 window.applyCustomTheme = () => {
     play('k');
-    const bg = document.getElementById('customBg').value;
-    const panel = document.getElementById('customPanel').value;
-    const inp = document.getElementById('customInput').value;
-    const acc = document.getElementById('customAccent').value;
-    document.documentElement.style.setProperty('--bg-app', bg);
-    document.documentElement.style.setProperty('--bg-panel', panel);
-    document.documentElement.style.setProperty('--bg-input', inp);
-    document.documentElement.style.setProperty('--accent', acc);
+    const t = getCustomThemeFromEditor();
+    document.documentElement.style.setProperty('--bg-app', t.bg1 || '#050505');
+    document.documentElement.style.setProperty('--bg-panel', t.panel1 || '#0a0a0a');
+    document.documentElement.style.setProperty('--bg-input', t.panel2 || '#151515');
+    document.documentElement.style.setProperty('--accent', t.accent || '#ffffff');
+    document.documentElement.style.setProperty('--text-main', t.textMain || '#e8e8e8');
+    document.documentElement.style.setProperty('--text-secondary', t.textSecondary || '#aaaaaa');
+    document.documentElement.style.setProperty('--btn-bg', t.btnBg || '#242424');
+    document.documentElement.style.setProperty('--btn-text', t.btnText || '#ffffff');
+    document.documentElement.style.setProperty('--border', hexToRgba(t.border || '#4a4a4a', 0.28));
+    document.documentElement.style.setProperty('--border-hover', hexToRgba(t.border || '#4a4a4a', 0.48));
+    document.documentElement.style.setProperty('--glass-bg-base', hexToRgba(t.panel1 || '#0a0a0a', 0.56));
+    document.documentElement.style.setProperty('--glass-border-base', hexToRgba(t.accent || '#ffffff', 0.18));
+    document.documentElement.style.setProperty('--glass-highlight-base', 'rgba(255,255,255,0.06)');
+    document.documentElement.style.setProperty('--glass-shadow-base', `0 14px 44px ${hexToRgba(t.shadowTint || '#000000', Math.max(0.08, (t.glowStrength || 35) / 100))}`);
+    BlckbxPrefs.gradientApp = { c1: t.bg1 || '#050505', c2: t.bg2 || '#0d1020', c3: t.glow || '#0a0a0a', angle: t.bgAngle || 135 };
+    BlckbxPrefs.gradientPanel = { c1: t.panel1 || '#0a0a0a', c2: t.panel2 || '#151515', c3: t.glow || '#121620', angle: t.panelAngle || 135 };
+    BlckbxPrefs.gradientsEnabled = true;
+    applyGradientSystem();
+    applyGlassIntensity();
+    BlckbxPrefs.save();
     document.body.setAttribute('data-theme', 'custom');
+    try { localStorage.setItem('blckbx_theme', 'custom'); } catch (e) { /* ignore */ }
 };
 
 const TENOR_KEY = "LIVDSRZULELA";
@@ -4920,9 +7031,9 @@ window.toggleGifPicker = () => {
     const p = document.getElementById('gifPicker');
     const o = document.getElementById('gifOverlay');
     if(p.classList.contains('active')) {
-        p.classList.remove('active');
-        o.classList.remove('active');
+        window.closeGifPicker();
     } else {
+        if (p) p.classList.remove('closing');
         p.classList.add('active');
         o.classList.add('active');
         document.getElementById('gifSearch').focus();
@@ -4931,27 +7042,48 @@ window.toggleGifPicker = () => {
 };
 
 window.closeGifPicker = () => {
-    document.getElementById('gifPicker').classList.remove('active');
-    document.getElementById('gifOverlay').classList.remove('active');
+    const p = document.getElementById('gifPicker');
+    const o = document.getElementById('gifOverlay');
+    if (p) p.classList.add('closing');
+    if (p) p.classList.remove('active');
+    if (o) o.classList.remove('active');
+    setTimeout(() => {
+        if (p) p.classList.remove('closing');
+    }, 220);
 };
 
 window.searchGifs = async () => {
-    const q = document.getElementById('gifSearch').value;
-    const url = q 
-        ? `https://g.tenor.com/v1/search?q=${q}&key=${TENOR_KEY}&limit=10`
-        : `https://g.tenor.com/v1/trending?key=${TENOR_KEY}&limit=10`;
-    
-    const res = await fetch(url);
-    const data = await res.json();
     const grid = document.getElementById('gifResults');
-    grid.innerHTML = '';
-    data.results.forEach(g => {
-        const div = document.createElement('div');
-        div.className = 'gif-item';
-        div.innerHTML = `<img src="${g.media[0].tinygif.url}">`;
-        div.onclick = () => window.sendGif(g.media[0].gif.url);
-        grid.appendChild(div);
-    });
+    if (!grid) return;
+    const q = document.getElementById('gifSearch').value;
+    const url = q
+        ? `https://g.tenor.com/v1/search?q=${encodeURIComponent(q)}&key=${TENOR_KEY}&limit=10`
+        : `https://g.tenor.com/v1/trending?key=${TENOR_KEY}&limit=10`;
+    try {
+        const res = await fetch(url);
+        if (!res.ok) throw new Error('network');
+        const data = await res.json();
+        const results = Array.isArray(data.results) ? data.results : [];
+        grid.innerHTML = '';
+        results.forEach(g => {
+            const media = g.media && g.media[0];
+            const tiny = media && media.tinygif && media.tinygif.url;
+            const full = media && media.gif && media.gif.url;
+            if (!tiny || !full || !Security.isValidUrl(full)) return;
+            const div = document.createElement('div');
+            div.className = 'gif-item';
+            const img = document.createElement('img');
+            img.src = tiny;
+            img.alt = '';
+            img.referrerPolicy = 'no-referrer';
+            div.appendChild(img);
+            div.onclick = () => window.sendGif(full);
+            grid.appendChild(div);
+        });
+        if (!grid.children.length) grid.innerHTML = '<div class="username-hint" style="padding:20px;text-align:center;">no results</div>';
+    } catch (e) {
+        grid.innerHTML = '<div class="username-hint" style="padding:20px;text-align:center;">could not load gifs</div>';
+    }
 };
 
 window.showHowToUse = () => {
@@ -4962,8 +7094,14 @@ window.showHowToUse = () => {
 
 window.closeHowTo = () => {
     play('k');
-    document.getElementById('howToOverlay').classList.remove('active');
-    document.getElementById('howToModal').classList.remove('active');
+    const m = document.getElementById('howToModal');
+    const o = document.getElementById('howToOverlay');
+    if (m) m.classList.add('closing');
+    if (m) m.classList.remove('active');
+    if (o) o.classList.remove('active');
+    setTimeout(() => {
+        if (m) m.classList.remove('closing');
+    }, 220);
 };
 
 window.closeScreenShare = () => {
@@ -4972,8 +7110,14 @@ window.closeScreenShare = () => {
     if (video) {
         video.srcObject = null;
     }
-    document.getElementById('screenShareOverlay').classList.remove('active');
-    document.getElementById('screenShareModal').classList.remove('active');
+    const m = document.getElementById('screenShareModal');
+    const o = document.getElementById('screenShareOverlay');
+    if (m) m.classList.add('closing');
+    if (m) m.classList.remove('active');
+    if (o) o.classList.remove('active');
+    setTimeout(() => {
+        if (m) m.classList.remove('closing');
+    }, 220);
 };
 
 // Security Warning Modal
@@ -5028,6 +7172,23 @@ window.closeFingerprintModal = () => {
 
 // Show security warning on first load
 window.addEventListener('DOMContentLoaded', () => {
+    App.originalDocumentTitle = document.title;
+    try {
+        const th = localStorage.getItem('blckbx_theme');
+        if (th) document.body.setAttribute('data-theme', th);
+    } catch (e) { /* ignore */ }
+    try {
+        const av = localStorage.getItem('blckbx_avatar');
+        if (Security.isSafeAvatarDataUrl(av)) App.avatarDataUrl = av;
+    } catch (e) { /* ignore */ }
+    applyFrameGlassPrefs();
+    applyGradientSystem();
+    applyGlassIntensity();
+    applyBubblePrefs();
+    initSettingsInputBindings();
+    refreshSavedThemeSelect();
+    syncGradientSettingsLabels();
+    initMessageLogUX();
     const hideWarning = localStorage.getItem('blckbx_hide_security_warning');
     if (!hideWarning) {
         setTimeout(() => {
@@ -5128,6 +7289,42 @@ document.getElementById('joinRoomBtn').onclick = async () => {
     await App.joinExistingPublicRoom(roomCode);
     setTimeout(() => App.updateVoiceUI(), 500);
 };
+
+function autoResizeMessageInput() {
+    const ta = document.getElementById('msg');
+    if (!ta) return;
+    ta.style.height = 'auto';
+    ta.style.height = Math.min(160, Math.max(44, ta.scrollHeight)) + 'px';
+}
+
+let lastTypingPulse = 0;
+function initMessageComposer() {
+    const ta = document.getElementById('msg');
+    if (!ta) return;
+    ta.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' && !e.shiftKey) {
+            e.preventDefault();
+            window.sendMessage();
+        }
+    });
+    ta.addEventListener('input', () => {
+        autoResizeMessageInput();
+        if (!BlckbxPrefs.typingIndicators || Object.keys(App.conns).length === 0) return;
+        const n = Date.now();
+        if (n - lastTypingPulse > 1800) {
+            lastTypingPulse = n;
+            broadcastTyping(true);
+        }
+        clearTimeout(window._typingIdleTimer);
+        window._typingIdleTimer = setTimeout(() => {
+            broadcastTyping(false);
+            lastTypingPulse = 0;
+        }, 2400);
+    });
+    autoResizeMessageInput();
+}
+
+initMessageComposer();
 
 // 3D Canvas Animation
 const canvas3d = document.getElementById('canvas3d');
