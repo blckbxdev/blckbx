@@ -1,3 +1,18 @@
+
+<!--
+▀█████████▄   ▄█        ▄████████    ▄█   ▄█▄ ▀█████████▄  ▀████    ▐████▀ 
+  ███    ███ ███       ███    ███   ███ ▄███▀   ███    ███   ███▌   ████▀  
+  ███    ███ ███       ███    █▀    ███▐██▀     ███    ███    ███  ▐███    
+ ▄███▄▄▄██▀  ███       ███         ▄█████▀     ▄███▄▄▄██▀     ▀███▄███▀    
+▀▀███▀▀▀██▄  ███       ███        ▀▀█████▄    ▀▀███▀▀▀██▄     ████▀██▄        
+  ███    ██▄ ███       ███    █▄    ███▐██▄     ███    ██▄   ▐███  ▀███    
+  ███    ███ ███▌    ▄ ███    ███   ███ ▀███▄   ███    ███  ▄███     ███▄  
+▄█████████▀  █████▄▄██ ████████▀    ███   ▀█▀ ▄█████████▀  ████       ███▄ 
+             ▀                      ▀                                      
+-->
+
+<!-- Welcome to blckbx's source code, use this to change anything you want, add any feutures etc. Ofc this can be used for bad intent, always download the official source code, and app from https://github.com/blckbxdev/blckbx when releasing a public modification of blckbx, please add proper credit.-->
+<!-- I've asked AI to anotate as much as possible, to make adding certain features as easy as possible. -->
 <!doctype html>
 <html lang="en">
 <head>
@@ -243,12 +258,15 @@ body, input, button, textarea, select, h1, h2, h3, .message, .username {
 html {
     height: 100%;
     overflow: hidden;
+    color-scheme: dark;
 }
 body {
     margin: 0;
     background: var(--bg-app);
     color: var(--text-main);
     font-family: var(--font-ui);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
     height: 100%;
     display: flex;
     justify-content: center;
@@ -260,6 +278,15 @@ body {
     top: 0;
     left: 0;
     transition: background-color 0.35s var(--ease-out), color 0.25s ease;
+}
+
+button, input, textarea, select {
+    touch-action: manipulation;
+}
+
+:focus-visible {
+    outline: 2px solid rgba(255,255,255,0.22);
+    outline-offset: 2px;
 }
 body::before {
     content: '';
@@ -593,6 +620,24 @@ body::before {
     width: 16px;
     height: 16px;
 }
+.room-load-more-wrap {
+    padding: 10px 4px 2px;
+    text-align: center;
+}
+.room-load-more-btn {
+    width: auto !important;
+    margin: 0 !important;
+    padding: 10px 14px !important;
+    background: var(--bg-secondary) !important;
+    border: 1px solid var(--border-hover) !important;
+    color: var(--text-secondary) !important;
+    font-size: 10px !important;
+    border-radius: 10px !important;
+}
+.room-load-more-btn:hover {
+    border-color: var(--accent-border) !important;
+    color: var(--text-main) !important;
+}
 .empty-rooms {
     text-align: center;
     padding: 60px 20px;
@@ -704,6 +749,7 @@ body::before {
     border: 1px solid var(--border);
     color: var(--text-main);
     padding: 12px;
+    min-height: 56px;
     border-radius: var(--radius-sm);
     font-family: var(--font-mono);
     font-size: 10px;
@@ -713,11 +759,22 @@ body::before {
     gap: 6px;
     cursor: pointer;
     transition: all 0.15s ease;
+    user-select: none;
 }
 .mobile-nav-btn:hover {
     background: var(--bg-secondary);
     border-color: var(--border-hover);
     transform: translateY(-2px);
+}
+.mobile-nav-btn:active {
+    transform: translateY(0) scale(0.98);
+    border-color: var(--border-strong);
+}
+
+@media (hover: none) {
+    .mobile-nav-btn:hover {
+        transform: none;
+    }
 }
 .mobile-nav-btn svg {
     width: 20px;
@@ -1834,6 +1891,10 @@ progress::-webkit-progress-value { background: #fff; border-radius: 2px; }
 .settings-section:last-of-type {
     margin-bottom: 0;
 }
+.settings-section h4 + .settings-subtle {
+    margin-top: -6px;
+    margin-bottom: 12px;
+}
 .settings-section h4 {
     font-family: var(--font-mono);
     font-size: 11px;
@@ -1920,6 +1981,13 @@ progress::-webkit-progress-value { background: #fff; border-radius: 2px; }
     font-size: 10px;
     color: var(--text-muted);
     margin-top: 6px;
+}
+.custom-theme-section {
+    margin-top: 14px;
+    padding: 14px;
+    border: 1px solid var(--glass-border);
+    border-radius: 12px;
+    background: rgba(0,0,0,0.14);
 }
 #toastHost {
     position: fixed;
@@ -2248,6 +2316,21 @@ progress::-webkit-progress-value { background: #fff; border-radius: 2px; }
     .theme-grid {
         grid-template-columns: 1fr;
     }
+    .settings-grid-2,
+    .settings-grid-3 {
+        grid-template-columns: 1fr;
+    }
+    .settings-inline {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 8px;
+    }
+    #themeModal,
+    #settingsModal {
+        width: min(94vw, 560px);
+        max-height: 86vh;
+        padding: 18px;
+    }
     .msg-copy-btn {
         opacity: 1 !important;
         pointer-events: auto !important;
@@ -2325,6 +2408,12 @@ body.no-blur #title::after {
     position: relative;
     margin-bottom: 14px;
 }
+.modal-subtitle {
+    margin: -8px 0 14px;
+    color: var(--text-muted);
+    font-size: 11px;
+    line-height: 1.45;
+}
 #settingsSearchInput {
     width: 100%;
     padding: 10px 38px 10px 14px;
@@ -2377,15 +2466,18 @@ body.no-blur #title::after {
 }
 .settings-nav-tabs {
     display: flex;
-    gap: 4px;
-    flex-wrap: wrap;
+    gap: 6px;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    scrollbar-width: none;
     margin-bottom: 14px;
     padding-bottom: 14px;
     border-bottom: 1px solid var(--border);
 }
+.settings-nav-tabs::-webkit-scrollbar { display: none; }
 .settings-nav-tab {
-    flex: 1;
-    min-width: 0;
+    flex: 0 0 auto;
+    min-width: 86px;
     padding: 7px 8px !important;
     font-size: 9px !important;
     font-weight: 600;
@@ -2531,6 +2623,7 @@ body.no-blur #title::after {
                 <button class="sort-btn" onclick="setSortMode('popular')">popular</button>
                 <button class="sort-btn" onclick="setSortMode('name')">a-z</button>
             </div>
+            <div class="settings-subtle" style="margin: -6px 0 8px; text-align:center;">optimized for large directories (up to ~1000 active rooms)</div>
             
             <div class="room-list" id="publicRoomsList">
                 <div class="empty-rooms">
@@ -2830,6 +2923,7 @@ body.no-blur #title::after {
         <h3>choose theme</h3>
         <button class="close-btn" onclick="closeThemeModal()">×</button>
     </div>
+    <div class="modal-subtitle">pick a preset or build your own theme. custom themes save a full snapshot of appearance settings.</div>
     <div class="theme-grid">
         <div class="theme-option active" data-theme="default" onclick="applyTheme('default', this)">
             <div class="theme-preview" style="background: #050505;">
@@ -2884,10 +2978,10 @@ body.no-blur #title::after {
         <label>custom theme creator</label>
         <div class="settings-grid-2">
             <div class="color-picker-row"><label>app bg 1</label><input type="color" id="customBg1" value="#050505" oninput="previewCustomThemeLive()"></div>
-            <div class="color-picker-row"><label>app bg 2</label><input type="color" id="customBg2" value="#0d1020" oninput="previewCustomThemeLive()"></div>
+            <div class="color-picker-row"><label>app bg 2</label><input type="color" id="customBg2" value="#101010" oninput="previewCustomThemeLive()"></div>
             <div class="color-picker-row"><label>panel bg 1</label><input type="color" id="customPanel1" value="#0a0a0a" oninput="previewCustomThemeLive()"></div>
             <div class="color-picker-row"><label>panel bg 2</label><input type="color" id="customPanel2" value="#151515" oninput="previewCustomThemeLive()"></div>
-            <div class="color-picker-row"><label>ui glow</label><input type="color" id="customGlow" value="#6b9fff" oninput="previewCustomThemeLive()"></div>
+            <div class="color-picker-row"><label>ui glow</label><input type="color" id="customGlow" value="#1f1f1f" oninput="previewCustomThemeLive()"></div>
             <div class="color-picker-row"><label>accent</label><input type="color" id="customAccent" value="#ffffff" oninput="previewCustomThemeLive()"></div>
             <div class="color-picker-row"><label>text main</label><input type="color" id="customTextMain" value="#e8e8e8" oninput="previewCustomThemeLive()"></div>
             <div class="color-picker-row"><label>text secondary</label><input type="color" id="customTextSecondary" value="#aaaaaa" oninput="previewCustomThemeLive()"></div>
@@ -2895,6 +2989,26 @@ body.no-blur #title::after {
             <div class="color-picker-row"><label>button text</label><input type="color" id="customBtnText" value="#ffffff" oninput="previewCustomThemeLive()"></div>
             <div class="color-picker-row"><label>border</label><input type="color" id="customBorder" value="#4a4a4a" oninput="previewCustomThemeLive()"></div>
             <div class="color-picker-row"><label>shadow tint</label><input type="color" id="customShadowTint" value="#000000" oninput="previewCustomThemeLive()"></div>
+        </div>
+        <div class="settings-grid-2" style="margin-top:10px;">
+            <div class="color-picker-row"><label>logo color</label><input type="color" id="customLogoColor" value="#ffffff" oninput="applyLogoColorFromCustomizer(this.value)"></div>
+            <div style="display:flex; flex-direction:column; gap:6px;">
+                <label style="font-size:10px; color:var(--text-muted); font-family:var(--font-mono); letter-spacing:1px;">logo image</label>
+                <input type="file" id="customLogoFile" accept="image/*" style="padding:10px; background:var(--bg-input); border:1px solid var(--border); border-radius:var(--radius-sm); color:var(--text-secondary); font-family:var(--font-mono); font-size:10px;">
+                <label style="display:flex; align-items:center; gap:8px; font-size:10px; color:var(--text-secondary); font-family:var(--font-mono);">
+                    <input type="checkbox" id="customLogoCube" onchange="toggleLogoImageCube(this.checked)">
+                    map image on all cube faces
+                </label>
+                <div class="settings-inline" style="margin-top:2px;">
+                    <label style="margin:0;">logo size</label>
+                    <input id="customLogoScale" type="range" min="70" max="150" value="100" oninput="setLogoScale(this.value)">
+                    <span id="customLogoScaleLabel" class="settings-subtle">100%</span>
+                </div>
+                <div style="display:flex; gap:8px;">
+                    <button type="button" onclick="applyLogoImageFromCustomizer()" style="flex:1; padding:10px;">use image</button>
+                    <button type="button" onclick="clearLogoImage()" style="flex:1; padding:10px; background:transparent; border-color:var(--border); color:var(--text-muted);">clear</button>
+                </div>
+            </div>
         </div>
         <div class="settings-inline" style="margin-top:10px;">
             <label style="margin:0;">bg angle</label>
@@ -2914,13 +3028,14 @@ body.no-blur #title::after {
         <div class="settings-grid-2" style="margin-top:12px;">
             <button type="button" onclick="applyCustomTheme()">apply custom theme</button>
             <button type="button" onclick="resetCustomThemeEditor()" style="background:transparent;border-color:var(--border);color:var(--text-muted);">reset editor</button>
-            <button type="button" onclick="saveCustomThemeToLibrary()">save theme</button>
+            <button type="button" onclick="saveCustomThemeToLibrary()">save full theme</button>
             <button type="button" onclick="loadSelectedCustomTheme()">load selected</button>
         </div>
         <div class="settings-inline" style="margin-top:10px;">
             <input id="customThemeName" placeholder="theme name..." maxlength="30">
             <select id="savedCustomThemes"></select>
         </div>
+        <div class="settings-subtle">saved themes include current colors, gradients, logo settings, and ui prefs.</div>
     </div>
 </div>
 
@@ -2930,6 +3045,7 @@ body.no-blur #title::after {
         <h3>settings</h3>
         <button type="button" class="close-btn" onclick="closeSettingsModal()" aria-label="close settings">×</button>
     </div>
+    <div class="modal-subtitle">everything is grouped by category below. use search for quick jumps and close settings to save changes.</div>
 
     <!-- Search -->
     <div class="settings-search-wrap">
@@ -2954,6 +3070,7 @@ body.no-blur #title::after {
 
     <div class="settings-section" id="settings-sec-presets" data-search-tags="presets hub frames glass ui chat bubble preset minimal cinema flat">
         <h4>presets hub</h4>
+        <div class="settings-subtle">quick start styles for the full app. you can still tweak every setting after applying one.</div>
         <div class="settings-group-title">theme-matched frame presets</div>
         <div class="preset-grid">
             <button type="button" class="preset-btn" onclick="applyFramePreset('default')">default frames</button>
@@ -2985,6 +3102,7 @@ body.no-blur #title::after {
     </div>
     <div class="settings-section" id="settings-sec-profile" data-search-tags="profile nickname avatar picture name display sync">
         <h4>profile</h4>
+        <div class="settings-subtle">how you appear to peers in the current room.</div>
         <label for="settingsNickname">display nickname</label>
         <input type="text" id="settingsNickname" maxlength="20" autocomplete="off" spellcheck="false" placeholder="how others see you">
         <label for="settingsAvatarInput" style="margin-top:14px;">profile picture (64×64)</label>
@@ -3002,6 +3120,7 @@ body.no-blur #title::after {
     </div>
     <div class="settings-section" id="settings-sec-chat" data-search-tags="chat read receipts typing indicators bubble layout avatar name time status">
         <h4>chat behavior</h4>
+        <div class="settings-subtle">controls message metadata and bubble display density.</div>
         <label class="settings-toggle"><span>send read receipts</span><input type="checkbox" id="prefReadReceipts"></label>
         <label class="settings-toggle"><span>show typing indicators</span><input type="checkbox" id="prefTyping"></label>
         <details class="settings-collapsible">
@@ -3022,11 +3141,13 @@ body.no-blur #title::after {
     </div>
     <div class="settings-section" id="settings-sec-notif" data-search-tags="notifications sound effects tab title flash alerts">
         <h4>notifications</h4>
+        <div class="settings-subtle">set how the app notifies you about new activity.</div>
         <label class="settings-toggle"><span>sound effects</span><input type="checkbox" id="prefSounds"></label>
         <label class="settings-toggle"><span>flash tab title when hidden</span><input type="checkbox" id="prefTitleFlash"></label>
     </div>
     <div class="settings-section" id="settings-sec-appearance" data-search-tags="appearance glass intensity blur top left right middle frame bubbles theme gallery">
         <h4>appearance</h4>
+        <div class="settings-subtle">adjust panel glass and frame visibility for readability.</div>
         <div class="settings-inline" style="margin-bottom:10px;">
             <label style="margin:0;">glass intensity</label>
             <input id="prefGlassIntensity" type="range" min="20" max="100" value="72">
@@ -3050,6 +3171,7 @@ body.no-blur #title::after {
     </div>
     <div class="settings-section" id="settings-sec-gradients" data-search-tags="gradients global enable animate speed easing direction angle app panel colors">
         <h4>global gradients</h4>
+        <div class="settings-subtle">base gradients used across app + panels when enabled.</div>
         <label class="settings-toggle"><span>enable gradients</span><input type="checkbox" id="prefGradientsEnabled"></label>
         <label class="settings-toggle"><span>animate gradients</span><input type="checkbox" id="prefGradientAnimate"></label>
         <div class="settings-inline">
@@ -3066,9 +3188,9 @@ body.no-blur #title::after {
             </select>
         </div>
         <div class="settings-grid-3" style="margin-top:10px;">
-            <div><label>app 1</label><input type="color" id="prefGradApp1" value="#0a0f1a"></div>
-            <div><label>app 2</label><input type="color" id="prefGradApp2" value="#1a1f33"></div>
-            <div><label>app 3</label><input type="color" id="prefGradApp3" value="#050505"></div>
+            <div><label>app 1</label><input type="color" id="prefGradApp1" value="#000000"></div>
+            <div><label>app 2</label><input type="color" id="prefGradApp2" value="#101010"></div>
+            <div><label>app 3</label><input type="color" id="prefGradApp3" value="#1f1f1f"></div>
         </div>
         <div class="settings-inline" style="margin-top:8px;">
             <label style="margin:0;">app direction</label>
@@ -3078,7 +3200,7 @@ body.no-blur #title::after {
         <div class="settings-grid-3" style="margin-top:10px;">
             <div><label>panel 1</label><input type="color" id="prefGradPanel1" value="#141414"></div>
             <div><label>panel 2</label><input type="color" id="prefGradPanel2" value="#0d0d0d"></div>
-            <div><label>panel 3</label><input type="color" id="prefGradPanel3" value="#151b2a"></div>
+            <div><label>panel 3</label><input type="color" id="prefGradPanel3" value="#1a1a1a"></div>
         </div>
         <div class="settings-inline" style="margin-top:8px;">
             <label style="margin:0;">panel direction</label>
@@ -3093,9 +3215,9 @@ body.no-blur #title::after {
             <summary>left frame</summary>
             <label class="settings-toggle"><span>left frame gradient</span><input type="checkbox" id="prefGradLeftEnabled"></label>
             <div class="settings-grid-3">
-                <div><label>left 1</label><input type="color" id="prefGradLeft1" value="#1c2435"></div>
-                <div><label>left 2</label><input type="color" id="prefGradLeft2" value="#101723"></div>
-                <div><label>left 3</label><input type="color" id="prefGradLeft3" value="#0f1014"></div>
+                <div><label>left 1</label><input type="color" id="prefGradLeft1" value="#161616"></div>
+                <div><label>left 2</label><input type="color" id="prefGradLeft2" value="#0e0e0e"></div>
+                <div><label>left 3</label><input type="color" id="prefGradLeft3" value="#1c1c1c"></div>
             </div>
             <div class="settings-inline" style="margin-top:8px;">
                 <label style="margin:0;">left direction</label>
@@ -3113,9 +3235,9 @@ body.no-blur #title::after {
             <summary>top frame</summary>
             <label class="settings-toggle"><span>top frame gradient</span><input type="checkbox" id="prefGradTopEnabled"></label>
             <div class="settings-grid-3">
-                <div><label>top 1</label><input type="color" id="prefGradTop1" value="#1e1e22"></div>
-                <div><label>top 2</label><input type="color" id="prefGradTop2" value="#141820"></div>
-                <div><label>top 3</label><input type="color" id="prefGradTop3" value="#0c0f14"></div>
+                <div><label>top 1</label><input type="color" id="prefGradTop1" value="#151515"></div>
+                <div><label>top 2</label><input type="color" id="prefGradTop2" value="#0d0d0d"></div>
+                <div><label>top 3</label><input type="color" id="prefGradTop3" value="#1a1a1a"></div>
             </div>
             <div class="settings-inline" style="margin-top:8px;">
                 <label style="margin:0;">top direction</label>
@@ -3133,9 +3255,9 @@ body.no-blur #title::after {
             <summary>middle frame</summary>
             <label class="settings-toggle"><span>middle frame gradient</span><input type="checkbox" id="prefGradMiddleEnabled"></label>
             <div class="settings-grid-3">
-                <div><label>mid 1</label><input type="color" id="prefGradMiddle1" value="#1a1b22"></div>
-                <div><label>mid 2</label><input type="color" id="prefGradMiddle2" value="#12151d"></div>
-                <div><label>mid 3</label><input type="color" id="prefGradMiddle3" value="#0c1016"></div>
+                <div><label>mid 1</label><input type="color" id="prefGradMiddle1" value="#141414"></div>
+                <div><label>mid 2</label><input type="color" id="prefGradMiddle2" value="#0c0c0c"></div>
+                <div><label>mid 3</label><input type="color" id="prefGradMiddle3" value="#181818"></div>
             </div>
             <div class="settings-inline" style="margin-top:8px;">
                 <label style="margin:0;">middle direction</label>
@@ -3153,9 +3275,9 @@ body.no-blur #title::after {
             <summary>right frame</summary>
             <label class="settings-toggle"><span>right frame gradient</span><input type="checkbox" id="prefGradRightEnabled"></label>
             <div class="settings-grid-3">
-                <div><label>right 1</label><input type="color" id="prefGradRight1" value="#241a34"></div>
-                <div><label>right 2</label><input type="color" id="prefGradRight2" value="#151128"></div>
-                <div><label>right 3</label><input type="color" id="prefGradRight3" value="#100f14"></div>
+                <div><label>right 1</label><input type="color" id="prefGradRight1" value="#161616"></div>
+                <div><label>right 2</label><input type="color" id="prefGradRight2" value="#0e0e0e"></div>
+                <div><label>right 3</label><input type="color" id="prefGradRight3" value="#1c1c1c"></div>
             </div>
             <div class="settings-inline" style="margin-top:8px;">
                 <label style="margin:0;">right direction</label>
@@ -3307,18 +3429,54 @@ body.no-blur #title::after {
 </div>
 
 <script>
-// Global Discovery System with Beacon Pattern (PROVEN TO WORK!)
-// This system elects a 'Beacon' peer to hold the room list.
-// If the beacon exists, we connect to it. If it doesn't, we BECOME it.
+// global discovery w/ beacon pattern (yeah)
+// one peer holds the public room list ("beacon").
+// if it exists we connect, if not we try to become it.
 const RoomDirectory = {
     beaconId: 'blckbx-beacon-v2-global', // Deterministic beacon ID
     peer: null,
     rooms: new Map(), // Stores { id, name, users, lastSeen, created }
     isBeacon: false,
     conn: null,
+    maxRooms: 1200,
+    maxRoomNameLen: 48,
+    _lastBroadcastAt: 0,
+    // If a public room is created before we finish connecting to the beacon,
+    // we keep the latest announce payload here and flush it on connect/host.
+    pendingAnnounce: null,
+    _connecting: false,
+
+    sanitizeRoom(room) {
+        if (!room || typeof room !== 'object') return null;
+        const id = Security.sanitizePlainText(String(room.id || ''), 80).toLowerCase();
+        if (!/^blckbx-room-[a-z0-9]{6,20}$/.test(id)) return null;
+        const rawName = Security.sanitizePlainText(String(room.name || ''), this.maxRoomNameLen).trim();
+        const name = rawName || 'untitled room';
+        const usersNum = Number(room.users);
+        const users = Number.isFinite(usersNum) ? Math.max(1, Math.min(500, Math.floor(usersNum))) : 1;
+        const now = Date.now();
+        const createdNum = Number(room.created);
+        const created = Number.isFinite(createdNum) ? Math.max(now - 30 * 24 * 3600 * 1000, Math.min(now, createdNum)) : now;
+        return { id, name, users, created, lastSeen: now };
+    },
+
+    normalizeRoomList(rooms) {
+        if (!Array.isArray(rooms)) return [];
+        const out = [];
+        const seen = new Set();
+        for (const r of rooms) {
+            const safe = this.sanitizeRoom(r);
+            if (!safe || seen.has(safe.id)) continue;
+            seen.add(safe.id);
+            out.push(safe);
+            if (out.length >= this.maxRooms) break;
+        }
+        return out;
+    },
     
     init() {
         console.log('🔍 Starting room discovery...');
+        this._connecting = true;
         
         // Try to CONNECT to the beacon first
         this.peer = new Peer(null, { 
@@ -3340,6 +3498,10 @@ const RoomDirectory = {
             console.log('Discovery error:', err.type);
         });
     },
+
+    ensureInit() {
+        if (!this.peer) this.init();
+    },
     
     connectToBeacon() {
         console.log('Attempting to connect to beacon:', this.beaconId);
@@ -3359,22 +3521,31 @@ const RoomDirectory = {
             connected = true;
             this.conn = conn;
             this.isBeacon = false;
+            this._connecting = false;
             setStatus('var(--success)', 'connected');
             
             // Request room list
             conn.send({ type: 'GET_ROOMS' });
+
+            // If we were already hosting a room, register it now.
+            if (this.pendingAnnounce) {
+                conn.send({ type: 'REGISTER_ROOM', room: this.pendingAnnounce });
+            }
         });
 
         conn.on('data', (data) => {
+            if (!Security.isSafeControlMessage(data)) return;
             if (data.type === 'ROOM_LIST') {
-                console.log('Received room list:', data.rooms);
-                this.updateRoomListUI(data.rooms);
+                const safeRooms = this.normalizeRoomList(data.rooms);
+                console.log('Received room list:', safeRooms.length);
+                this.updateRoomListUI(safeRooms);
             }
         });
 
         conn.on('close', () => {
             console.log('⚠️ Beacon connection lost. Attempting election...');
             this.conn = null;
+            this._connecting = false;
             setStatus('var(--danger)', 'reconnecting');
             // Try to become beacon after random delay to avoid race conditions
             setTimeout(() => this.attemptToBecomeBeacon(), Math.random() * 2000);
@@ -3388,6 +3559,7 @@ const RoomDirectory = {
         setTimeout(() => {
             if (!connected) {
                 console.log('⏱️ Beacon connection timeout - attempting to become beacon');
+                this._connecting = false;
                 this.attemptToBecomeBeacon();
             }
         }, 3000);
@@ -3420,7 +3592,15 @@ const RoomDirectory = {
             console.log('🌟 I AM NOW THE BEACON');
             this.isBeacon = true;
             this.peer = beaconPeer;
+            this._connecting = false;
             this.startBeaconLogic();
+
+            // If we were already hosting a room, register it locally immediately.
+            if (this.pendingAnnounce) {
+                const r = this.pendingAnnounce;
+                this.rooms.set(r.id, { ...r, lastSeen: Date.now() });
+                this.broadcastRooms();
+            }
             
             // Update UI to show we're hosting
             const el = document.getElementById('discoveryStatus');
@@ -3450,22 +3630,27 @@ const RoomDirectory = {
             console.log('Beacon: New client connected:', conn.peer);
             
             conn.on('data', (data) => {
+                if (!Security.isSafeControlMessage(data)) return;
                 if (data.type === 'REGISTER_ROOM') {
-                    const room = data.room;
-                    this.rooms.set(room.id, { 
-                        ...room, 
-                        lastSeen: Date.now() 
-                    });
+                    const room = this.sanitizeRoom(data.room);
+                    if (!room) return;
+                    this.rooms.set(room.id, room);
+                    // keep memory bounded even under abuse/spam
+                    if (this.rooms.size > this.maxRooms) {
+                        const oldest = [...this.rooms.values()].sort((a, b) => a.lastSeen - b.lastSeen).slice(0, this.rooms.size - this.maxRooms);
+                        oldest.forEach(r => this.rooms.delete(r.id));
+                    }
                     console.log('Beacon: Registered room:', room.name);
                     this.broadcastRooms();
                     
                 } else if (data.type === 'GET_ROOMS') {
                     // Send room list to requester
-                    const roomList = Array.from(this.rooms.values());
+                    const roomList = Array.from(this.rooms.values()).slice(0, this.maxRooms);
                     conn.send({ type: 'ROOM_LIST', rooms: roomList });
                     console.log('Beacon: Sent room list to', conn.peer);
                 }
             });
+            conn.on('error', () => {});
         });
 
         // Prune stale rooms every 10 seconds
@@ -3489,8 +3674,12 @@ const RoomDirectory = {
     
     broadcastRooms() {
         if (!this.isBeacon) return;
-        
-        const roomArray = Array.from(this.rooms.values());
+        const now = Date.now();
+        // throttle noisy broadcast storms from rapid peer joins/leaves
+        if (now - this._lastBroadcastAt < 500) return;
+        this._lastBroadcastAt = now;
+
+        const roomArray = Array.from(this.rooms.values()).slice(0, this.maxRooms);
         
         // Broadcast to all connected clients
         if (this.peer && this.peer.connections) {
@@ -3509,7 +3698,12 @@ const RoomDirectory = {
     
     updateRoomListUI(rooms) {
         // Update the global currentRooms variable
-        currentRooms = rooms;
+        const safe = this.normalizeRoomList(rooms);
+        // Skip heavy re-render if same room ids + user counts order
+        const sig = safe.map(r => `${r.id}:${r.users}:${r.lastSeen}`).join('|');
+        if (this._lastUiSig === sig) return;
+        this._lastUiSig = sig;
+        currentRooms = safe;
         
         // Trigger render if we're on the browse screen
         const browseStep = document.getElementById('browseRoomsStep');
@@ -3520,6 +3714,19 @@ const RoomDirectory = {
     
     // Called by room host to keep room alive in directory
     announceRoom(roomId, name, users) {
+        // Ensure discovery system is running so public rooms become discoverable
+        this.ensureInit();
+
+        // Keep latest announce payload so we can flush once connected/hosting.
+        const payload = this.sanitizeRoom({
+            id: roomId,
+            name,
+            users,
+            created: this.pendingAnnounce?.id === roomId ? (this.pendingAnnounce.created || Date.now()) : Date.now()
+        });
+        if (!payload) return;
+        this.pendingAnnounce = payload;
+
         if (this.isBeacon) {
             // I'm the beacon, just add it locally
             this.rooms.set(roomId, { 
@@ -3534,13 +3741,10 @@ const RoomDirectory = {
             // Send to beacon
             this.conn.send({ 
                 type: 'REGISTER_ROOM', 
-                room: { 
-                    id: roomId, 
-                    name, 
-                    users, 
-                    created: Date.now() 
-                } 
+                room: payload
             });
+        } else {
+            // Not connected yet; we'll flush `pendingAnnounce` on connect/host.
         }
     },
     
@@ -3552,7 +3756,7 @@ const RoomDirectory = {
 // Initialize room directory on-demand (when user clicks browse rooms)
 // RoomDirectory.init();
 
-// Security
+// security helpers (keep inputs boring + safe)
 class Security {
     static escapeHtml(text) {
         if (!text) return '';
@@ -3584,6 +3788,13 @@ class Security {
         if (!s.startsWith('data:image/png;base64,')) return false;
         // ~64x64 PNG is usually tiny; cap to prevent memory abuse
         return s.length <= 120000;
+    }
+
+    static isSafeLogoDataUrl(s) {
+        if (typeof s !== 'string') return false;
+        if (!s.startsWith('data:image/png;base64,')) return false;
+        // 128x128 png, still keep it small
+        return s.length <= 420000;
     }
 
     static safeInitial(name) {
@@ -4395,6 +4606,25 @@ const App = {
                     console.warn('dropped malformed control message');
                     return;
                 }
+                // tiny anti-abuse: rate limit control frames per peer so a malicious client
+                // can't freeze others by spamming json objects.
+                const ctlPeer = conn.peer;
+                const ctlNow = Date.now();
+                this._ctlRate = this._ctlRate || {};
+                const bucket = this._ctlRate[ctlPeer] || (this._ctlRate[ctlPeer] = []);
+                // keep last 3s
+                while (bucket.length && ctlNow - bucket[0] > 3000) bucket.shift();
+                bucket.push(ctlNow);
+                // allow ~70 control frames per 3s (typing, ping/pong, receipts, etc)
+                if (bucket.length > 70) {
+                    console.warn('dropped spammy control stream from', ctlPeer);
+                    return;
+                }
+
+                // hard caps to avoid memory bombs
+                if (typeof data.peerId === 'string' && data.peerId.length > 80) return;
+                if (typeof data.fileId === 'string' && data.fileId.length > 120) return;
+
                 if (data.type === 'handshake') {
                     if (typeof data.key !== 'string' || data.key.length < 80 || data.key.length > 12000) {
                         console.warn('invalid handshake key');
@@ -4658,6 +4888,14 @@ const App = {
                 else if (data.type === 'file_chunk') {
                     if (!sessionEstablished) {
                         console.warn('Received file chunk before session established');
+                        return;
+                    }
+                    if (typeof data.payload !== 'string' || data.payload.length > 900000) {
+                        console.warn('dropped oversized file chunk payload');
+                        return;
+                    }
+                    if (!Number.isInteger(data.chunkIndex) || data.chunkIndex < 0 || data.chunkIndex > 200000) {
+                        console.warn('dropped invalid chunk index');
                         return;
                     }
                     
@@ -5006,12 +5244,16 @@ const App = {
 // Room browsing state
 let currentRooms = [];
 let currentSortMode = 'recent';
+let roomBrowseRefreshTimer = null;
+let roomRenderPage = 1;
+const ROOM_PAGE_SIZE = 80;
 
 // Room browsing functions
 window.showBrowseRooms = function() {
     play('k');
     showStep('browseRoomsStep');
     currentSortMode = 'recent';
+    roomRenderPage = 1;
     document.querySelectorAll('.sort-btn').forEach((btn, i) => {
         if (i === 0) btn.classList.add('active');
         else btn.classList.remove('active');
@@ -5052,10 +5294,18 @@ window.showBrowseRooms = function() {
             setDiscStatus('var(--success)', 'connected');
         }
     }
+
+    // Keep the list live while browsing (helps discoverability UX)
+    if (roomBrowseRefreshTimer) clearInterval(roomBrowseRefreshTimer);
+    roomBrowseRefreshTimer = setInterval(() => {
+        const browseStep = document.getElementById('browseRoomsStep');
+        if (!browseStep || !browseStep.classList.contains('active')) return;
+        refreshRoomList();
+    }, 4000);
 };
 
 window.refreshRoomList = function() {
-    play('k');
+    // silent refresh (called often while browsing)
     console.log('Refreshing room list...');
     
     // If we're connected to the beacon, request fresh room list
@@ -5098,13 +5348,19 @@ window.onRoomsDiscovered = function() {
 window.setSortMode = function(mode) {
     play('k');
     currentSortMode = mode;
+    roomRenderPage = 1;
     document.querySelectorAll('.sort-btn').forEach(btn => btn.classList.remove('active'));
-    event.target.classList.add('active');
-    document.getElementById('roomSort').textContent = `sort: ${mode}`;
+    if (event?.target) event.target.classList.add('active');
     renderRooms();
 };
 
 window.filterRooms = function() {
+    roomRenderPage = 1;
+    renderRooms();
+};
+
+window.loadMoreRooms = function() {
+    roomRenderPage += 1;
     renderRooms();
 };
 
@@ -5120,6 +5376,7 @@ function getTimeAgo(timestamp) {
 
 function renderRooms() {
     const container = document.getElementById('publicRoomsList');
+    if (!container) return;
     const searchTerm = document.getElementById('roomSearchInput')?.value.toLowerCase() || '';
     
     // Filter rooms by search
@@ -5144,8 +5401,11 @@ function renderRooms() {
     // Update stats
     const totalRooms = currentRooms.length;
     const totalUsers = currentRooms.reduce((sum, room) => sum + room.users, 0);
-    document.getElementById('roomCount').textContent = 
-        `${filteredRooms.length} ${filteredRooms.length === 1 ? 'room' : 'rooms'} • ${totalUsers} ${totalUsers === 1 ? 'user' : 'users'} online`;
+    const shownCount = Math.min(filteredRooms.length, roomRenderPage * ROOM_PAGE_SIZE);
+    const roomCountEl = document.getElementById('roomCount');
+    if (roomCountEl) {
+        roomCountEl.textContent = `${shownCount}/${filteredRooms.length} shown • ${totalUsers} ${totalUsers === 1 ? 'user' : 'users'} online`;
+    }
     
     if (filteredRooms.length === 0) {
         if (searchTerm) {
@@ -5176,13 +5436,16 @@ function renderRooms() {
         return;
     }
     
-    container.innerHTML = filteredRooms.map(room => {
+    const toRender = filteredRooms.slice(0, shownCount);
+    container.innerHTML = toRender.map(room => {
         const isNew = (Date.now() - room.created) < 300000; // New if less than 5 minutes old
+        const safeRoomName = Security.escapeHtml(room.name);
+        const encodedRoomName = encodeURIComponent(room.name);
         return `
-        <div class="room-item" onclick="joinPublicRoomFromBrowse('${room.id}', '${Security.escapeHtml(room.name)}')">
+        <div class="room-item" onclick="joinPublicRoomFromBrowse('${room.id}', '${encodedRoomName}')">
             <div class="room-item-info">
                 <div class="room-item-header">
-                    <div class="room-item-name">${Security.escapeHtml(room.name)}</div>
+                    <div class="room-item-name">${safeRoomName}</div>
                     ${isNew ? '<span class="room-item-badge">new</span>' : ''}
                 </div>
                 <div class="room-item-meta">
@@ -5198,7 +5461,7 @@ function renderRooms() {
                     <div class="room-item-time">${getTimeAgo(room.lastSeen)}</div>
                 </div>
             </div>
-            <button class="room-item-join" onclick="event.stopPropagation(); joinPublicRoomFromBrowse('${room.id}', '${Security.escapeHtml(room.name)}')">
+            <button class="room-item-join" onclick="event.stopPropagation(); joinPublicRoomFromBrowse('${room.id}', '${encodedRoomName}')">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                     <line x1="5" y1="12" x2="19" y2="12"></line>
                     <polyline points="12 5 19 12 12 19"></polyline>
@@ -5206,13 +5469,19 @@ function renderRooms() {
             </button>
         </div>
     `;
-    }).join('');
+    }).join('') + (shownCount < filteredRooms.length ? `
+        <div class="room-load-more-wrap">
+            <button class="room-load-more-btn" onclick="loadMoreRooms()">load more rooms (${filteredRooms.length - shownCount} left)</button>
+        </div>
+    ` : '');
 }
 
 window.joinPublicRoomFromBrowse = async function(roomId, roomName) {
     play('n');
     document.getElementById('usernameOverlay').classList.add('hidden');
-    App.roomName = roomName; // Set name before joining so joinExistingPublicRoom preserves it
+    let decoded = roomName;
+    try { decoded = decodeURIComponent(roomName); } catch (e) { /* ignore */ }
+    App.roomName = Security.sanitizePlainText(String(decoded || ''), 48) || 'public room'; // Set name before joining so joinExistingPublicRoom preserves it
     await App.joinExistingPublicRoom(roomId);
     setTimeout(() => App.updateVoiceUI(), 500);
 };
@@ -5221,6 +5490,11 @@ window.joinPublicRoomFromBrowse = async function(roomId, roomName) {
 function showStep(stepId) {
     document.querySelectorAll('.setup-step').forEach(s => s.classList.remove('active'));
     document.getElementById(stepId).classList.add('active');
+
+    if (stepId !== 'browseRoomsStep' && roomBrowseRefreshTimer) {
+        clearInterval(roomBrowseRefreshTimer);
+        roomBrowseRefreshTimer = null;
+    }
 }
 
 window.selectRoomType = function(type) {
@@ -5273,12 +5547,18 @@ const BlckbxPrefs = {
     gradientAnimation: true,
     gradientSpeed: 22,
     gradientEasing: 'linear',
-    gradientApp: { c1: '#0a0f1a', c2: '#1a1f33', c3: '#050505', angle: 135 },
-    gradientPanel: { c1: '#141414', c2: '#0d0d0d', c3: '#151b2a', angle: 135 },
-    gradientTop: { enabled: false, animate: false, speed: 22, c1: '#1e1e22', c2: '#141820', c3: '#0c0f14', angle: 140 },
-    gradientMiddle: { enabled: false, animate: false, speed: 22, c1: '#1a1b22', c2: '#12151d', c3: '#0c1016', angle: 145 },
-    gradientLeft: { enabled: false, animate: false, speed: 20, c1: '#1c2435', c2: '#101723', c3: '#0f1014', angle: 145 },
-    gradientRight: { enabled: false, animate: false, speed: 24, c1: '#241a34', c2: '#151128', c3: '#100f14', angle: 225 },
+    // Default look: monochrome black/white with dark-grey gradients
+    gradientApp: { c1: '#000000', c2: '#101010', c3: '#1f1f1f', angle: 135 },
+    gradientPanel: { c1: '#151515', c2: '#0d0d0d', c3: '#1a1a1a', angle: 135 },
+    gradientTop: { enabled: false, animate: false, speed: 22, c1: '#151515', c2: '#0d0d0d', c3: '#1a1a1a', angle: 140 },
+    gradientMiddle: { enabled: false, animate: false, speed: 22, c1: '#141414', c2: '#0c0c0c', c3: '#181818', angle: 145 },
+    gradientLeft: { enabled: false, animate: false, speed: 20, c1: '#161616', c2: '#0e0e0e', c3: '#1c1c1c', angle: 150 },
+    gradientRight: { enabled: false, animate: false, speed: 24, c1: '#161616', c2: '#0e0e0e', c3: '#1c1c1c', angle: 225 },
+    logoColor: '#ffffff',
+    logoMode: 'wire', // 'wire' | 'image'
+    logoImageDataUrl: null,
+    logoImageCube: false,
+    logoImageScale: 100,
     disableBlur: false,
     load() {
         try {
@@ -5310,6 +5590,11 @@ const BlckbxPrefs = {
             if (j.gradientMiddle && typeof j.gradientMiddle === 'object') this.gradientMiddle = { ...this.gradientMiddle, ...j.gradientMiddle };
             if (j.gradientLeft && typeof j.gradientLeft === 'object') this.gradientLeft = { ...this.gradientLeft, ...j.gradientLeft };
             if (j.gradientRight && typeof j.gradientRight === 'object') this.gradientRight = { ...this.gradientRight, ...j.gradientRight };
+            if (typeof j.logoColor === 'string' && /^#[0-9a-fA-F]{6}$/.test(j.logoColor)) this.logoColor = j.logoColor;
+            if (j.logoMode === 'wire' || j.logoMode === 'image') this.logoMode = j.logoMode;
+            if (typeof j.logoImageDataUrl === 'string') this.logoImageDataUrl = j.logoImageDataUrl;
+            if (typeof j.logoImageCube === 'boolean') this.logoImageCube = j.logoImageCube;
+            if (typeof j.logoImageScale === 'number') this.logoImageScale = Math.max(70, Math.min(150, j.logoImageScale));
             if (typeof j.disableBlur === 'boolean') this.disableBlur = j.disableBlur;
         } catch (e) { /* ignore corrupt prefs */ }
     },
@@ -5341,6 +5626,11 @@ const BlckbxPrefs = {
                 gradientMiddle: this.gradientMiddle,
                 gradientLeft: this.gradientLeft,
                 gradientRight: this.gradientRight,
+                logoColor: this.logoColor,
+                logoMode: this.logoMode,
+                logoImageDataUrl: this.logoImageDataUrl,
+                logoImageCube: this.logoImageCube,
+                logoImageScale: this.logoImageScale,
                 disableBlur: this.disableBlur
             }));
         } catch (e) { /* quota / private mode */ }
@@ -5453,7 +5743,7 @@ window.applyGlassPreset = (kind) => {
 
 window.applyFramePreset = (themeName) => {
     const sets = {
-        default: { top:['#1e1e22','#141820','#0c0f14',140], mid:['#1a1b22','#12151d','#0c1016',145], left:['#1c2435','#101723','#0f1014',145], right:['#241a34','#151128','#100f14',225] },
+        default: { top:['#151515','#0d0d0d','#1a1a1a',140], mid:['#141414','#0c0c0c','#181818',145], left:['#161616','#0e0e0e','#1c1c1c',150], right:['#161616','#0e0e0e','#1c1c1c',225] },
         midnight:{ top:['#112142','#142b52','#0b1630',140], mid:['#13233f','#10203a','#0b1628',145], left:['#122646','#0f1f3a','#0a1324',150], right:['#1f2d52','#112446','#0b1833',225] },
         white:   { top:['#ffffff','#f2f5fa','#e8edf8',130], mid:['#ffffff','#f6f8fc','#edf1fa',140], left:['#f7f9fd','#edf1f8','#e3e9f4',145], right:['#f5f8fe','#edf2fb','#e6ecf8',225] },
         red:     { top:['#2b0505','#3a0909','#200505',135], mid:['#260404','#340707','#1d0404',145], left:['#240404','#300606','#1a0303',150], right:['#2b0505','#3a0909','#200505',225] },
@@ -5534,6 +5824,11 @@ function syncSettingsFromPrefs() {
     setCheck('prefGradMiddleEnabled', BlckbxPrefs.gradientMiddle?.enabled); setCheck('prefGradMiddleAnimate', BlckbxPrefs.gradientMiddle?.animate); setVal('prefGradMiddleSpeed', BlckbxPrefs.gradientMiddle?.speed); setVal('prefGradMiddle1', BlckbxPrefs.gradientMiddle?.c1); setVal('prefGradMiddle2', BlckbxPrefs.gradientMiddle?.c2); setVal('prefGradMiddle3', BlckbxPrefs.gradientMiddle?.c3); setVal('prefGradMiddleAngle', BlckbxPrefs.gradientMiddle?.angle);
     setCheck('prefGradLeftEnabled', BlckbxPrefs.gradientLeft?.enabled); setCheck('prefGradLeftAnimate', BlckbxPrefs.gradientLeft?.animate); setVal('prefGradLeftSpeed', BlckbxPrefs.gradientLeft?.speed); setVal('prefGradLeft1', BlckbxPrefs.gradientLeft?.c1); setVal('prefGradLeft2', BlckbxPrefs.gradientLeft?.c2); setVal('prefGradLeft3', BlckbxPrefs.gradientLeft?.c3); setVal('prefGradLeftAngle', BlckbxPrefs.gradientLeft?.angle);
     setCheck('prefGradRightEnabled', BlckbxPrefs.gradientRight?.enabled); setCheck('prefGradRightAnimate', BlckbxPrefs.gradientRight?.animate); setVal('prefGradRightSpeed', BlckbxPrefs.gradientRight?.speed); setVal('prefGradRight1', BlckbxPrefs.gradientRight?.c1); setVal('prefGradRight2', BlckbxPrefs.gradientRight?.c2); setVal('prefGradRight3', BlckbxPrefs.gradientRight?.c3); setVal('prefGradRightAngle', BlckbxPrefs.gradientRight?.angle);
+    setVal('customLogoColor', BlckbxPrefs.logoColor || '#ffffff');
+    setCheck('customLogoCube', !!BlckbxPrefs.logoImageCube);
+    setVal('customLogoScale', BlckbxPrefs.logoImageScale || 100);
+    const logoScaleLabel = document.getElementById('customLogoScaleLabel');
+    if (logoScaleLabel) logoScaleLabel.textContent = `${Math.round(BlckbxPrefs.logoImageScale || 100)}%`;
     syncGradientSettingsLabels();
 }
 
@@ -5591,9 +5886,8 @@ function rgbaWithAlphaScale(color, scale, fallback) {
 
 function applyGlassIntensity() {
     const root = document.documentElement;
-    // IMPORTANT: read computed styles from document.body — that's where [data-theme]
-    // attribute CSS rules live. Reading from documentElement (html) would return
-    // the :root defaults instead of the active theme's overrides.
+    // read computed styles from body (that's where [data-theme] lives)
+    // reading from html would pull :root defaults and break themes.
     const cs = getComputedStyle(document.body);
     const intensity = Math.max(20, Math.min(100, Number(BlckbxPrefs.glassIntensity) || 72));
     const scale = 0.45 + (intensity / 100) * 0.95;
@@ -5667,7 +5961,8 @@ function syncGradientSettingsLabels() {
         ['prefGradRightSpeed', 'prefGradRightSpeedLabel', 's'],
         ['customBgAngle', 'customBgAngleLabel', '°'],
         ['customPanelAngle', 'customPanelAngleLabel', '°'],
-        ['customGlowStrength', 'customGlowStrengthLabel', '%']
+        ['customGlowStrength', 'customGlowStrengthLabel', '%'],
+        ['customLogoScale', 'customLogoScaleLabel', '%']
     ];
     pairs.forEach(([inputId, labelId, suf]) => {
         const i = document.getElementById(inputId);
@@ -5676,11 +5971,14 @@ function syncGradientSettingsLabels() {
     });
 }
 
+let themePreviewRaf = 0;
 function previewCustomThemeLive() {
+    if (themePreviewRaf) cancelAnimationFrame(themePreviewRaf);
+    themePreviewRaf = requestAnimationFrame(() => {
     const get = id => document.getElementById(id)?.value;
     const glow = Number(get('customGlowStrength') || 35);
     const shadowAlpha = Math.min(0.85, Math.max(0.08, glow / 100));
-    const bg = { c1: get('customBg1') || '#050505', c2: get('customBg2') || '#0d1020', c3: get('customGlow') || '#0a0a0a', angle: Number(get('customBgAngle') || 135) };
+    const bg = { c1: get('customBg1') || '#050505', c2: get('customBg2') || '#101010', c3: get('customGlow') || '#1f1f1f', angle: Number(get('customBgAngle') || 135) };
     const pnl = { c1: get('customPanel1') || '#0a0a0a', c2: get('customPanel2') || '#151515', c3: get('customGlow') || '#121620', angle: Number(get('customPanelAngle') || 135) };
     document.documentElement.style.setProperty('--bg-app', bg.c1);
     document.documentElement.style.setProperty('--bg-panel', pnl.c1);
@@ -5698,17 +5996,20 @@ function previewCustomThemeLive() {
     document.documentElement.style.setProperty('--glass-shadow-base', `0 14px 44px ${hexToRgba(get('customShadowTint') || '#000000', shadowAlpha)}`);
     BlckbxPrefs.gradientApp = bg;
     BlckbxPrefs.gradientPanel = pnl;
+    // keep logo preview in sync
+    applyLogoColorFromCustomizer(get('customLogoColor') || BlckbxPrefs.logoColor || '#ffffff');
     applyGradientSystem();
     applyGlassIntensity();
     syncGradientSettingsLabels();
+    });
 }
 
 function resetCustomThemeEditor() {
     const defaults = {
-        customBg1: '#050505', customBg2: '#0d1020', customPanel1: '#0a0a0a', customPanel2: '#151515',
-        customGlow: '#6b9fff', customAccent: '#ffffff', customTextMain: '#e8e8e8', customTextSecondary: '#aaaaaa',
+        customBg1: '#050505', customBg2: '#101010', customPanel1: '#0a0a0a', customPanel2: '#151515',
+        customGlow: '#1f1f1f', customAccent: '#ffffff', customTextMain: '#e8e8e8', customTextSecondary: '#aaaaaa',
         customBtnBg: '#242424', customBtnText: '#ffffff', customBorder: '#4a4a4a', customShadowTint: '#000000',
-        customBgAngle: '135', customPanelAngle: '135', customGlowStrength: '35'
+        customBgAngle: '135', customPanelAngle: '135', customGlowStrength: '35', customLogoScale: String(BlckbxPrefs.logoImageScale || 100)
     };
     Object.entries(defaults).forEach(([k, v]) => {
         const el = document.getElementById(k);
@@ -5729,8 +6030,58 @@ function getCustomThemeFromEditor() {
         border: get('customBorder'), shadowTint: get('customShadowTint'),
         bgAngle: Number(get('customBgAngle') || 135),
         panelAngle: Number(get('customPanelAngle') || 135),
-        glowStrength: Number(get('customGlowStrength') || 35)
+        glowStrength: Number(get('customGlowStrength') || 35),
+        logoScale: Number(get('customLogoScale') || (BlckbxPrefs.logoImageScale || 100))
     };
+}
+
+function exportFullThemeSnapshot(name) {
+    const theme = document.body.getAttribute('data-theme') || 'default';
+    const cssVars = [
+        '--bg-app','--bg-panel','--bg-input','--accent',
+        '--text-main','--text-secondary','--border','--border-hover',
+        '--btn-bg','--btn-text',
+        '--glass-bg-base','--glass-border-base','--glass-highlight-base','--glass-shadow-base'
+    ];
+    const inline = {};
+    cssVars.forEach(k => {
+        const v = document.documentElement.style.getPropertyValue(k);
+        if (v) inline[k] = v.trim();
+    });
+    return {
+        v: 2,
+        name: String(name || '').slice(0, 30),
+        theme,
+        inline,
+        prefs: JSON.parse(JSON.stringify(BlckbxPrefs))
+    };
+}
+
+function importFullThemeSnapshot(snap) {
+    if (!snap || typeof snap !== 'object') return false;
+    const theme = typeof snap.theme === 'string' ? snap.theme : 'default';
+    document.body.setAttribute('data-theme', theme);
+    try { localStorage.setItem('blckbx_theme', theme); } catch (e) { /* ignore */ }
+    if (snap.prefs && typeof snap.prefs === 'object') {
+        Object.assign(BlckbxPrefs, snap.prefs);
+        BlckbxPrefs.save();
+    }
+    // apply any stored inline css var overrides (used for custom themes)
+    if (snap.inline && typeof snap.inline === 'object') {
+        Object.entries(snap.inline).forEach(([k, v]) => {
+            if (typeof k === 'string' && typeof v === 'string' && k.startsWith('--') && v.length < 200) {
+                document.documentElement.style.setProperty(k, v);
+            }
+        });
+    }
+    applyFrameGlassPrefs();
+    applyGradientSystem();
+    applyGlassIntensity();
+    applyBubblePrefs();
+    applyBlurPrefs();
+    syncSettingsFromPrefs();
+    syncGradientSettingsLabels();
+    return true;
 }
 
 function setCustomThemeEditor(theme) {
@@ -5744,7 +6095,8 @@ function setCustomThemeEditor(theme) {
         customBorder: theme.border, customShadowTint: theme.shadowTint,
         customBgAngle: String(theme.bgAngle ?? 135),
         customPanelAngle: String(theme.panelAngle ?? 135),
-        customGlowStrength: String(theme.glowStrength ?? 35)
+        customGlowStrength: String(theme.glowStrength ?? 35),
+        customLogoScale: String(theme.logoScale ?? (BlckbxPrefs.logoImageScale || 100))
     };
     Object.entries(map).forEach(([k, v]) => {
         const el = document.getElementById(k);
@@ -5809,12 +6161,12 @@ function initSettingsInputBindings() {
             BlckbxPrefs.bubbleShowTime = !!document.getElementById('prefBubbleShowTime')?.checked;
             BlckbxPrefs.bubbleShowStatus = !!document.getElementById('prefBubbleShowStatus')?.checked;
             const get = (x, d) => document.getElementById(x)?.value || d;
-            BlckbxPrefs.gradientApp = { c1:get('prefGradApp1','#0a0f1a'), c2:get('prefGradApp2','#1a1f33'), c3:get('prefGradApp3','#050505'), angle:Number(get('prefGradAppAngle',135)) };
-            BlckbxPrefs.gradientPanel = { c1:get('prefGradPanel1','#141414'), c2:get('prefGradPanel2','#0d0d0d'), c3:get('prefGradPanel3','#151b2a'), angle:Number(get('prefGradPanelAngle',135)) };
-            BlckbxPrefs.gradientTop = { enabled:!!document.getElementById('prefGradTopEnabled')?.checked, animate:!!document.getElementById('prefGradTopAnimate')?.checked, speed:Math.max(4, Number(get('prefGradTopSpeed',22))), c1:get('prefGradTop1','#1e1e22'), c2:get('prefGradTop2','#141820'), c3:get('prefGradTop3','#0c0f14'), angle:Number(get('prefGradTopAngle',140)) };
-            BlckbxPrefs.gradientMiddle = { enabled:!!document.getElementById('prefGradMiddleEnabled')?.checked, animate:!!document.getElementById('prefGradMiddleAnimate')?.checked, speed:Math.max(4, Number(get('prefGradMiddleSpeed',22))), c1:get('prefGradMiddle1','#1a1b22'), c2:get('prefGradMiddle2','#12151d'), c3:get('prefGradMiddle3','#0c1016'), angle:Number(get('prefGradMiddleAngle',145)) };
-            BlckbxPrefs.gradientLeft = { enabled:!!document.getElementById('prefGradLeftEnabled')?.checked, animate:!!document.getElementById('prefGradLeftAnimate')?.checked, speed:Math.max(4, Number(get('prefGradLeftSpeed',20))), c1:get('prefGradLeft1','#1c2435'), c2:get('prefGradLeft2','#101723'), c3:get('prefGradLeft3','#0f1014'), angle:Number(get('prefGradLeftAngle',145)) };
-            BlckbxPrefs.gradientRight = { enabled:!!document.getElementById('prefGradRightEnabled')?.checked, animate:!!document.getElementById('prefGradRightAnimate')?.checked, speed:Math.max(4, Number(get('prefGradRightSpeed',24))), c1:get('prefGradRight1','#241a34'), c2:get('prefGradRight2','#151128'), c3:get('prefGradRight3','#100f14'), angle:Number(get('prefGradRightAngle',225)) };
+            BlckbxPrefs.gradientApp = { c1:get('prefGradApp1','#000000'), c2:get('prefGradApp2','#101010'), c3:get('prefGradApp3','#1f1f1f'), angle:Number(get('prefGradAppAngle',135)) };
+            BlckbxPrefs.gradientPanel = { c1:get('prefGradPanel1','#151515'), c2:get('prefGradPanel2','#0d0d0d'), c3:get('prefGradPanel3','#1a1a1a'), angle:Number(get('prefGradPanelAngle',135)) };
+            BlckbxPrefs.gradientTop = { enabled:!!document.getElementById('prefGradTopEnabled')?.checked, animate:!!document.getElementById('prefGradTopAnimate')?.checked, speed:Math.max(4, Number(get('prefGradTopSpeed',22))), c1:get('prefGradTop1','#151515'), c2:get('prefGradTop2','#0d0d0d'), c3:get('prefGradTop3','#1a1a1a'), angle:Number(get('prefGradTopAngle',140)) };
+            BlckbxPrefs.gradientMiddle = { enabled:!!document.getElementById('prefGradMiddleEnabled')?.checked, animate:!!document.getElementById('prefGradMiddleAnimate')?.checked, speed:Math.max(4, Number(get('prefGradMiddleSpeed',22))), c1:get('prefGradMiddle1','#141414'), c2:get('prefGradMiddle2','#0c0c0c'), c3:get('prefGradMiddle3','#181818'), angle:Number(get('prefGradMiddleAngle',145)) };
+            BlckbxPrefs.gradientLeft = { enabled:!!document.getElementById('prefGradLeftEnabled')?.checked, animate:!!document.getElementById('prefGradLeftAnimate')?.checked, speed:Math.max(4, Number(get('prefGradLeftSpeed',20))), c1:get('prefGradLeft1','#161616'), c2:get('prefGradLeft2','#0e0e0e'), c3:get('prefGradLeft3','#1c1c1c'), angle:Number(get('prefGradLeftAngle',150)) };
+            BlckbxPrefs.gradientRight = { enabled:!!document.getElementById('prefGradRightEnabled')?.checked, animate:!!document.getElementById('prefGradRightAnimate')?.checked, speed:Math.max(4, Number(get('prefGradRightSpeed',24))), c1:get('prefGradRight1','#161616'), c2:get('prefGradRight2','#0e0e0e'), c3:get('prefGradRight3','#1c1c1c'), angle:Number(get('prefGradRightAngle',225)) };
             applyGradientSystem();
             applyGlassIntensity();
             applyBubblePrefs();
@@ -5826,6 +6178,8 @@ function initSettingsInputBindings() {
 window.saveCustomThemeToLibrary = () => {
     const t = getCustomThemeFromEditor();
     if (!t.name) return showToast('name the theme first');
+    // save both: the custom editor colors + a full ui snapshot
+    t.snapshot = exportFullThemeSnapshot(t.name);
     const themes = getSavedCustomThemes().filter(x => x.name !== t.name);
     themes.push(t);
     setSavedCustomThemes(themes.slice(-30));
@@ -5839,6 +6193,9 @@ window.loadSelectedCustomTheme = () => {
     const t = themes.find(x => x.name === sel?.value);
     if (!t) return showToast('pick a saved theme');
     setCustomThemeEditor(t);
+    if (t.snapshot) {
+        importFullThemeSnapshot(t.snapshot);
+    }
     showToast('theme loaded');
 };
 
@@ -5871,6 +6228,83 @@ async function downscaleAvatarToPng64(file) {
         URL.revokeObjectURL(blobUrl);
     }
 }
+
+async function downscaleLogoToPng128(file) {
+    if (!file || !file.type || !file.type.startsWith('image/')) throw new Error('not an image');
+    if (file.size > 8 * 1024 * 1024) throw new Error('image too large');
+    const blobUrl = URL.createObjectURL(file);
+    try {
+        const img = new Image();
+        img.decoding = 'async';
+        img.referrerPolicy = 'no-referrer';
+        await new Promise((res, rej) => {
+            img.onload = res;
+            img.onerror = rej;
+            img.src = blobUrl;
+        });
+        const canvas = document.createElement('canvas');
+        canvas.width = 128;
+        canvas.height = 128;
+        const ctx = canvas.getContext('2d', { alpha: true });
+        ctx.clearRect(0, 0, 128, 128);
+        const s = Math.min(img.naturalWidth, img.naturalHeight);
+        const sx = Math.floor((img.naturalWidth - s) / 2);
+        const sy = Math.floor((img.naturalHeight - s) / 2);
+        ctx.drawImage(img, sx, sy, s, s, 0, 0, 128, 128);
+        // keep alpha when exporting so transparent logos stay transparent
+        const dataUrl = canvas.toDataURL('image/png');
+        if (!Security.isSafeLogoDataUrl(dataUrl)) throw new Error('logo rejected');
+        return dataUrl;
+    } finally {
+        URL.revokeObjectURL(blobUrl);
+    }
+}
+
+window.applyLogoColorFromCustomizer = (hex) => {
+    const v = typeof hex === 'string' && /^#[0-9a-fA-F]{6}$/.test(hex) ? hex : '#ffffff';
+    BlckbxPrefs.logoColor = v;
+    BlckbxPrefs.save();
+};
+
+window.applyLogoImageFromCustomizer = async () => {
+    play('k');
+    const input = document.getElementById('customLogoFile');
+    const file = input?.files?.[0];
+    if (!file) return showToast('choose an image first');
+    try {
+        const url = await downscaleLogoToPng128(file);
+        BlckbxPrefs.logoImageDataUrl = url;
+        BlckbxPrefs.logoMode = 'image';
+        BlckbxPrefs.save();
+        loadLogoImg();
+        showToast('logo image set');
+    } catch (e) {
+        console.error(e);
+        showToast('could not use that image');
+    }
+};
+
+window.clearLogoImage = () => {
+    play('k');
+    BlckbxPrefs.logoImageDataUrl = null;
+    BlckbxPrefs.logoMode = 'wire';
+    BlckbxPrefs.save();
+    loadLogoImg();
+    showToast('logo reset');
+};
+
+window.toggleLogoImageCube = (on) => {
+    BlckbxPrefs.logoImageCube = !!on;
+    BlckbxPrefs.save();
+};
+
+window.setLogoScale = (val) => {
+    const n = Math.max(70, Math.min(150, Number(val) || 100));
+    BlckbxPrefs.logoImageScale = n;
+    const label = document.getElementById('customLogoScaleLabel');
+    if (label) label.textContent = `${Math.round(n)}%`;
+    BlckbxPrefs.save();
+};
 
 window.applyAvatarFromSettings = async () => {
     play('k');
@@ -6158,7 +6592,7 @@ function downloadFile(url, name) {
     }
 }
 
-// File transfer prompt
+// file transfer prompt (ask before receiving bytes)
 function showFileTransferPrompt(fileId, fileName, fileSize, mimeType, senderName, peerId, totalChunks) {
     const messages = document.getElementById('messages');
     const div = document.createElement('div');
@@ -6235,7 +6669,28 @@ window.acceptFileTransfer = function(fileId, peerId) {
     
     prompt.remove();
     
-    // Initialize file transfer — chunks stored as sparse indexed array for correct ordering
+    // init transfer state (defensive caps so someone can't memory-bomb you)
+    const MAX_INCOMING_TRANSFERS = 3;
+    const MAX_FILE_CHUNKS = 50000;
+    const MAX_FILE_SIZE = 5 * 1024 * 1024 * 1024; // 5gb
+    App.fileTransfers = App.fileTransfers || {};
+    if (Object.keys(App.fileTransfers).length >= MAX_INCOMING_TRANSFERS) {
+        addSystemMsg('too many incoming transfers at once');
+        try { if (App.conns[peerId]) App.conns[peerId].send({ type: 'file_rejected', fileId }); } catch (e) { /* ignore */ }
+        return;
+    }
+    if (!Number.isFinite(fileSize) || fileSize <= 0 || fileSize > MAX_FILE_SIZE) {
+        addSystemMsg('incoming file rejected (invalid size)');
+        try { if (App.conns[peerId]) App.conns[peerId].send({ type: 'file_rejected', fileId }); } catch (e) { /* ignore */ }
+        return;
+    }
+    if (totalChunks && (totalChunks < 1 || totalChunks > MAX_FILE_CHUNKS)) {
+        addSystemMsg('incoming file rejected (too many chunks)');
+        try { if (App.conns[peerId]) App.conns[peerId].send({ type: 'file_rejected', fileId }); } catch (e) { /* ignore */ }
+        return;
+    }
+
+    // chunks stored as sparse indexed array for correct ordering
     App.fileTransfers = App.fileTransfers || {};
     App.fileTransfers[fileId] = {
         chunks: [],          // sparse array indexed by chunkIndex
@@ -6277,14 +6732,14 @@ window.rejectFileTransfer = function(fileId, peerId) {
     addSystemMsg(`file transfer rejected`);
 };
 
-// Assembles and downloads a received file from indexed chunks.
-// Safe to call multiple times — guarded by transfer.assembled flag.
+// assemble + download a received file from indexed chunks.
+// safe to call more than once (assembled flag blocks double-run).
 function assembleReceivedFile(fileId, peerId, appCtx) {
     const transfer = (appCtx || App).fileTransfers[fileId];
     if (!transfer || !transfer.accepted || transfer.assembled) return;
     transfer.assembled = true; // prevent double-assembly from race
     
-    // Build ordered array from the sparse indexed chunk array
+    // build ordered array from the sparse indexed chunk array
     const ordered = [];
     for (let i = 0; i < transfer.totalChunks; i++) {
         if (transfer.chunks[i] !== undefined) {
@@ -7113,42 +7568,42 @@ window.closeSettingsModal = () => {
     const pdb = document.getElementById('prefDisableBlur');
     if (pdb) BlckbxPrefs.disableBlur = !!pdb.checked;
     const get = (id, d) => document.getElementById(id)?.value || d;
-    BlckbxPrefs.gradientApp = { c1: get('prefGradApp1', '#0a0f1a'), c2: get('prefGradApp2', '#1a1f33'), c3: get('prefGradApp3', '#050505'), angle: Number(get('prefGradAppAngle', 135)) };
-    BlckbxPrefs.gradientPanel = { c1: get('prefGradPanel1', '#141414'), c2: get('prefGradPanel2', '#0d0d0d'), c3: get('prefGradPanel3', '#151b2a'), angle: Number(get('prefGradPanelAngle', 135)) };
+    BlckbxPrefs.gradientApp = { c1: get('prefGradApp1', '#000000'), c2: get('prefGradApp2', '#101010'), c3: get('prefGradApp3', '#1f1f1f'), angle: Number(get('prefGradAppAngle', 135)) };
+    BlckbxPrefs.gradientPanel = { c1: get('prefGradPanel1', '#141414'), c2: get('prefGradPanel2', '#0d0d0d'), c3: get('prefGradPanel3', '#1a1a1a'), angle: Number(get('prefGradPanelAngle', 135)) };
     BlckbxPrefs.gradientTop = {
         enabled: !!document.getElementById('prefGradTopEnabled')?.checked,
         animate: !!document.getElementById('prefGradTopAnimate')?.checked,
         speed: Math.max(4, Number(get('prefGradTopSpeed', 22))),
-        c1: get('prefGradTop1', '#1e1e22'),
-        c2: get('prefGradTop2', '#141820'),
-        c3: get('prefGradTop3', '#0c0f14'),
+        c1: get('prefGradTop1', '#151515'),
+        c2: get('prefGradTop2', '#0d0d0d'),
+        c3: get('prefGradTop3', '#1a1a1a'),
         angle: Number(get('prefGradTopAngle', 140))
     };
     BlckbxPrefs.gradientMiddle = {
         enabled: !!document.getElementById('prefGradMiddleEnabled')?.checked,
         animate: !!document.getElementById('prefGradMiddleAnimate')?.checked,
         speed: Math.max(4, Number(get('prefGradMiddleSpeed', 22))),
-        c1: get('prefGradMiddle1', '#1a1b22'),
-        c2: get('prefGradMiddle2', '#12151d'),
-        c3: get('prefGradMiddle3', '#0c1016'),
+        c1: get('prefGradMiddle1', '#141414'),
+        c2: get('prefGradMiddle2', '#0c0c0c'),
+        c3: get('prefGradMiddle3', '#181818'),
         angle: Number(get('prefGradMiddleAngle', 145))
     };
     BlckbxPrefs.gradientLeft = {
         enabled: !!document.getElementById('prefGradLeftEnabled')?.checked,
         animate: !!document.getElementById('prefGradLeftAnimate')?.checked,
         speed: Math.max(4, Number(get('prefGradLeftSpeed', 20))),
-        c1: get('prefGradLeft1', '#1c2435'),
-        c2: get('prefGradLeft2', '#101723'),
-        c3: get('prefGradLeft3', '#0f1014'),
-        angle: Number(get('prefGradLeftAngle', 145))
+        c1: get('prefGradLeft1', '#161616'),
+        c2: get('prefGradLeft2', '#0e0e0e'),
+        c3: get('prefGradLeft3', '#1c1c1c'),
+        angle: Number(get('prefGradLeftAngle', 150))
     };
     BlckbxPrefs.gradientRight = {
         enabled: !!document.getElementById('prefGradRightEnabled')?.checked,
         animate: !!document.getElementById('prefGradRightAnimate')?.checked,
         speed: Math.max(4, Number(get('prefGradRightSpeed', 24))),
-        c1: get('prefGradRight1', '#241a34'),
-        c2: get('prefGradRight2', '#151128'),
-        c3: get('prefGradRight3', '#100f14'),
+        c1: get('prefGradRight1', '#161616'),
+        c2: get('prefGradRight2', '#0e0e0e'),
+        c3: get('prefGradRight3', '#1c1c1c'),
         angle: Number(get('prefGradRightAngle', 225))
     };
     BlckbxPrefs.save();
@@ -7195,7 +7650,7 @@ window.applyTheme = (theme, el) => {
     play('k');
     document.body.setAttribute('data-theme', theme);
     try { localStorage.setItem('blckbx_theme', theme); } catch (e) { /* ignore */ }
-    // reset any custom inline overrides so theme variables fully apply
+    // reset any custom inline overrides so theme vars fully apply
     if (theme !== 'custom') {
         ['--bg-app','--bg-panel','--bg-input','--accent','--glass-bg-base','--glass-border-base','--glass-highlight-base','--glass-shadow-base','--glass-bg','--glass-border','--glass-highlight','--glass-shadow','--text-main','--text-secondary','--border','--border-hover','--btn-bg','--btn-text'].forEach(k => {
             document.documentElement.style.removeProperty(k);
@@ -7205,7 +7660,7 @@ window.applyTheme = (theme, el) => {
     const node = el || document.querySelector(`.theme-option[data-theme="${theme}"]`);
     if (node) node.classList.add('active');
     const presetGrad = {
-        default: { app:['#0a0f1a','#1a1f33','#050505'], panel:['#141414','#0d0d0d','#151b2a'] },
+        default: { app:['#000000','#101010','#1f1f1f'], panel:['#151515','#0d0d0d','#1a1a1a'] },
         midnight:{ app:['#071225','#0f2347','#080d18'], panel:['#112142','#142b52','#0b1630'] },
         white:   { app:['#f6f7fb','#e7ebf4','#f0f2f8'], panel:['#ffffff','#f2f5fa','#e8edf8'] },
         red:     { app:['#220202','#3a0606','#140202'], panel:['#2b0505','#3a0909','#200505'] },
@@ -7397,6 +7852,24 @@ window.addEventListener('DOMContentLoaded', () => {
     try {
         const th = localStorage.getItem('blckbx_theme');
         if (th) document.body.setAttribute('data-theme', th);
+    } catch (e) { /* ignore */ }
+    // make "default" actually be monochrome even if old prefs were saved.
+    // only touches stored prefs when user hasn't explicitly picked a theme.
+    try {
+        const th = localStorage.getItem('blckbx_theme');
+        if (!th || th === 'default') {
+            const looksOld = BlckbxPrefs && BlckbxPrefs.gradientApp && (BlckbxPrefs.gradientApp.c1 === '#0a0f1a' || BlckbxPrefs.gradientPanel?.c3 === '#151b2a');
+            if (looksOld) {
+                BlckbxPrefs.gradientApp = { c1: '#000000', c2: '#101010', c3: '#1f1f1f', angle: 135 };
+                BlckbxPrefs.gradientPanel = { c1: '#151515', c2: '#0d0d0d', c3: '#1a1a1a', angle: 135 };
+                // also nuke frame tint defaults so the glass panels stay neutral
+                BlckbxPrefs.gradientTop = { enabled: false, animate: false, speed: 22, c1: '#151515', c2: '#0d0d0d', c3: '#1a1a1a', angle: 140 };
+                BlckbxPrefs.gradientMiddle = { enabled: false, animate: false, speed: 22, c1: '#141414', c2: '#0c0c0c', c3: '#181818', angle: 145 };
+                BlckbxPrefs.gradientLeft = { enabled: false, animate: false, speed: 20, c1: '#161616', c2: '#0e0e0e', c3: '#1c1c1c', angle: 150 };
+                BlckbxPrefs.gradientRight = { enabled: false, animate: false, speed: 24, c1: '#161616', c2: '#0e0e0e', c3: '#1c1c1c', angle: 225 };
+                BlckbxPrefs.save();
+            }
+        }
     } catch (e) { /* ignore */ }
     try {
         const av = localStorage.getItem('blckbx_avatar');
@@ -7600,6 +8073,28 @@ window.scrollToSettings = function(sectionId, tabEl) {
 // 3D Canvas Animation
 const canvas3d = document.getElementById('canvas3d');
 const ctx3d = canvas3d.getContext('2d');
+let logoImg = null;
+let logoImgReady = false;
+let logoTexDirty = true;
+let glState = null;
+
+function loadLogoImg() {
+    logoImgReady = false;
+    logoTexDirty = true;
+    const src = BlckbxPrefs?.logoImageDataUrl;
+    if (!src || !Security.isSafeLogoDataUrl(src)) {
+        logoImg = null;
+        return;
+    }
+    const img = new Image();
+    img.decoding = 'async';
+    img.referrerPolicy = 'no-referrer';
+    img.onload = () => { logoImgReady = true; logoTexDirty = true; };
+    img.onerror = () => { logoImgReady = false; logoTexDirty = true; };
+    img.src = src;
+    logoImg = img;
+}
+loadLogoImg();
 
 function getDimensions() {
     const dpr = window.devicePixelRatio || 1;
@@ -7616,9 +8111,139 @@ window.addEventListener('resize', () => dims = getDimensions());
 const scale = 26;
 let t = 0;
 
+function ensureLogoGl() {
+    const targetW = Math.max(2, canvas3d.width);
+    const targetH = Math.max(2, canvas3d.height);
+    if (glState && glState.glCanvas.width === targetW && glState.glCanvas.height === targetH) return glState;
+
+    const glCanvas = document.createElement('canvas');
+    glCanvas.width = targetW;
+    glCanvas.height = targetH;
+    const gl = glCanvas.getContext('webgl', { alpha: true, antialias: true, premultipliedAlpha: true });
+    if (!gl) return null;
+
+    const vsSrc = 'attribute vec3 a_pos;attribute vec2 a_uv;uniform mat4 u_mvp;varying vec2 v_uv;void main(){gl_Position=u_mvp*vec4(a_pos,1.0);v_uv=a_uv;}';
+    const fsSrc = 'precision mediump float;varying vec2 v_uv;uniform sampler2D u_tex;void main(){gl_FragColor=texture2D(u_tex,v_uv);}';
+    const compile = (type, src) => {
+        const sh = gl.createShader(type);
+        gl.shaderSource(sh, src);
+        gl.compileShader(sh);
+        return gl.getShaderParameter(sh, gl.COMPILE_STATUS) ? sh : null;
+    };
+    const vs = compile(gl.VERTEX_SHADER, vsSrc);
+    const fs = compile(gl.FRAGMENT_SHADER, fsSrc);
+    if (!vs || !fs) return null;
+    const prog = gl.createProgram();
+    gl.attachShader(prog, vs);
+    gl.attachShader(prog, fs);
+    gl.linkProgram(prog);
+    if (!gl.getProgramParameter(prog, gl.LINK_STATUS)) return null;
+
+    const verts = new Float32Array([
+        -1,-1, 1, 0,1,  1,-1, 1, 1,1,  1, 1, 1, 1,0,  -1,-1, 1, 0,1,  1, 1, 1, 1,0,  -1, 1, 1, 0,0,
+         1,-1,-1, 0,1, -1,-1,-1, 1,1, -1, 1,-1, 1,0,   1,-1,-1, 0,1, -1, 1,-1, 1,0,   1, 1,-1, 0,0,
+        -1,-1,-1, 0,1, -1,-1, 1, 1,1, -1, 1, 1, 1,0,  -1,-1,-1, 0,1, -1, 1, 1, 1,0,  -1, 1,-1, 0,0,
+         1,-1, 1, 0,1,  1,-1,-1, 1,1,  1, 1,-1, 1,0,   1,-1, 1, 0,1,  1, 1,-1, 1,0,   1, 1, 1, 0,0,
+        -1,-1,-1, 0,1,  1,-1,-1, 1,1,  1,-1, 1, 1,0,  -1,-1,-1, 0,1,  1,-1, 1, 1,0,  -1,-1, 1, 0,0,
+        -1, 1, 1, 0,1,  1, 1, 1, 1,1,  1, 1,-1, 1,0,  -1, 1, 1, 0,1,  1, 1,-1, 1,0,  -1, 1,-1, 0,0
+    ]);
+    const vbo = gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER, vbo);
+    gl.bufferData(gl.ARRAY_BUFFER, verts, gl.STATIC_DRAW);
+
+    const tex = gl.createTexture();
+    gl.bindTexture(gl.TEXTURE_2D, tex);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+    gl.pixelStorei(gl.UNPACK_PREMULTIPLY_ALPHA_WEBGL, true);
+    gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, 1, 1, 0, gl.RGBA, gl.UNSIGNED_BYTE, new Uint8Array([255,255,255,255]));
+
+    gl.enable(gl.DEPTH_TEST);
+    gl.enable(gl.BLEND);
+    gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
+
+    glState = {
+        glCanvas, gl, prog, vbo, tex,
+        aPos: gl.getAttribLocation(prog, 'a_pos'),
+        aUv: gl.getAttribLocation(prog, 'a_uv'),
+        uMvp: gl.getUniformLocation(prog, 'u_mvp'),
+        uTex: gl.getUniformLocation(prog, 'u_tex')
+    };
+    logoTexDirty = true;
+    return glState;
+}
+
+function renderLogoCubeGl(rotX, rotY, cubeScale) {
+    const st = ensureLogoGl();
+    if (!st || !logoImgReady || !logoImg) return false;
+    const { gl, prog, vbo, tex, aPos, aUv, uMvp, uTex, glCanvas } = st;
+    gl.viewport(0, 0, glCanvas.width, glCanvas.height);
+    gl.clearColor(0, 0, 0, 0);
+    gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+    gl.useProgram(prog);
+    gl.bindBuffer(gl.ARRAY_BUFFER, vbo);
+    gl.enableVertexAttribArray(aPos);
+    gl.vertexAttribPointer(aPos, 3, gl.FLOAT, false, 20, 0);
+    gl.enableVertexAttribArray(aUv);
+    gl.vertexAttribPointer(aUv, 2, gl.FLOAT, false, 20, 12);
+    gl.activeTexture(gl.TEXTURE0);
+    gl.bindTexture(gl.TEXTURE_2D, tex);
+    if (logoTexDirty) {
+        gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, logoImg);
+        logoTexDirty = false;
+    }
+    gl.uniform1i(uTex, 0);
+
+    const mul4 = (a, b) => {
+        const o = new Float32Array(16);
+        for (let c = 0; c < 4; c++) {
+            for (let r = 0; r < 4; r++) {
+                o[c * 4 + r] =
+                    a[0 * 4 + r] * b[c * 4 + 0] +
+                    a[1 * 4 + r] * b[c * 4 + 1] +
+                    a[2 * 4 + r] * b[c * 4 + 2] +
+                    a[3 * 4 + r] * b[c * 4 + 3];
+            }
+        }
+        return o;
+    };
+    const cY = Math.cos(rotY), sY = Math.sin(rotY);
+    const cX = Math.cos(rotX), sX = Math.sin(rotX);
+    const s = cubeScale;
+    const model = new Float32Array([
+        cY * s,        0,        -sY * s,      0,
+        sY * sX * s,   cX * s,    cY * sX * s, 0,
+        sY * cX * s,  -sX * s,    cY * cX * s, 0,
+        0,             0,         0,           1
+    ]);
+    const view = new Float32Array([
+        1,0,0,0,
+        0,1,0,0,
+        0,0,1,0,
+        0,0,-3.2,1
+    ]);
+    const asp = glCanvas.width / glCanvas.height;
+    const f = 1.0 / Math.tan(34 * Math.PI / 180);
+    const near = 0.1, far = 10.0;
+    const proj = new Float32Array([
+        f / asp, 0, 0, 0,
+        0, f, 0, 0,
+        0, 0, (far + near) / (near - far), -1,
+        0, 0, (2 * far * near) / (near - far), 0
+    ]);
+    const mvp = mul4(proj, mul4(view, model));
+    gl.uniformMatrix4fv(uMvp, false, mvp);
+    gl.drawArrays(gl.TRIANGLES, 0, 36);
+    ctx3d.clearRect(0, 0, dims.w, dims.h);
+    ctx3d.drawImage(glCanvas, 0, 0, dims.w, dims.h);
+    return true;
+}
+
 function draw3d() {
     ctx3d.clearRect(0, 0, dims.w, dims.h);
-    ctx3d.strokeStyle = '#ffffff';
+    ctx3d.strokeStyle = (BlckbxPrefs?.logoColor && /^#[0-9a-fA-F]{6}$/.test(BlckbxPrefs.logoColor)) ? BlckbxPrefs.logoColor : '#ffffff';
     ctx3d.lineWidth = 1.5;
     ctx3d.lineCap = 'round';
     ctx3d.lineJoin = 'round';
@@ -7661,32 +8286,63 @@ function draw3d() {
         return (x + 1) * 9 + (y + 1) * 3 + (z + 1);
     }
 
-    ctx3d.beginPath();
-    for (let x = -1; x <= 1; x++) {
-        for (let y = -1; y <= 1; y++) {
-            for (let z = -1; z <= 1; z++) {
-                const currIdx = getIdx(x, y, z);
-                const p1 = projected[currIdx];
+    const wantsImage = (BlckbxPrefs?.logoMode === 'image') && logoImg && logoImgReady;
+    const logoScaleMul = Math.max(0.7, Math.min(1.5, (Number(BlckbxPrefs?.logoImageScale) || 100) / 100));
+    if (!wantsImage) {
+        ctx3d.beginPath();
+        for (let x = -1; x <= 1; x++) {
+            for (let y = -1; y <= 1; y++) {
+                for (let z = -1; z <= 1; z++) {
+                    const currIdx = getIdx(x, y, z);
+                    const p1 = projected[currIdx];
 
-                if (x < 1) {
-                    const p2 = projected[getIdx(x + 1, y, z)];
-                    ctx3d.moveTo(...p1);
-                    ctx3d.lineTo(...p2);
-                }
-                if (y < 1) {
-                    const p3 = projected[getIdx(x, y + 1, z)];
-                    ctx3d.moveTo(...p1);
-                    ctx3d.lineTo(...p3);
-                }
-                if (z < 1) {
-                    const p4 = projected[getIdx(x, y, z + 1)];
-                    ctx3d.moveTo(...p1);
-                    ctx3d.lineTo(...p4);
+                    if (x < 1) {
+                        const p2 = projected[getIdx(x + 1, y, z)];
+                        ctx3d.moveTo(...p1);
+                        ctx3d.lineTo(...p2);
+                    }
+                    if (y < 1) {
+                        const p3 = projected[getIdx(x, y + 1, z)];
+                        ctx3d.moveTo(...p1);
+                        ctx3d.lineTo(...p3);
+                    }
+                    if (z < 1) {
+                        const p4 = projected[getIdx(x, y, z + 1)];
+                        ctx3d.moveTo(...p1);
+                        ctx3d.lineTo(...p4);
+                    }
                 }
             }
         }
+        ctx3d.stroke();
+    } else {
+        if (BlckbxPrefs.logoImageCube) {
+            // real cube mesh path (webgl). keeps perspective + proper face wrap.
+            if (!renderLogoCubeGl(t * 0.7, t, 1.05 * logoScaleMul)) {
+                // fallback if webgl unavailable
+                ctx3d.stroke();
+            }
+        } else {
+            // flat image mode: replace cube with one rotating plane
+            const o = project(...rotate(0, 0, 0));
+            const ax = project(...rotate(scale, 0, 0));
+            const ay = project(...rotate(0, scale, 0));
+            const ux = ax[0] - o[0], uy = ax[1] - o[1];
+            const vx = ay[0] - o[0], vy = ay[1] - o[1];
+            const ulen = Math.hypot(ux, uy) || 1;
+            const vlen = Math.hypot(vx, vy) || 1;
+            // roughly match original cube size
+            const half = Math.min(dims.w, dims.h) * 0.56 * logoScaleMul;
+            const uX = (ux / ulen) * half, uY = (uy / ulen) * half;
+            const vX = (vx / vlen) * half, vY = (vy / vlen) * half;
+
+            ctx3d.save();
+            ctx3d.setTransform(uX, uY, vX, vY, o[0], o[1]);
+            ctx3d.imageSmoothingEnabled = true;
+            ctx3d.drawImage(logoImg, -0.5, -0.5, 1, 1);
+            ctx3d.restore();
+        }
     }
-    ctx3d.stroke();
 
     t += 0.008;
     requestAnimationFrame(draw3d);
@@ -7696,3 +8352,5 @@ draw3d();
 </script>
 </body>
 </html>
+
+<!-- Love from blckbx team <3 -->
